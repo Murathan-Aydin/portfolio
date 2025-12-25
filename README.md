@@ -1,5 +1,33 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Configuration des variables d'environnement
+
+Pour personnaliser vos informations de contact et vos mentions légales, créez un fichier `.env.local` à la racine du projet avec les variables suivantes :
+
+```bash
+# Informations personnelles
+BUSINESS_NAME=m-aydin
+FIRST_NAME=Murathan
+LAST_NAME=Aydin
+SIRET=REDACTED_SIRET
+ADDRESS=
+
+# Contact
+CONTACT_EMAIL=contact@ma-dev.fr
+PHONE_NUMBER=REDACTED_PHONE
+PHONE_NUMBER_DISPLAY=REDACTED_PHONE_DISPLAY
+
+# Hébergeur
+HOST_NAME=OVH
+HOST_ADDRESS=2 rue Kellermann, 59100 Roubaix, France
+HOST_WEBSITE=https://www.ovh.com
+HOST_TYPE=VPS en France
+```
+
+**Note :** Pour que les variables soient accessibles côté client (composants React), vous pouvez également utiliser le préfixe `NEXT_PUBLIC_` (ex: `NEXT_PUBLIC_CONTACT_EMAIL`). Le fichier `lib/config.ts` gère automatiquement les deux formats.
+
+Un fichier `.env.local.example` est disponible comme référence.
+
 ## Getting Started
 
 First, run the development server:
