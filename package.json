@@ -5,8 +5,9 @@
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
+		"prestart": "node scripts/ensure-uploads-dir.js",
 		"start": "next start",
-		"start:prod": "next start -p 3000 -H 127.0.0.1",
+		"start:prod": "node scripts/ensure-uploads-dir.js && next start -p 3000 -H 127.0.0.1",
 		"lint": "eslint ."
 	},
 	"dependencies": {

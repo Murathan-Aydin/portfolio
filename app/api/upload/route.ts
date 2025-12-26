@@ -44,18 +44,39 @@ export async function POST(request: NextRequest) {
         const randomString = Math.random().toString(36).substring(2, 15)
         const filename = `${timestamp}-${randomString}.webp`
 
-        // Créer le dossier uploads s'il n'existe pas
-        const uploadsDir = join(process.cwd(), "public", "uploads")
-        if (!existsSync(uploadsDir)) {
-            await mkdir(uploadsDir, { recursive: true })
+        // Créer le dossier images/projets s'il n'existe pas (volume Docker)
+        const imagesDir = join(process.cwd(), "public", "images", "projets")
+        if (!existsSync(imagesDir)) {
+            try {
+                await mkdir(imagesDir, { recursive: true, mode: 0o755 })
+            } catch (mkdirError: any) {
+                console.error("Error creating images directory:", mkdirError)
+                // Si le dossier ne peut pas être créé, on essaie quand même d'écrire le fichier
+                // (peut-être que le dossier existe mais existsSync a échoué)
+            }
         }
 
         // Sauvegarder le fichier
-        const filepath = join(uploadsDir, filename)
-        await writeFile(filepath, webpBuffer)
+        const filepath = join(imagesDir, filename)
+        try {
+            await writeFile(filepath, webpBuffer)
+        } catch (writeError: any) {
+            console.error("Error writing file:", writeError)
+            // Vérifier si c'est un problème de permissions ou de dossier
+            if (writeError.code === "ENOENT" || writeError.code === "EACCES") {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        error: "Erreur de permissions. Vérifiez que le dossier public/images/projets existe et est accessible.",
+                    },
+                    { status: 500 }
+                )
+            }
+            throw writeError
+        }
 
         // Retourner l'URL de l'image
-        const imageUrl = `/uploads/${filename}`
+        const imageUrl = `/images/projets/${filename}`
 
         return NextResponse.json({
             success: true,
