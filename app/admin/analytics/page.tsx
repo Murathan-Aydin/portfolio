@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { motion } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
+import { gsap } from "gsap"
 import { Users, Eye, Clock, TrendingUp, ArrowUpRight, ArrowDownRight, Globe, Monitor } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -87,6 +87,35 @@ const stats = [
 
 export default function AdminAnalyticsPage() {
     const [period, setPeriod] = useState("month")
+    const statsRef = useRef<HTMLDivElement>(null)
+    const chart1Ref = useRef<HTMLDivElement>(null)
+    const chart2Ref = useRef<HTMLDivElement>(null)
+    const chart3Ref = useRef<HTMLDivElement>(null)
+    const chart4Ref = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (statsRef.current) {
+            const cards = statsRef.current.children
+            gsap.fromTo(
+                Array.from(cards),
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }
+            )
+        }
+    }, [])
+
+    useEffect(() => {
+        const refs = [chart1Ref, chart2Ref, chart3Ref, chart4Ref]
+        refs.forEach((ref, index) => {
+            if (ref.current) {
+                gsap.fromTo(
+                    ref.current,
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.5, delay: 0.4 + index * 0.1 }
+                )
+            }
+        })
+    }, [])
 
     return (
         <ProtectedRoute>
@@ -107,14 +136,9 @@ export default function AdminAnalyticsPage() {
                         </Select>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        {stats.map((stat, index) => (
-                            <motion.div
-                                key={stat.title}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                            >
+                    <div ref={statsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        {stats.map((stat) => (
+                            <div key={stat.title}>
                                 <Card>
                                     <CardContent className="p-6">
                                         <div className="flex items-center justify-between">
@@ -139,17 +163,12 @@ export default function AdminAnalyticsPage() {
                                         </div>
                                     </CardContent>
                                 </Card>
-                            </motion.div>
+                            </div>
                         ))}
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 }}
-                            className="lg:col-span-2"
-                        >
+                        <div ref={chart1Ref} className="lg:col-span-2">
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -208,9 +227,9 @@ export default function AdminAnalyticsPage() {
                                     </ChartContainer>
                                 </CardContent>
                             </Card>
-                        </motion.div>
+                        </div>
 
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+                        <div ref={chart2Ref}>
                             <Card className="h-full">
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -251,11 +270,11 @@ export default function AdminAnalyticsPage() {
                                     </div>
                                 </CardContent>
                             </Card>
-                        </motion.div>
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
+                        <div ref={chart3Ref}>
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -272,11 +291,9 @@ export default function AdminAnalyticsPage() {
                                                     <span className="text-sm text-muted-foreground">{page.views.toLocaleString()} vues</span>
                                                 </div>
                                                 <div className="h-2 bg-muted rounded-full overflow-hidden">
-                                                    <motion.div
-                                                        initial={{ width: 0 }}
-                                                        animate={{ width: `${page.percentage}%` }}
-                                                        transition={{ delay: 0.8 + index * 0.1, duration: 0.5 }}
+                                                    <div
                                                         className="h-full bg-primary rounded-full"
+                                                        style={{ width: `${page.percentage}%` }}
                                                     />
                                                 </div>
                                             </div>
@@ -284,9 +301,9 @@ export default function AdminAnalyticsPage() {
                                     </div>
                                 </CardContent>
                             </Card>
-                        </motion.div>
+                        </div>
 
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}>
+                        <div ref={chart4Ref}>
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -316,7 +333,7 @@ export default function AdminAnalyticsPage() {
                                     </ChartContainer>
                                 </CardContent>
                             </Card>
-                        </motion.div>
+                        </div>
                     </div>
 
                     <div className="mt-6 p-4 bg-muted/50 rounded-lg">

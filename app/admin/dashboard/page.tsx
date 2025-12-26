@@ -1,6 +1,7 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useEffect, useRef } from "react"
+import { gsap } from "gsap"
 import { FolderKanban, Users, Eye, TrendingUp, FileText, ArrowUpRight, ArrowDownRight } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AdminHeader } from "@/components/admin/admin-header"
@@ -46,20 +47,39 @@ const recentActivity = [
 ]
 
 export default function AdminDashboardPage() {
+    const statsRef = useRef<HTMLDivElement>(null)
+    const card1Ref = useRef<HTMLDivElement>(null)
+    const card2Ref = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (statsRef.current) {
+            const cards = statsRef.current.children
+            gsap.fromTo(
+                Array.from(cards),
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }
+            )
+        }
+    }, [])
+
+    useEffect(() => {
+        if (card1Ref.current) {
+            gsap.fromTo(card1Ref.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.4 })
+        }
+        if (card2Ref.current) {
+            gsap.fromTo(card2Ref.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.5 })
+        }
+    }, [])
+
     return (
         <ProtectedRoute>
             <div className="min-h-screen bg-background">
                 <main className="ml-64 p-8">
                     <AdminHeader title="Dashboard" description="Vue d'ensemble de votre activité" />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        {stats.map((stat, index) => (
-                            <motion.div
-                                key={stat.title}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                            >
+                    <div ref={statsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        {stats.map((stat) => (
+                            <div key={stat.title}>
                                 <Card>
                                     <CardContent className="p-6">
                                         <div className="flex items-center justify-between">
@@ -84,12 +104,12 @@ export default function AdminDashboardPage() {
                                         </div>
                                     </CardContent>
                                 </Card>
-                            </motion.div>
+                            </div>
                         ))}
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+                        <div ref={card1Ref}>
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -114,9 +134,9 @@ export default function AdminDashboardPage() {
                                     </div>
                                 </CardContent>
                             </Card>
-                        </motion.div>
+                        </div>
 
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+                        <div ref={card2Ref}>
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -148,7 +168,7 @@ export default function AdminDashboardPage() {
                                     </div>
                                 </CardContent>
                             </Card>
-                        </motion.div>
+                        </div>
                     </div>
                 </main>
             </div>

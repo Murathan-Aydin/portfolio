@@ -350,9 +350,9 @@ export default function DevisPage() {
                                         politique de confidentialité
                                     </a>
                                 </p>
-                            </motion.div>
+                            </div>
                         </form>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </>

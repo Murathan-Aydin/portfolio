@@ -2,9 +2,9 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
-import { motion } from "framer-motion"
+import { gsap } from "gsap"
 import { Eye, EyeOff, Lock, Mail, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -19,6 +19,24 @@ export default function AdminLoginPage() {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const { login } = useAdminAuth()
+    const containerRef = useRef<HTMLDivElement>(null)
+    const iconRef = useRef<HTMLDivElement>(null)
+    const errorRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (containerRef.current) {
+            gsap.fromTo(containerRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 })
+        }
+        if (iconRef.current) {
+            gsap.fromTo(iconRef.current, { scale: 0.8 }, { scale: 1, duration: 0.5, delay: 0.2, ease: "back.out(1.7)" })
+        }
+    }, [])
+
+    useEffect(() => {
+        if (error && errorRef.current) {
+            gsap.fromTo(errorRef.current, { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3 })
+        }
+    }, [error])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -41,36 +59,28 @@ export default function AdminLoginPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-secondary/30 via-background to-accent/20 flex items-center justify-center p-4">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full max-w-md"
-            >
+            <div ref={containerRef} className="w-full max-w-md">
                 <div className="bg-card rounded-2xl shadow-xl border border-border p-8">
                     <div className="text-center mb-8">
-                        <motion.div
-                            initial={{ scale: 0.8 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                        <div
+                            ref={iconRef}
                             className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4"
                         >
                             <Lock className="w-8 h-8 text-primary" />
-                        </motion.div>
+                        </div>
                         <h1 className="text-2xl font-bold text-foreground">Administration</h1>
                         <p className="text-muted-foreground mt-2">Connectez-vous à votre espace admin</p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {error && (
-                            <motion.div
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
+                            <div
+                                ref={errorRef}
                                 className="flex items-center gap-2 p-3 bg-destructive/10 text-destructive rounded-lg text-sm"
                             >
                                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                                 {error}
-                            </motion.div>
+                            </div>
                         )}
 
                         <div className="space-y-2">
@@ -118,11 +128,7 @@ export default function AdminLoginPage() {
                             disabled={isLoading}
                         >
                             {isLoading ? (
-                                <motion.div
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                                    className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full"
-                                />
+                                <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
                             ) : (
                                 "Se connecter"
                             )}
@@ -131,7 +137,7 @@ export default function AdminLoginPage() {
 
                     <p className="text-center text-xs text-muted-foreground mt-6">Demo: REDACTED_ADMIN_EMAIL / REDACTED_ADMIN_PASSWORD</p>
                 </div>
-            </motion.div>
+            </div>
         </div>
     )
 }

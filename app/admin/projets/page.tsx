@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
+import { gsap } from "gsap"
 import { Plus, Pencil, Trash2, Eye, MoreVertical, Search, Filter, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -27,10 +27,22 @@ export default function AdminProjectsPage() {
     const [isLoading, setIsLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState("")
     const [deleteProject, setDeleteProject] = useState<Project | null>(null)
+    const gridRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         fetchProjects()
     }, [])
+
+    useEffect(() => {
+        if (!isLoading && gridRef.current && projects.length > 0) {
+            const cards = gridRef.current.children
+            gsap.fromTo(
+                Array.from(cards),
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.5, stagger: 0.05 }
+            )
+        }
+    }, [isLoading, projects])
 
     const fetchProjects = async () => {
         try {
@@ -111,16 +123,9 @@ export default function AdminProjectsPage() {
                             <Loader2 className="w-8 h-8 animate-spin text-primary" />
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <AnimatePresence>
-                                {filteredProjects.map((project, index) => (
-                                    <motion.div
-                                        key={project.slug}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, scale: 0.95 }}
-                                        transition={{ delay: index * 0.05 }}
-                                    >
+                        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {filteredProjects.map((project) => (
+                                <div key={project.slug}>
                                         <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
                                             <div className="relative aspect-video overflow-hidden">
                                                 <img
@@ -186,9 +191,8 @@ export default function AdminProjectsPage() {
                                                 <p className="text-xs text-muted-foreground mt-3">{project.projectDate}</p>
                                             </CardContent>
                                         </Card>
-                                    </motion.div>
+                                    </div>
                                 ))}
-                            </AnimatePresence>
                         </div>
                     )}
 
