@@ -24,5 +24,10 @@ export default withAuth(
 
 // Configuration des matchers pour protéger uniquement les routes admin
 export const config = {
-    matcher: ["/admin/:path*"],
+    matcher: [
+        // Match all request paths except for:
+        // - _next (Next.js internals)
+        // - files in public (images, favicon, robots, sitemap, etc.)
+        "/((?!_next|images|favicon.ico|robots.txt|sitemap.xml).*)",
+    ],
 }
