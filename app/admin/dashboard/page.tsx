@@ -1,58 +1,59 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
-import { FolderKanban, Users, Eye, TrendingUp, FileText, ArrowUpRight, ArrowDownRight } from "lucide-react"
+import { FolderKanban, Users, Eye, TrendingUp, FileText, ArrowUpRight, ArrowDownRight, Loader2 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AdminHeader } from "@/components/admin/admin-header"
 import { ProtectedRoute } from "@/components/admin/protected-route"
-import { projects } from "@/lib/projects-data"
+import Link from "next/link"
 
-const stats = [
-    {
-        title: "Projets",
-        value: projects.length,
-        change: "+2",
-        trend: "up",
-        icon: FolderKanban,
-    },
-    {
-        title: "Visiteurs ce mois",
-        value: "2,847",
-        change: "+12.5%",
-        trend: "up",
-        icon: Users,
-    },
-    {
-        title: "Pages vues",
-        value: "12,493",
-        change: "+8.2%",
-        trend: "up",
-        icon: Eye,
-    },
-    {
-        title: "Demandes de devis",
-        value: "24",
-        change: "-3",
-        trend: "down",
-        icon: FileText,
-    },
-]
-
-const recentActivity = [
-    { action: "Nouveau projet ajouté", project: "Restaurant Le Gourmet", time: "Il y a 2h" },
-    { action: "Projet modifié", project: "Boutique Mode Éthique", time: "Il y a 5h" },
-    { action: "Demande de devis reçue", project: "Cabinet d'Architecte", time: "Il y a 1j" },
-    { action: "Nouveau visiteur unique", project: "-", time: "Il y a 1j" },
-]
+interface DashboardData {
+    stats: {
+        projects: { value: number; change: string; trend: "up" | "down" }
+        visitors: { value: string; change: string; trend: "up" | "down" }
+        pageViews: { value: string; change: string; trend: "up" | "down" }
+        devis: { value: string; change: string; trend: "up" | "down" }
+    }
+    recentActivity: Array<{ action: string; project: string; time: string }>
+    latestProjects: Array<{ title: string; clientName: string; projectDate: string; image: string; slug: string }>
+}
 
 export default function AdminDashboardPage() {
+    const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
     const statsRef = useRef<HTMLDivElement>(null)
     const card1Ref = useRef<HTMLDivElement>(null)
     const card2Ref = useRef<HTMLDivElement>(null)
 
+    // Fetch dashboard data
     useEffect(() => {
-        if (statsRef.current) {
+        const fetchDashboardData = async () => {
+            setIsLoading(true)
+            setError(null)
+            try {
+                const response = await fetch("/api/dashboard")
+                const result = await response.json()
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.error || "Erreur lors de la récupération des données")
+                }
+
+                setDashboardData(result.data)
+            } catch (err: any) {
+                console.error("Error fetching dashboard data:", err)
+                setError(err.message || "Erreur lors du chargement des données")
+            } finally {
+                setIsLoading(false)
+            }
+        }
+
+        fetchDashboardData()
+    }, [])
+
+    useEffect(() => {
+        if (dashboardData && statsRef.current) {
             const cards = statsRef.current.children
             gsap.fromTo(
                 Array.from(cards),
@@ -60,16 +61,82 @@ export default function AdminDashboardPage() {
                 { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }
             )
         }
-    }, [])
+    }, [dashboardData])
 
     useEffect(() => {
-        if (card1Ref.current) {
-            gsap.fromTo(card1Ref.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.4 })
+        if (dashboardData) {
+            if (card1Ref.current) {
+                gsap.fromTo(card1Ref.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.4 })
+            }
+            if (card2Ref.current) {
+                gsap.fromTo(card2Ref.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.5 })
+            }
         }
-        if (card2Ref.current) {
-            gsap.fromTo(card2Ref.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.5 })
-        }
-    }, [])
+    }, [dashboardData])
+
+    if (isLoading) {
+        return (
+            <ProtectedRoute>
+                <div className="min-h-screen bg-background">
+                    <main className="ml-64 p-8">
+                        <div className="flex items-center justify-center h-96">
+                            <div className="text-center">
+                                <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
+                                <p className="text-muted-foreground">Chargement du dashboard...</p>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </ProtectedRoute>
+        )
+    }
+
+    if (error || !dashboardData) {
+        return (
+            <ProtectedRoute>
+                <div className="min-h-screen bg-background">
+                    <main className="ml-64 p-8">
+                        <div className="flex items-center justify-center h-96">
+                            <div className="text-center">
+                                <p className="text-destructive mb-4">{error || "Aucune donnée disponible"}</p>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </ProtectedRoute>
+        )
+    }
+
+    const stats = [
+        {
+            title: "Projets",
+            value: dashboardData.stats.projects.value,
+            change: dashboardData.stats.projects.change,
+            trend: dashboardData.stats.projects.trend,
+            icon: FolderKanban,
+        },
+        {
+            title: "Visiteurs ce mois",
+            value: dashboardData.stats.visitors.value,
+            change: dashboardData.stats.visitors.change,
+            trend: dashboardData.stats.visitors.trend,
+            icon: Users,
+        },
+        {
+            title: "Pages vues",
+            value: dashboardData.stats.pageViews.value,
+            change: dashboardData.stats.pageViews.change,
+            trend: dashboardData.stats.pageViews.trend,
+            icon: Eye,
+        },
+        {
+            title: "Demandes de devis",
+            value: dashboardData.stats.devis.value,
+            change: dashboardData.stats.devis.change,
+            trend: dashboardData.stats.devis.trend,
+            icon: FileText,
+        },
+    ]
 
     return (
         <ProtectedRoute>
@@ -118,20 +185,24 @@ export default function AdminDashboardPage() {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="space-y-4">
-                                        {recentActivity.map((activity, index) => (
-                                            <div
-                                                key={index}
-                                                className="flex items-center justify-between py-3 border-b border-border last:border-0"
-                                            >
-                                                <div>
-                                                    <p className="font-medium text-foreground">{activity.action}</p>
-                                                    <p className="text-sm text-muted-foreground">{activity.project}</p>
+                                    {dashboardData.recentActivity.length > 0 ? (
+                                        <div className="space-y-4">
+                                            {dashboardData.recentActivity.map((activity, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="flex items-center justify-between py-3 border-b border-border last:border-0"
+                                                >
+                                                    <div>
+                                                        <p className="font-medium text-foreground">{activity.action}</p>
+                                                        <p className="text-sm text-muted-foreground">{activity.project}</p>
+                                                    </div>
+                                                    <span className="text-xs text-muted-foreground">{activity.time}</span>
                                                 </div>
-                                                <span className="text-xs text-muted-foreground">{activity.time}</span>
-                                            </div>
-                                        ))}
-                                    </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="text-center text-muted-foreground py-8">Aucune activité récente</div>
+                                    )}
                                 </CardContent>
                             </Card>
                         </div>
@@ -145,27 +216,32 @@ export default function AdminDashboardPage() {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="space-y-4">
-                                        {projects.slice(0, 4).map((project) => (
-                                            <div
-                                                key={project.slug}
-                                                className="flex items-center gap-4 py-3 border-b border-border last:border-0"
-                                            >
-                                                <div className="w-12 h-12 bg-muted rounded-lg overflow-hidden">
-                                                    <img
-                                                        src={project.image || "/placeholder.svg"}
-                                                        alt={project.title}
-                                                        className="w-full h-full object-cover"
-                                                    />
-                                                </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <p className="font-medium text-foreground truncate">{project.title}</p>
-                                                    <p className="text-sm text-muted-foreground">{project.clientName}</p>
-                                                </div>
-                                                <span className="text-xs text-muted-foreground">{project.projectDate}</span>
-                                            </div>
-                                        ))}
-                                    </div>
+                                    {dashboardData.latestProjects.length > 0 ? (
+                                        <div className="space-y-4">
+                                            {dashboardData.latestProjects.map((project) => (
+                                                <Link
+                                                    key={project.slug}
+                                                    href={`/admin/projets/${project.slug}/edit`}
+                                                    className="flex items-center gap-4 py-3 border-b border-border last:border-0 hover:bg-muted/50 transition-colors rounded-lg px-2 -mx-2"
+                                                >
+                                                    <div className="w-12 h-12 bg-muted rounded-lg overflow-hidden flex-shrink-0">
+                                                        <img
+                                                            src={project.image || "/placeholder.svg"}
+                                                            alt={project.title}
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className="font-medium text-foreground truncate">{project.title}</p>
+                                                        <p className="text-sm text-muted-foreground">{project.clientName}</p>
+                                                    </div>
+                                                    <span className="text-xs text-muted-foreground whitespace-nowrap">{project.projectDate}</span>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="text-center text-muted-foreground py-8">Aucun projet disponible</div>
+                                    )}
                                 </CardContent>
                             </Card>
                         </div>
