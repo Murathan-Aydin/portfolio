@@ -91,7 +91,7 @@ export default function AdminProjectsPage() {
     return (
         <ProtectedRoute>
             <div className="min-h-screen bg-background">
-                <main className="ml-64 p-8">
+                <main className="lg:ml-64 p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8">
                     <AdminHeader title="Projets" description="Gérez vos projets et réalisations" />
 
                     <div className="flex items-center justify-between mb-6">
@@ -102,7 +102,7 @@ export default function AdminProjectsPage() {
                                     placeholder="Rechercher un projet..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-80 pl-10"
+                                    className="w-full sm:w-64 md:w-80 pl-10"
                                 />
                             </div>
                             <Button variant="outline" size="icon">

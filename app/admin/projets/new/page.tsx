@@ -148,7 +148,7 @@ export default function NewProjectPage() {
             <div className="min-h-screen bg-background">
                 <AdminSidebar />
 
-                <main className="ml-64 p-8">
+                <main className="lg:ml-64 p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8">
                     <div className="flex items-center gap-4 mb-6">
                         <Link href="/admin/projets">
                             <Button variant="ghost" size="icon">

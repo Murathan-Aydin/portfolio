@@ -155,7 +155,7 @@ export default function EditProjectPage() {
             <ProtectedRoute>
                 <div className="min-h-screen bg-background">
                     <AdminSidebar />
-                    <main className="ml-64 p-8 flex items-center justify-center">
+                    <main className="lg:ml-64 p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8 flex items-center justify-center">
                         <Loader2 className="w-8 h-8 animate-spin text-primary" />
                     </main>
                 </div>
@@ -168,7 +168,7 @@ export default function EditProjectPage() {
             <ProtectedRoute>
                 <div className="min-h-screen bg-background">
                     <AdminSidebar />
-                    <main className="ml-64 p-8">
+                    <main className="lg:ml-64 p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8">
                         <div className="text-center py-12">
                             <p className="text-muted-foreground mb-4">Projet non trouvé</p>
                             <Link href="/admin/projets">
@@ -186,7 +186,7 @@ export default function EditProjectPage() {
             <div className="min-h-screen bg-background">
                 <AdminSidebar />
 
-                <main className="ml-64 p-8">
+                <main className="lg:ml-64 p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8">
                     <div className="flex items-center gap-4 mb-6">
                         <Link href="/admin/projets">
                             <Button variant="ghost" size="icon">

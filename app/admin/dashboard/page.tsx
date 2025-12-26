@@ -78,7 +78,7 @@ export default function AdminDashboardPage() {
         return (
             <ProtectedRoute>
                 <div className="min-h-screen bg-background">
-                    <main className="ml-64 p-8">
+                    <main className="lg:ml-64 p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8">
                         <div className="flex items-center justify-center h-96">
                             <div className="text-center">
                                 <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
@@ -95,7 +95,7 @@ export default function AdminDashboardPage() {
         return (
             <ProtectedRoute>
                 <div className="min-h-screen bg-background">
-                    <main className="ml-64 p-8">
+                    <main className="lg:ml-64 p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8">
                         <div className="flex items-center justify-center h-96">
                             <div className="text-center">
                                 <p className="text-destructive mb-4">{error || "Aucune donnée disponible"}</p>
@@ -141,7 +141,7 @@ export default function AdminDashboardPage() {
     return (
         <ProtectedRoute>
             <div className="min-h-screen bg-background">
-                <main className="ml-64 p-8">
+                <main className="lg:ml-64 p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8">
                     <AdminHeader title="Dashboard" description="Vue d'ensemble de votre activité" />
 
                     <div ref={statsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

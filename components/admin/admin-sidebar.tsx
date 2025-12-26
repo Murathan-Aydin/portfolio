@@ -2,9 +2,9 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
-import { LayoutDashboard, FolderKanban, BarChart3, LogOut, Plus, Home } from "lucide-react"
+import { LayoutDashboard, FolderKanban, BarChart3, LogOut, Plus, Home, Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAdminAuth } from "@/contexts/admin-auth-context"
 
@@ -18,6 +18,7 @@ const menuItems = [
 export function AdminSidebar() {
   const pathname = usePathname()
   const { user, logout } = useAdminAuth()
+  const [isOpen, setIsOpen] = useState(false)
   const menuItemsRef = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
@@ -28,8 +29,38 @@ export function AdminSidebar() {
     })
   }, [])
 
+  // Fermer le menu quand on change de page sur mobile
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
+
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-card border-r border-border flex flex-col">
+    <>
+      {/* Bouton hamburger pour mobile */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-card border border-border rounded-lg shadow-lg"
+        aria-label="Toggle menu"
+      >
+        {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      </button>
+
+      {/* Overlay pour mobile */}
+      {isOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          "fixed left-0 top-0 h-screen w-64 bg-card border-r border-border flex flex-col z-40 transition-transform duration-300",
+          "lg:translate-x-0",
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
       <div className="p-6 border-b border-border">
         <Link href="/admin/dashboard" className="flex items-center gap-2">
           <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
@@ -96,6 +127,7 @@ export function AdminSidebar() {
           </div>
         </div>
       )}
-    </aside>
+      </aside>
+    </>
   )
 }
