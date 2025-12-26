@@ -1,37 +1,60 @@
 import { notFound } from "next/navigation"
-import { getProjectBySlug, getAllProjects } from "@/lib/projects-data"
+import connectDB from "@/lib/mongodb"
+import Project from "@/models/Project"
 import { ProjectDetailClient } from "./project-detail-client"
 
 export async function generateStaticParams() {
-    const projects = getAllProjects()
-    return projects.map((project) => ({
-        slug: project.slug,
-    }))
+    try {
+        await connectDB()
+        const projects = await Project.find({}).select("slug").lean()
+        return projects.map((project) => ({
+            slug: project.slug,
+        }))
+    } catch (error) {
+        console.error("Error generating static params:", error)
+        return []
+    }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = await params
-    const project = getProjectBySlug(slug)
+    try {
+        const { slug } = await params
+        await connectDB()
+        const project = await Project.findOne({ slug }).lean()
 
-    if (!project) {
-        return {
-            title: "Projet non trouvé | MA.DEV",
+        if (!project) {
+            return {
+                title: "Projet non trouvé | MA.DEV",
+            }
         }
-    }
 
-    return {
-        title: `${project.title} | MA.DEV`,
-        description: project.description,
+        return {
+            title: `${project.title} | MA.DEV`,
+            description: project.description,
+        }
+    } catch (error) {
+        return {
+            title: "Projet | MA.DEV",
+        }
     }
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = await params
-    const project = getProjectBySlug(slug)
+    try {
+        const { slug } = await params
+        await connectDB()
+        const project = await Project.findOne({ slug }).lean()
 
-    if (!project) {
+        if (!project) {
+            notFound()
+        }
+
+        // Convertir l'objet MongoDB en objet JavaScript simple
+        const projectData = JSON.parse(JSON.stringify(project))
+
+        return <ProjectDetailClient project={projectData} />
+    } catch (error) {
+        console.error("Error fetching project:", error)
         notFound()
     }
-
-    return <ProjectDetailClient project={project} />
 }

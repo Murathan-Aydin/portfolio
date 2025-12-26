@@ -21,7 +21,7 @@ export function HeroSection() {
                             Développeur web freelance à Mâcon
                         </h1>
                         <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-lg">
-                            Création de sites modernes, performants et sur mesure
+                            Création de sites modernes, performants et sur mesure pour les entreprises de Mâcon et de Saône-et-Loire. Accompagnement personnalisé et devis gratuit.
                         </p>
                         <div className="mt-8 flex flex-col sm:flex-row gap-4">
                             <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6">

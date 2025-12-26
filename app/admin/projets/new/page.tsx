@@ -33,6 +33,8 @@ export default function NewProjectPage() {
     })
     const [newTag, setNewTag] = useState("")
     const [newFeature, setNewFeature] = useState("")
+    const [isUploadingImage, setIsUploadingImage] = useState(false)
+    const [imagePreview, setImagePreview] = useState<string | null>(null)
 
     const generateSlug = (title: string) => {
         return title
@@ -77,24 +79,65 @@ export default function NewProjectPage() {
         })
     }
 
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        // Vérifier la taille (max 100MB)
+        if (file.size > 100 * 1024 * 1024) {
+            alert("Le fichier est trop volumineux. Taille maximale : 100MB")
+            return
+        }
+
+        setIsUploadingImage(true)
+
+        try {
+            const uploadFormData = new FormData()
+            uploadFormData.append("file", file)
+
+            const response = await fetch("/api/upload", {
+                method: "POST",
+                body: uploadFormData,
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                throw new Error(data.error || "Erreur lors de l'upload")
+            }
+
+            // Mettre à jour l'URL de l'image et la preview
+            setFormData({ ...formData, image: data.url })
+            setImagePreview(data.url)
+        } catch (error: any) {
+            console.error("Error uploading image:", error)
+            alert(error.message || "Erreur lors de l'upload de l'image")
+        } finally {
+            setIsUploadingImage(false)
+        }
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
 
         try {
-            // TODO: Replace with API call to your MongoDB backend
-            // await fetch('/api/projects', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(formData),
-            // })
+            const response = await fetch("/api/projects", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            })
 
-            // Simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 1000))
+            const data = await response.json()
+
+            if (!response.ok) {
+                throw new Error(data.error || "Erreur lors de la création du projet")
+            }
 
             router.push("/admin/projets")
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error creating project:", error)
+            alert(error.message || "Erreur lors de la création du projet")
         } finally {
             setIsLoading(false)
         }
@@ -288,20 +331,73 @@ export default function NewProjectPage() {
                                     </CardHeader>
                                     <CardContent>
                                         <div className="space-y-4">
-                                            <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer">
-                                                <ImageIcon className="w-10 h-10 mx-auto text-muted-foreground mb-2" />
-                                                <p className="text-sm text-muted-foreground">Glissez une image ou cliquez pour sélectionner</p>
-                                                <p className="text-xs text-muted-foreground mt-1">PNG, JPG jusqu'à 5MB</p>
-                                            </div>
+                                            {/* Upload d'image */}
                                             <div className="space-y-2">
-                                                <Label htmlFor="imageUrl">Ou entrez l'URL de l'image</Label>
+                                                <Label htmlFor="imageUpload">
+                                                    Télécharger une image <span className="text-destructive">*</span>
+                                                </Label>
+                                                <div className="relative">
+                                                    <Input
+                                                        id="imageUpload"
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={handleImageUpload}
+                                                        disabled={isUploadingImage}
+                                                        className="cursor-pointer"
+                                                    />
+                                                    {isUploadingImage && (
+                                                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                                            <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <p className="text-xs text-muted-foreground">
+                                                    Formats acceptés : PNG, JPG, JPEG, WEBP (jusqu'à 100MB). L'image sera automatiquement convertie en WebP.
+                                                </p>
+                                            </div>
+
+                                            {/* Preview de l'image */}
+                                            {(imagePreview || formData.image) && (
+                                                <div className="space-y-2">
+                                                    <Label>Aperçu de l'image</Label>
+                                                    <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-border">
+                                                        <img
+                                                            src={imagePreview || formData.image}
+                                                            alt="Preview"
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setFormData({ ...formData, image: "" })
+                                                                setImagePreview(null)
+                                                            }}
+                                                            className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full p-1 hover:bg-destructive/90 transition-colors"
+                                                        >
+                                                            <X className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* URL manuelle (optionnel) */}
+                                            <div className="space-y-2">
+                                                <Label htmlFor="imageUrl">
+                                                    Ou entrez une URL d'image
+                                                </Label>
                                                 <Input
                                                     id="imageUrl"
                                                     type="url"
                                                     value={formData.image}
-                                                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                                                    onChange={(e) => {
+                                                        setFormData({ ...formData, image: e.target.value })
+                                                        setImagePreview(e.target.value || null)
+                                                    }}
                                                     placeholder="https://example.com/image.jpg"
                                                 />
+                                                <p className="text-xs text-muted-foreground">
+                                                    Alternative : utilisez une URL d'image externe si vous préférez.
+                                                </p>
                                             </div>
                                         </div>
                                     </CardContent>

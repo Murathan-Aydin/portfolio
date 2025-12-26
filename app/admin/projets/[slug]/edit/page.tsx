@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { useRouter, useParams } from "next/navigation"
-import { Save, ArrowLeft, Plus, X, Loader2 } from "lucide-react"
+import { Save, ArrowLeft, Plus, X, Loader2, ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AdminSidebar } from "@/components/admin/admin-sidebar"
 import { AdminHeader } from "@/components/admin/admin-header"
 import { ProtectedRoute } from "@/components/admin/protected-route"
-import { getProjectBySlug, type Project } from "@/lib/projects-data"
+import type { Project } from "@/lib/types"
 import Link from "next/link"
 
 export default function EditProjectPage() {
@@ -26,16 +26,34 @@ export default function EditProjectPage() {
     const [formData, setFormData] = useState<Project | null>(null)
     const [newTag, setNewTag] = useState("")
     const [newFeature, setNewFeature] = useState("")
+    const [isUploadingImage, setIsUploadingImage] = useState(false)
+    const [imagePreview, setImagePreview] = useState<string | null>(null)
 
     useEffect(() => {
-        // TODO: Replace with API call to your MongoDB backend
-        // const project = await fetch(`/api/projects/${slug}`).then(res => res.json())
-        const project = getProjectBySlug(slug)
-        if (project) {
-            setFormData(project)
+        const fetchProject = async () => {
+            try {
+                const response = await fetch(`/api/projects/${slug}`)
+                const data = await response.json()
+
+                if (data.success && data.data) {
+                    setFormData(data.data)
+                    setImagePreview(data.data.image || null)
+                } else {
+                    console.error("Project not found")
+                    router.push("/admin/projets")
+                }
+            } catch (error) {
+                console.error("Error fetching project:", error)
+                router.push("/admin/projets")
+            } finally {
+                setIsFetching(false)
+            }
         }
-        setIsFetching(false)
-    }, [slug])
+
+        if (slug) {
+            fetchProject()
+        }
+    }, [slug, router])
 
     const addTag = () => {
         if (formData && newTag.trim() && !formData.tags.includes(newTag.trim())) {
@@ -66,6 +84,44 @@ export default function EditProjectPage() {
         }
     }
 
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file || !formData) return
+
+        // Vérifier la taille (max 100MB)
+        if (file.size > 100 * 1024 * 1024) {
+            alert("Le fichier est trop volumineux. Taille maximale : 100MB")
+            return
+        }
+
+        setIsUploadingImage(true)
+
+        try {
+            const uploadFormData = new FormData()
+            uploadFormData.append("file", file)
+
+            const response = await fetch("/api/upload", {
+                method: "POST",
+                body: uploadFormData,
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                throw new Error(data.error || "Erreur lors de l'upload")
+            }
+
+            // Mettre à jour l'URL de l'image et la preview
+            setFormData({ ...formData, image: data.url })
+            setImagePreview(data.url)
+        } catch (error: any) {
+            console.error("Error uploading image:", error)
+            alert(error.message || "Erreur lors de l'upload de l'image")
+        } finally {
+            setIsUploadingImage(false)
+        }
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!formData) return
@@ -73,17 +129,22 @@ export default function EditProjectPage() {
         setIsLoading(true)
 
         try {
-            // TODO: Replace with API call to your MongoDB backend
-            // await fetch(`/api/projects/${slug}`, {
-            //   method: 'PUT',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(formData),
-            // })
+            const response = await fetch(`/api/projects/${slug}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            })
 
-            await new Promise((resolve) => setTimeout(resolve, 1000))
+            const data = await response.json()
+
+            if (!response.ok) {
+                throw new Error(data.error || "Erreur lors de la mise à jour du projet")
+            }
+
             router.push("/admin/projets")
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error updating project:", error)
+            alert(error.message || "Erreur lors de la mise à jour du projet")
         } finally {
             setIsLoading(false)
         }
@@ -301,23 +362,77 @@ export default function EditProjectPage() {
                                     </CardHeader>
                                     <CardContent>
                                         <div className="space-y-4">
-                                            {formData.image && (
-                                                <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
-                                                    <img
-                                                        src={formData.image || "/placeholder.svg"}
-                                                        alt={formData.title}
-                                                        className="w-full h-full object-cover"
+                                            {/* Upload d'image */}
+                                            <div className="space-y-2">
+                                                <Label htmlFor="imageUpload">
+                                                    Télécharger une image <span className="text-destructive">*</span>
+                                                </Label>
+                                                <div className="relative">
+                                                    <Input
+                                                        id="imageUpload"
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={handleImageUpload}
+                                                        disabled={isUploadingImage}
+                                                        className="cursor-pointer"
                                                     />
+                                                    {isUploadingImage && (
+                                                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                                            <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <p className="text-xs text-muted-foreground">
+                                                    Formats acceptés : PNG, JPG, JPEG, WEBP (jusqu'à 100MB). L'image sera automatiquement convertie en WebP.
+                                                </p>
+                                            </div>
+
+                                            {/* Preview de l'image */}
+                                            {(imagePreview || formData.image) && (
+                                                <div className="space-y-2">
+                                                    <Label>Aperçu de l'image</Label>
+                                                    <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-border">
+                                                        <img
+                                                            src={imagePreview || formData.image}
+                                                            alt="Preview"
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                if (formData) {
+                                                                    setFormData({ ...formData, image: "" })
+                                                                    setImagePreview(null)
+                                                                }
+                                                            }}
+                                                            className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full p-1 hover:bg-destructive/90 transition-colors"
+                                                        >
+                                                            <X className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             )}
+
+                                            {/* URL manuelle (optionnel) */}
                                             <div className="space-y-2">
-                                                <Label htmlFor="imageUrl">URL de l'image</Label>
+                                                <Label htmlFor="imageUrl">
+                                                    Ou entrez une URL d'image
+                                                </Label>
                                                 <Input
                                                     id="imageUrl"
                                                     type="url"
-                                                    value={formData.image}
-                                                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                                                    value={formData.image || ""}
+                                                    onChange={(e) => {
+                                                        if (formData) {
+                                                            setFormData({ ...formData, image: e.target.value })
+                                                            setImagePreview(e.target.value || null)
+                                                        }
+                                                    }}
+                                                    placeholder="https://example.com/image.jpg"
                                                 />
+                                                <p className="text-xs text-muted-foreground">
+                                                    Alternative : utilisez une URL d'image externe si vous préférez.
+                                                </p>
                                             </div>
                                         </div>
                                     </CardContent>

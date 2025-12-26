@@ -26,6 +26,14 @@ HOST_TYPE=VPS en France
 # NextAuth (Authentification)
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=votre_clé_secrète_ici
+
+# MongoDB (Base de données)
+MONGODB_URI=mongodb://localhost:27017/portfolio
+# Ou pour MongoDB Atlas:
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/portfolio?retryWrites=true&w=majority
+
+# SEO (Optionnel - pour sitemap et données structurées)
+NEXT_PUBLIC_SITE_URL=https://ma-dev.fr
 ```
 
 **Note :** Pour que les variables soient accessibles côté client (composants React), vous pouvez également utiliser le préfixe `NEXT_PUBLIC_` (ex: `NEXT_PUBLIC_CONTACT_EMAIL`). Le fichier `lib/config.ts` gère automatiquement les deux formats.

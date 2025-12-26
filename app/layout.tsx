@@ -4,14 +4,30 @@ import { Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { LayoutWrapper } from "@/components/layout-wrapper"
+import { StructuredData } from "@/components/seo/structured-data"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-    title: "MA.DEV | Développeur Web Freelance à Mâcon",
+    title: "Développeur Web Freelance à Mâcon | Création Site Internet Saône-et-Loire",
     description:
-        "Création de sites web modernes, performants et sur mesure. Développeur web freelance basé à Mâcon, intervention en Saône-et-Loire.",
-    generator: "v0.app",
+        "Développeur web freelance à Mâcon spécialisé dans la création de sites internet modernes et performants. Accompagnement personnalisé pour artisans, commerçants et PME en Saône-et-Loire. Devis gratuit.",
+    keywords: [
+        "développeur web Mâcon",
+        "création site internet Mâcon",
+        "freelance web Saône-et-Loire",
+        "développeur web Bourgogne",
+        "création site web Mâcon",
+        "développeur freelance Mâcon",
+        "site internet Mâcon",
+    ],
+    openGraph: {
+        title: "Développeur Web Freelance à Mâcon | MA.DEV",
+        description: "Création de sites web modernes et performants à Mâcon et en Saône-et-Loire. Devis gratuit.",
+        locale: "fr_FR",
+        type: "website",
+    },
+    generator: "Next.js",
     icons: {
         icon: [
             {
@@ -39,6 +55,7 @@ export default function RootLayout({
     return (
         <html lang="fr">
             <body className={`font-sans antialiased`}>
+                <StructuredData />
                 <LayoutWrapper>{children}</LayoutWrapper>
                 <Analytics />
             </body>

@@ -102,11 +102,25 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.5 }}
+                            className="bg-secondary/30 rounded-2xl p-8 mb-8"
+                        >
+                            <p className="text-sm text-muted-foreground italic leading-relaxed">
+                                Site web réalisé pour une entreprise en Saône-et-Loire, optimisé pour le référencement local
+                                et la performance. Ce projet illustre mon expertise en développement web pour les entreprises
+                                locales à Mâcon et dans la région Bourgogne-Franche-Comté.
+                            </p>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.6 }}
                             className="text-center bg-secondary/30 rounded-2xl p-12"
                         >
                             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Vous avez un projet similaire ?</h2>
                             <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
                                 Discutons ensemble de votre projet et voyons comment je peux vous aider à le réaliser.
+                                En tant que développeur web freelance à Mâcon, je vous accompagne dans la création de votre site internet.
                             </p>
                             <Link href="/devis">
                                 <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
