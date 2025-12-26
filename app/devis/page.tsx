@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Send, Check } from "lucide-react"
+import { Send, Check, Loader2, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -36,7 +36,21 @@ const services = [
 
 export default function DevisPage() {
     const [isSubmitted, setIsSubmitted] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState("")
     const [selectedServices, setSelectedServices] = useState<string[]>([])
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        company: "",
+        projectType: "site-vitrine",
+        budget: "2k-5k",
+        projectDescription: "",
+        deadline: "",
+        references: "",
+    })
 
     const handleServiceChange = (serviceId: string, checked: boolean) => {
         if (checked) {
@@ -46,9 +60,34 @@ export default function DevisPage() {
         }
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setIsSubmitted(true)
+        setError("")
+        setIsLoading(true)
+
+        try {
+            const response = await fetch("/api/devis", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    ...formData,
+                    services: selectedServices,
+                }),
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                throw new Error(data.error || "Erreur lors de l'envoi de la demande")
+            }
+
+            setIsSubmitted(true)
+        } catch (error: any) {
+            console.error("Error sending devis:", error)
+            setError(error.message || "Erreur lors de l'envoi de la demande")
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     if (isSubmitted) {
@@ -103,6 +142,17 @@ export default function DevisPage() {
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-8">
+                            {error && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="flex items-center gap-2 p-4 bg-destructive/10 text-destructive rounded-lg"
+                                >
+                                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                                    {error}
+                                </motion.div>
+                            )}
+
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -113,23 +163,58 @@ export default function DevisPage() {
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="firstName">Prénom *</Label>
-                                        <Input id="firstName" placeholder="Votre prénom" required className="border-primary/50" />
+                                        <Input
+                                            id="firstName"
+                                            placeholder="Votre prénom"
+                                            value={formData.firstName}
+                                            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                                            required
+                                            className="border-primary/50"
+                                        />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="lastName">Nom *</Label>
-                                        <Input id="lastName" placeholder="Votre nom" required className="border-primary/50" />
+                                        <Input
+                                            id="lastName"
+                                            placeholder="Votre nom"
+                                            value={formData.lastName}
+                                            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                                            required
+                                            className="border-primary/50"
+                                        />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="email">Email *</Label>
-                                        <Input id="email" type="email" placeholder="votre@email.com" required className="border-primary/50" />
+                                        <Input
+                                            id="email"
+                                            type="email"
+                                            placeholder="votre@email.com"
+                                            value={formData.email}
+                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                            required
+                                            className="border-primary/50"
+                                        />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="phone">Téléphone</Label>
-                                        <Input id="phone" type="tel" placeholder="06 00 00 00 00" className="border-primary/50" />
+                                        <Input
+                                            id="phone"
+                                            type="tel"
+                                            placeholder="06 00 00 00 00"
+                                            value={formData.phone}
+                                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                            className="border-primary/50"
+                                        />
                                     </div>
                                     <div className="space-y-2 md:col-span-2">
                                         <Label htmlFor="company">Entreprise</Label>
-                                        <Input id="company" placeholder="Nom de votre entreprise" className="border-primary/50" />
+                                        <Input
+                                            id="company"
+                                            placeholder="Nom de votre entreprise"
+                                            value={formData.company}
+                                            onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                                            className="border-primary/50"
+                                        />
                                     </div>
                                 </div>
                             </motion.div>
@@ -141,7 +226,11 @@ export default function DevisPage() {
                                 className="bg-secondary rounded-2xl p-8"
                             >
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Type de projet</h2>
-                                <RadioGroup defaultValue="site-vitrine" className="grid md:grid-cols-2 gap-4">
+                                <RadioGroup
+                                    value={formData.projectType}
+                                    onValueChange={(value) => setFormData({ ...formData, projectType: value })}
+                                    className="grid md:grid-cols-2 gap-4"
+                                >
                                     {projectTypes.map((type) => (
                                         <div
                                             key={type.id}
@@ -189,7 +278,11 @@ export default function DevisPage() {
                                 className="bg-secondary rounded-2xl p-8"
                             >
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Budget estimé</h2>
-                                <RadioGroup defaultValue="2k-5k" className="grid md:grid-cols-2 gap-4">
+                                <RadioGroup
+                                    value={formData.budget}
+                                    onValueChange={(value) => setFormData({ ...formData, budget: value })}
+                                    className="grid md:grid-cols-2 gap-4"
+                                >
                                     {budgetRanges.map((budget) => (
                                         <div
                                             key={budget.id}
@@ -217,6 +310,8 @@ export default function DevisPage() {
                                         <Textarea
                                             id="projectDescription"
                                             placeholder="Décrivez votre projet, vos objectifs, vos attentes..."
+                                            value={formData.projectDescription}
+                                            onChange={(e) => setFormData({ ...formData, projectDescription: e.target.value })}
                                             className="border-primary/50"
                                             rows={6}
                                             required
@@ -224,11 +319,24 @@ export default function DevisPage() {
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="deadline">Délai souhaité</Label>
-                                        <Input id="deadline" placeholder="Ex: 2 mois, Janvier 2025..." className="border-primary/50" />
+                                        <Input
+                                            id="deadline"
+                                            placeholder="Ex: 2 mois, Janvier 2025..."
+                                            value={formData.deadline}
+                                            onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
+                                            className="border-primary/50"
+                                        />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="references">Sites de référence</Label>
-                                        <Textarea id="references" placeholder="Listez des sites web qui vous inspirent..." className="border-primary/50" rows={3} />
+                                        <Textarea
+                                            id="references"
+                                            placeholder="Listez des sites web qui vous inspirent..."
+                                            value={formData.references}
+                                            onChange={(e) => setFormData({ ...formData, references: e.target.value })}
+                                            className="border-primary/50"
+                                            rows={3}
+                                        />
                                     </div>
                                 </div>
                             </motion.div>
@@ -241,9 +349,19 @@ export default function DevisPage() {
                                 <Button
                                     type="submit"
                                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-6 text-lg"
+                                    disabled={isLoading}
                                 >
-                                    Envoyer ma demande
-                                    <Send className="ml-2 w-5 h-5" />
+                                    {isLoading ? (
+                                        <>
+                                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                            Envoi en cours...
+                                        </>
+                                    ) : (
+                                        <>
+                                            Envoyer ma demande
+                                            <Send className="ml-2 w-5 h-5" />
+                                        </>
+                                    )}
                                 </Button>
                                 <p className="text-sm text-muted-foreground text-center mt-4">
                                     En soumettant ce formulaire, vous acceptez notre{" "}

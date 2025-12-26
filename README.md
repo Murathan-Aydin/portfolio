@@ -34,6 +34,13 @@ MONGODB_URI=mongodb://localhost:27017/portfolio
 
 # SEO (Optionnel - pour sitemap et données structurées)
 NEXT_PUBLIC_SITE_URL=https://ma-dev.fr
+
+# SMTP (Envoi d'emails - Contact et Devis)
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=votre-email@example.com
+SMTP_PASS=votre-mot-de-passe
+SMTP_TO=contact@ma-dev.fr
 ```
 
 **Note :** Pour que les variables soient accessibles côté client (composants React), vous pouvez également utiliser le préfixe `NEXT_PUBLIC_` (ex: `NEXT_PUBLIC_CONTACT_EMAIL`). Le fichier `lib/config.ts` gère automatiquement les deux formats.
