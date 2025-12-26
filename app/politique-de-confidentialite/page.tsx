@@ -82,15 +82,37 @@ export default function PolitiqueConfidentialite() {
                         </section>
 
                         <section>
-                            <h2 className="text-2xl font-semibold text-foreground mb-4">7. Cookies</h2>
+                            <h2 className="text-2xl font-semibold text-foreground mb-4">7. Cookies et outils de mesure d'audience</h2>
+                            <p className="text-muted-foreground leading-relaxed mb-4">
+                                Notre site utilise des cookies et des outils de mesure d'audience à des fins statistiques pour
+                                comprendre comment les visiteurs utilisent le site et améliorer l'expérience utilisateur.
+                            </p>
+                            <p className="text-muted-foreground leading-relaxed mb-4">
+                                Nous utilisons notamment Vercel Analytics, un service d'analyse de trafic qui collecte des données
+                                anonymisées sur la navigation (pages visitées, durée de visite, provenance du trafic). Ces données
+                                sont traitées de manière agrégée et anonyme, sans permettre l'identification des visiteurs.
+                            </p>
                             <p className="text-muted-foreground leading-relaxed">
-                                Notre site utilise des cookies pour améliorer votre expérience de navigation. Vous pouvez configurer
-                                votre navigateur pour refuser les cookies ou être alerté lorsqu'un cookie est envoyé.
+                                Vous pouvez configurer votre navigateur pour refuser les cookies ou être alerté lorsqu'un cookie
+                                est envoyé. Notez que le refus des cookies peut affecter certaines fonctionnalités du site.
                             </p>
                         </section>
 
                         <section>
-                            <h2 className="text-2xl font-semibold text-foreground mb-4">8. Sécurité</h2>
+                            <h2 className="text-2xl font-semibold text-foreground mb-4">8. Hébergement et traitement des données</h2>
+                            <p className="text-muted-foreground leading-relaxed mb-4">
+                                Les données collectées sont hébergées et traitées selon les prestataires utilisés pour l'hébergement
+                                du site et les services associés. Ces prestataires peuvent être situés dans l'Union Européenne ou
+                                en dehors, conformément aux garanties prévues par le RGPD.
+                            </p>
+                            <p className="text-muted-foreground leading-relaxed">
+                                Nous nous assurons que tous nos prestataires respectent les standards de protection des données
+                                personnelles applicables et mettent en œuvre les mesures de sécurité appropriées.
+                            </p>
+                        </section>
+
+                        <section>
+                            <h2 className="text-2xl font-semibold text-foreground mb-4">9. Sécurité</h2>
                             <p className="text-muted-foreground leading-relaxed">
                                 Nous mettons en œuvre des mesures de sécurité appropriées pour protéger vos données contre tout accès,
                                 modification, divulgation ou destruction non autorisés.
@@ -98,7 +120,7 @@ export default function PolitiqueConfidentialite() {
                         </section>
 
                         <section>
-                            <h2 className="text-2xl font-semibold text-foreground mb-4">9. Contact</h2>
+                            <h2 className="text-2xl font-semibold text-foreground mb-4">10. Contact</h2>
                             <p className="text-muted-foreground leading-relaxed">
                                 Pour toute question concernant cette politique de confidentialité ou pour exercer vos droits,
                                 contactez-nous à : {config.email}

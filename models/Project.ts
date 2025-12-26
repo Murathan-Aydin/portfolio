@@ -73,7 +73,6 @@ const ProjectSchema: Schema = new Schema(
 )
 
 // Index pour améliorer les performances de recherche
-ProjectSchema.index({ slug: 1 })
 ProjectSchema.index({ title: "text", description: "text" })
 
 const Project: Model<IProject> = mongoose.models.Project || mongoose.model<IProject>("Project", ProjectSchema)

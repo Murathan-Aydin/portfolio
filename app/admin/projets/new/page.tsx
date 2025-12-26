@@ -379,26 +379,6 @@ export default function NewProjectPage() {
                                                     </div>
                                                 </div>
                                             )}
-
-                                            {/* URL manuelle (optionnel) */}
-                                            <div className="space-y-2">
-                                                <Label htmlFor="imageUrl">
-                                                    Ou entrez une URL d'image
-                                                </Label>
-                                                <Input
-                                                    id="imageUrl"
-                                                    type="url"
-                                                    value={formData.image}
-                                                    onChange={(e) => {
-                                                        setFormData({ ...formData, image: e.target.value })
-                                                        setImagePreview(e.target.value || null)
-                                                    }}
-                                                    placeholder="https://example.com/image.jpg"
-                                                />
-                                                <p className="text-xs text-muted-foreground">
-                                                    Alternative : utilisez une URL d'image externe si vous préférez.
-                                                </p>
-                                            </div>
                                         </div>
                                     </CardContent>
                                 </Card>

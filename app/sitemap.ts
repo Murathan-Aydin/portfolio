@@ -3,7 +3,9 @@ import connectDB from "@/lib/mongodb"
 import Project from "@/models/Project"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ma-dev.fr"
+    // Fallback propre pour le développement local
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ||
+        (process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://ma-dev.fr")
 
     // Pages statiques
     const staticPages: MetadataRoute.Sitemap = [

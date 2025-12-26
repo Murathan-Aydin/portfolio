@@ -5,11 +5,12 @@ import connectDB from "@/lib/mongodb"
 import Project from "@/models/Project"
 
 // GET - Récupérer un projet par son slug
-export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
     try {
         await connectDB()
+        const { slug } = await params
 
-        const project = await Project.findOne({ slug: params.slug })
+        const project = await Project.findOne({ slug })
 
         if (!project) {
             return NextResponse.json({ success: false, error: "Projet non trouvé" }, { status: 404 })
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest, { params }: { params: { slug: st
 }
 
 // PUT - Mettre à jour un projet
-export async function PUT(request: NextRequest, { params }: { params: { slug: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
     try {
         // Vérifier l'authentification
         const session = await getServerSession(authOptions)
@@ -32,12 +33,13 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
         }
 
         await connectDB()
+        const { slug } = await params
 
         const body = await request.json()
         const { title, description, longDescription, tags, image, gallery, clientName, projectDate, projectUrl, features, slug: newSlug } = body
 
         // Si le slug change, vérifier qu'il n'existe pas déjà
-        if (newSlug && newSlug !== params.slug) {
+        if (newSlug && newSlug !== slug) {
             const existingProject = await Project.findOne({ slug: newSlug })
             if (existingProject) {
                 return NextResponse.json({ success: false, error: "Un projet avec ce slug existe déjà" }, { status: 400 })
@@ -48,7 +50,7 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
         const projectImage = image && image.trim() !== "" ? image : "/placeholder.svg"
 
         const project = await Project.findOneAndUpdate(
-            { slug: params.slug },
+            { slug },
             {
                 ...(newSlug && { slug: newSlug }),
                 title,
@@ -80,7 +82,7 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
 }
 
 // DELETE - Supprimer un projet
-export async function DELETE(request: NextRequest, { params }: { params: { slug: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
     try {
         // Vérifier l'authentification
         const session = await getServerSession(authOptions)
@@ -89,8 +91,9 @@ export async function DELETE(request: NextRequest, { params }: { params: { slug:
         }
 
         await connectDB()
+        const { slug } = await params
 
-        const project = await Project.findOneAndDelete({ slug: params.slug })
+        const project = await Project.findOneAndDelete({ slug })
 
         if (!project) {
             return NextResponse.json({ success: false, error: "Projet non trouvé" }, { status: 404 })

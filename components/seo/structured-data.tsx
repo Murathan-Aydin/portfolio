@@ -3,7 +3,9 @@
 import { config } from "@/lib/config"
 
 export function StructuredData() {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ma-dev.fr"
+    // Fallback propre pour le développement local
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+                    (process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://ma-dev.fr")
 
     const localBusinessSchema = {
         "@context": "https://schema.org",
@@ -11,7 +13,7 @@ export function StructuredData() {
         "@id": `${baseUrl}/#organization`,
         name: "MA.DEV",
         legalName: config.businessName,
-        description: "Développeur web freelance à Mâcon spécialisé dans la création de sites internet modernes et performants",
+        description: "Développeur web freelance à Mâcon spécialisé dans la création de sites internet modernes et performants pour les entreprises locales. Services de développement web, création de sites vitrine, e-commerce et applications sur mesure en Saône-et-Loire.",
         url: baseUrl,
         telephone: config.phone,
         email: config.email,
@@ -45,7 +47,10 @@ export function StructuredData() {
                 longitude: "4.8333",
             },
         },
-        sameAs: [],
+        sameAs: [
+            // Ajoutez vos réseaux sociaux ici si disponibles
+            // Exemple: "https://www.linkedin.com/in/votre-profil",
+        ],
     }
 
     const personSchema = {
@@ -53,6 +58,7 @@ export function StructuredData() {
         "@type": "Person",
         name: config.fullName,
         jobTitle: "Développeur Web Freelance",
+        description: "Développeur web freelance basé à Mâcon, spécialisé dans la création de sites internet modernes et performants pour les entreprises locales.",
         worksFor: {
             "@type": "Organization",
             name: "MA.DEV",
@@ -66,6 +72,10 @@ export function StructuredData() {
             postalCode: "71000",
             addressCountry: "FR",
         },
+        sameAs: [
+            // Ajoutez vos réseaux sociaux ici si disponibles
+            // Exemple: "https://www.linkedin.com/in/votre-profil",
+        ],
     }
 
     return (
