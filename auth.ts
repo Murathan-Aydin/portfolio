@@ -54,28 +54,46 @@ export const authOptions: NextAuthOptions = {
         async signIn({ user, account, profile, email, credentials }) {
             return true
         },
+        async redirect({ url, baseUrl }) {
+            // Permet les redirections vers des URLs relatives ou absolues du même domaine
+            // Supporte plusieurs domaines en utilisant l'URL de base de la requête
+            if (url.startsWith("/")) {
+                return `${baseUrl}${url}`
+            }
+            // Si l'URL est sur le même domaine (ou un domaine autorisé), l'accepter
+            try {
+                const urlObj = new URL(url)
+                const baseUrlObj = new URL(baseUrl)
+                // Accepter si c'est le même domaine ou un sous-domaine
+                if (urlObj.origin === baseUrlObj.origin ||
+                    urlObj.hostname.endsWith(baseUrlObj.hostname)) {
+                    return url
+                }
+            } catch {
+                // Si l'URL n'est pas valide, retourner baseUrl
+            }
+            return baseUrl
+        },
     },
     session: {
         strategy: "jwt",
     },
     secret: process.env.NEXTAUTH_SECRET,
-    // Permet à NextAuth de détecter automatiquement l'URL depuis les headers
-    // Nécessaire pour supporter plusieurs domaines
-    trustHost: true,
-    // Configuration des cookies pour la production
+    // Configuration pour supporter plusieurs domaines
+    // Les cookies seront définis sans domaine spécifique pour fonctionner sur chaque domaine
     useSecureCookies: process.env.NODE_ENV === "production",
     cookies: {
         sessionToken: {
-            name: process.env.NODE_ENV === "production" 
-                ? "__Secure-next-auth.session-token" 
+            name: process.env.NODE_ENV === "production"
+                ? "__Secure-next-auth.session-token"
                 : "next-auth.session-token",
             options: {
                 httpOnly: true,
                 sameSite: "lax",
                 path: "/",
                 secure: process.env.NODE_ENV === "production",
-                // Laisse NextAuth gérer automatiquement le domaine
-                domain: undefined,
+                // Pas de domaine spécifique = cookie valide uniquement sur le domaine actuel
+                // Chaque domaine aura sa propre session
             },
         },
     },
