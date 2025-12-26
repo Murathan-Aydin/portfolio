@@ -60,6 +60,12 @@ export async function POST(request: NextRequest) {
         const filepath = join(imagesDir, filename)
         try {
             await writeFile(filepath, webpBuffer)
+
+            // S'assurer que le fichier a les bonnes permissions (lecture pour tous)
+            const { chmod } = await import("fs/promises")
+            await chmod(filepath, 0o644).catch((err) => {
+                console.warn("Could not set file permissions:", err)
+            })
         } catch (writeError: any) {
             console.error("Error writing file:", writeError)
             // Vérifier si c'est un problème de permissions ou de dossier
