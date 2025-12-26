@@ -8,10 +8,26 @@ export default withAuth(
     {
         callbacks: {
             authorized: ({ token, req }) => {
-                // Permettre l'accès à la page de login
-                if (req.nextUrl.pathname === "/admin/login") {
+                const pathname = req.nextUrl.pathname
+
+                // Autoriser l'accès aux fichiers statiques et aux routes publiques
+                if (
+                    pathname.startsWith("/_next") ||
+                    pathname.startsWith("/images") ||
+                    pathname === "/favicon.ico" ||
+                    pathname === "/robots.txt" ||
+                    pathname === "/sitemap.xml" ||
+                    pathname.startsWith("/api") ||
+                    !pathname.startsWith("/admin")
+                ) {
                     return true
                 }
+
+                // Permettre l'accès à la page de login
+                if (pathname === "/admin/login") {
+                    return true
+                }
+
                 // Exiger un token pour toutes les autres routes admin
                 return !!token
             },
