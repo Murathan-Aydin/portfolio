@@ -145,3 +145,7 @@
 .animate-pulse-soft {
     animation: pulse-soft 4s ease-in-out infinite;
 }
+
+html, body {
+    scroll-behavior: smooth;
+}

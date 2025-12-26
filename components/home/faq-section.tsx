@@ -13,7 +13,7 @@ const faqs = [
     {
         question: "Quel est le prix d'un site internet à Mâcon ?",
         answer:
-            "Le prix d'un site internet à Mâcon varie selon la complexité du projet. Un site vitrine professionnel commence à partir de 1500€, tandis qu'un e-commerce ou une application sur mesure nécessite un devis personnalisé. Je vous propose toujours une estimation gratuite et sans engagement pour évaluer vos besoins précis.",
+            "Le prix d'un site internet à Mâcon varie selon la complexité du projet. Un site vitrine professionnel commence à partir de 1000€, tandis qu'un e-commerce ou une application sur mesure nécessite un devis personnalisé. Je vous propose toujours une estimation gratuite et sans engagement pour évaluer vos besoins précis.",
     },
     {
         question: "Combien coûte un développeur web freelance à Mâcon ?",
