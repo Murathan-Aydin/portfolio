@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
-import { Link, MapPin } from "lucide-react"
+import Link from "next/link"
+import { MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { FloatingBlobs } from "@/components/home/hero/floating-blobs"
 
@@ -12,7 +13,7 @@ export function HeroSection() {
 
     useEffect(() => {
         const isMobile = window.innerWidth < 768
-        
+
         if (contentRef.current) {
             gsap.fromTo(
                 contentRef.current,
@@ -20,7 +21,7 @@ export function HeroSection() {
                 { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
             )
         }
-        
+
         if (visualRef.current) {
             gsap.fromTo(
                 visualRef.current,
@@ -46,13 +47,11 @@ export function HeroSection() {
                             Création de sites modernes, performants et sur mesure pour les entreprises de Mâcon et de Saône-et-Loire. Accompagnement personnalisé et devis gratuit.
                         </p>
                         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
-                            <Link href="/devis" size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6">
-                                Demander un devis gratuit
-                            </Link>
-                            <Button asChild variant="outline" size="lg" className="border-2 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 bg-transparent">
-                                <Link href="/projets">
-                                    Voir mes projets
-                                </Link>
+                            <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 rounded-lg">
+                                <Link href="/devis">Demander un devis gratuit</Link>
+                            </Button>
+                            <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 rounded-lg border-2">
+                                <Link href="/projets">Voir mes projets</Link>
                             </Button>
                         </div>
                         <div className="mt-6 sm:mt-8 flex items-center gap-2 text-sm sm:text-base text-muted-foreground">
