@@ -1,6 +1,7 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import { createContext, useContext, type ReactNode } from "react"
+import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
 interface AdminUser {
@@ -19,39 +20,40 @@ interface AdminAuthContextType {
 const AdminAuthContext = createContext<AdminAuthContextType | undefined>(undefined)
 
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<AdminUser | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
+    const { data: session, status } = useSession()
     const router = useRouter()
 
-    useEffect(() => {
-        // TODO: Replace with NextAuth session check
-        // Example: const session = await getSession()
-        const storedUser = localStorage.getItem("admin_user")
-        if (storedUser) {
-            setUser(JSON.parse(storedUser))
+    const user: AdminUser | null = session?.user
+        ? {
+            id: session.user.id,
+            email: session.user.email,
+            name: session.user.name,
         }
-        setIsLoading(false)
-    }, [])
+        : null
+
+    const isLoading = status === "loading"
 
     const login = async (email: string, password: string): Promise<boolean> => {
-        // TODO: Replace with NextAuth signIn
-        // Example: const result = await signIn("credentials", { email, password, redirect: false })
+        try {
+            const result = await signIn("credentials", {
+                email,
+                password,
+                redirect: false,
+            })
 
-        // Mock login for demo - replace with your NextAuth implementation
-        if (email === "REDACTED_ADMIN_EMAIL" && password === "REDACTED_ADMIN_PASSWORD") {
-            const mockUser = { id: "1", email, name: "Admin MA.DEV" }
-            setUser(mockUser)
-            localStorage.setItem("admin_user", JSON.stringify(mockUser))
-            return true
+            if (result?.ok) {
+                router.push("/admin/dashboard")
+                return true
+            }
+            return false
+        } catch (error) {
+            console.error("Login error:", error)
+            return false
         }
-        return false
     }
 
-    const logout = () => {
-        // TODO: Replace with NextAuth signOut
-        // Example: await signOut({ redirect: false })
-        setUser(null)
-        localStorage.removeItem("admin_user")
+    const logout = async () => {
+        await signOut({ redirect: false })
         router.push("/admin/login")
     }
 

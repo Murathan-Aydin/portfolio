@@ -3,8 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
+import { LayoutWrapper } from "@/components/layout-wrapper"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -40,11 +39,7 @@ export default function RootLayout({
     return (
         <html lang="fr">
             <body className={`font-sans antialiased`}>
-                <Navbar />
-                <main className="min-h-screen bg-white">
-                    {children}
-                </main>
-                <Footer />
+                <LayoutWrapper>{children}</LayoutWrapper>
                 <Analytics />
             </body>
         </html>

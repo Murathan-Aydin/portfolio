@@ -22,9 +22,18 @@ HOST_NAME=OVH
 HOST_ADDRESS=2 rue Kellermann, 59100 Roubaix, France
 HOST_WEBSITE=https://www.ovh.com
 HOST_TYPE=VPS en France
+
+# NextAuth (Authentification)
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=votre_clé_secrète_ici
 ```
 
 **Note :** Pour que les variables soient accessibles côté client (composants React), vous pouvez également utiliser le préfixe `NEXT_PUBLIC_` (ex: `NEXT_PUBLIC_CONTACT_EMAIL`). Le fichier `lib/config.ts` gère automatiquement les deux formats.
+
+**Génération de NEXTAUTH_SECRET :** Pour générer une clé secrète sécurisée, utilisez la commande suivante :
+```bash
+openssl rand -base64 32
+```
 
 Un fichier `.env.local.example` est disponible comme référence.
 
