@@ -51,10 +51,33 @@ export const authOptions: NextAuthOptions = {
             }
             return session
         },
+        async signIn({ user, account, profile, email, credentials }) {
+            return true
+        },
     },
     session: {
         strategy: "jwt",
     },
     secret: process.env.NEXTAUTH_SECRET,
+    // Permet à NextAuth de détecter automatiquement l'URL depuis les headers
+    // Nécessaire pour supporter plusieurs domaines
+    trustHost: true,
+    // Configuration des cookies pour la production
+    useSecureCookies: process.env.NODE_ENV === "production",
+    cookies: {
+        sessionToken: {
+            name: process.env.NODE_ENV === "production" 
+                ? "__Secure-next-auth.session-token" 
+                : "next-auth.session-token",
+            options: {
+                httpOnly: true,
+                sameSite: "lax",
+                path: "/",
+                secure: process.env.NODE_ENV === "production",
+                // Laisse NextAuth gérer automatiquement le domaine
+                domain: undefined,
+            },
+        },
+    },
 }
 
