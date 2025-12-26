@@ -17,7 +17,7 @@ const projectTypes = [
     { id: "e-commerce", label: "E-commerce" },
     { id: "application-web", label: "Application web" },
     { id: "refonte", label: "Refonte de site" },
-    { id: "autre", label: "Autre" },
+    { id: "autre_projet", label: "Autre projet" },
 ]
 
 const budgetRanges = [
@@ -32,6 +32,7 @@ const services = [
     { id: "seo", label: "Optimisation SEO" },
     { id: "maintenance", label: "Maintenance" },
     { id: "hebergement", label: "Hébergement" },
+    { id: "autre_service", label: "Autre service" },
 ]
 
 export default function DevisPage() {
@@ -232,15 +233,14 @@ export default function DevisPage() {
                                     className="grid md:grid-cols-2 gap-4"
                                 >
                                     {projectTypes.map((type) => (
-                                        <div
+                                        <Label
                                             key={type.id}
-                                            className="flex items-center space-x-3 bg-white rounded-lg p-4 border border-primary/50 hover:border-primary transition-colors"
+                                            htmlFor={type.id}
+                                            className="flex items-center space-x-3 bg-white rounded-lg p-4 border border-primary/50 hover:border-primary transition-colors cursor-pointer"
                                         >
                                             <RadioGroupItem value={type.id} id={type.id} />
-                                            <Label htmlFor={type.id} className="cursor-pointer">
-                                                {type.label}
-                                            </Label>
-                                        </div>
+                                            <span>{type.label}</span>
+                                        </Label>
                                     ))}
                                 </RadioGroup>
                             </div>
@@ -249,19 +249,18 @@ export default function DevisPage() {
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Services souhaités</h2>
                                 <div className="grid md:grid-cols-2 gap-4">
                                     {services.map((service) => (
-                                        <div
+                                        <Label
                                             key={service.id}
-                                            className="flex items-center space-x-3 bg-white rounded-lg p-4 border border-primary/50 hover:border-primary transition-colors"
+                                            htmlFor={service.id}
+                                            className="flex items-center space-x-3 bg-white rounded-lg p-4 border border-primary/50 hover:border-primary transition-colors cursor-pointer"
                                         >
                                             <Checkbox
                                                 id={service.id}
                                                 checked={selectedServices.includes(service.id)}
                                                 onCheckedChange={(checked) => handleServiceChange(service.id, checked as boolean)}
                                             />
-                                            <Label htmlFor={service.id} className="cursor-pointer">
-                                                {service.label}
-                                            </Label>
-                                        </div>
+                                            <span>{service.label}</span>
+                                        </Label>
                                     ))}
                                 </div>
                             </div>
@@ -274,15 +273,14 @@ export default function DevisPage() {
                                     className="grid md:grid-cols-2 gap-4"
                                 >
                                     {budgetRanges.map((budget) => (
-                                        <div
+                                        <Label
                                             key={budget.id}
-                                            className="flex items-center space-x-3 bg-white rounded-lg p-4 border border-primary/50 hover:border-primary transition-colors"
+                                            htmlFor={budget.id}
+                                            className="flex items-center space-x-3 bg-white rounded-lg p-4 border border-primary/50 hover:border-primary transition-colors cursor-pointer"
                                         >
                                             <RadioGroupItem value={budget.id} id={budget.id} />
-                                            <Label htmlFor={budget.id} className="cursor-pointer">
-                                                {budget.label}
-                                            </Label>
-                                        </div>
+                                            <span>{budget.label}</span>
+                                        </Label>
                                     ))}
                                 </RadioGroup>
                             </div>
