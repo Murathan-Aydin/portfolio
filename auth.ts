@@ -17,8 +17,8 @@ export const authOptions: NextAuthOptions = {
                 // Vérification des credentials
                 // TODO: Remplacer par une vraie vérification en base de données
                 if (
-                    credentials.email === "REDACTED_ADMIN_EMAIL" &&
-                    credentials.password === "REDACTED_ADMIN_PASSWORD"
+                    credentials.email === process.env.USER_ADMIN &&
+                    credentials.password === process.env.PASS_ADMIN
                 ) {
                     return {
                         id: "1",
