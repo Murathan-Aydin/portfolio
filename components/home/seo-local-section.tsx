@@ -1,18 +1,44 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useEffect, useRef } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger)
+}
 
 export function SEOLocalSection() {
+    const contentRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (contentRef.current) {
+            const isMobile = window.innerWidth < 768
+            gsap.fromTo(
+                contentRef.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    scrollTrigger: {
+                        trigger: contentRef.current,
+                        start: "top 85%",
+                        once: true,
+                    },
+                }
+            )
+        }
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        }
+    }, [])
+
     return (
-        <section className="py-16 bg-white border-t border-border">
-            <div className="container mx-auto px-6">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="max-w-4xl mx-auto"
-                >
+        <section className="py-12 sm:py-16 bg-white border-t border-border">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div ref={contentRef} className="max-w-4xl mx-auto">
                     <div className="prose prose-lg max-w-none">
                         <h2 className="text-2xl font-semibold text-foreground mb-4">
                             Développeur web freelance à Mâcon – Accompagnement personnalisé pour votre projet
@@ -34,7 +60,7 @@ export function SEOLocalSection() {
                             N'hésitez pas à me contacter pour un devis gratuit et sans engagement.
                         </p>
                     </div>
-                </motion.div>
+                </div>
             </div>
         </section>
     )

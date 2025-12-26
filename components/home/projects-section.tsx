@@ -1,34 +1,22 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import type { Project } from "@/lib/types"
 import Link from "next/link"
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1,
-        },
-    },
-}
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.5 },
-    },
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger)
 }
 
 export function ProjectsSection() {
     const [projects, setProjects] = useState<Project[]>([])
+    const titleRef = useRef<HTMLDivElement>(null)
+    const containerRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -48,32 +36,69 @@ export function ProjectsSection() {
         fetchProjects()
     }, [])
 
+    useEffect(() => {
+        if (projects.length === 0) return
+
+        const isMobile = window.innerWidth < 768
+
+        // Animation du titre
+        if (titleRef.current) {
+            gsap.fromTo(
+                titleRef.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    scrollTrigger: {
+                        trigger: titleRef.current,
+                        start: "top 85%",
+                        once: true,
+                    },
+                }
+            )
+        }
+
+        // Animation des projets avec stagger
+        if (containerRef.current) {
+            const projectCards = containerRef.current.querySelectorAll(".project-card")
+            gsap.fromTo(
+                projectCards,
+                { opacity: 0, y: isMobile ? 20 : 40 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.4,
+                    stagger: isMobile ? 0.05 : 0.1,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top 80%",
+                        once: true,
+                    },
+                }
+            )
+        }
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        }
+    }, [projects])
+
     return (
-        <section id="projets" className="py-24 bg-white">
-            <div className="container mx-auto px-6">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="text-center mb-16"
-                >
-                    <h2 className="text-3xl md:text-4xl font-bold text-foreground">Projets web réalisés à Mâcon et en Saône-et-Loire</h2>
-                    <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+        <section id="projets" className="py-16 sm:py-24 bg-white">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div ref={titleRef} className="text-center mb-12 sm:mb-16">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Projets web réalisés à Mâcon et en Saône-et-Loire</h2>
+                    <p className="mt-3 sm:mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
                         Découvrez quelques-unes de mes réalisations pour des entreprises locales
                     </p>
-                </motion.div>
+                </div>
 
                 {projects.length > 0 && (
-                    <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="grid md:grid-cols-2 gap-8"
-                    >
+                    <div ref={containerRef} className="grid sm:grid-cols-2 gap-6 sm:gap-8">
                         {projects.map((project) => (
-                            <motion.div key={project._id || project.slug} variants={itemVariants}>
+                            <div key={project._id || project.slug} className="project-card">
                                 <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-xl transition-all duration-300">
                                     <div className="relative overflow-hidden">
                                         <img
@@ -106,9 +131,9 @@ export function ProjectsSection() {
                                         </Link>
                                     </CardContent>
                                 </Card>
-                            </motion.div>
+                            </div>
                         ))}
-                    </motion.div>
+                    </div>
                 )}
             </div>
         </section>

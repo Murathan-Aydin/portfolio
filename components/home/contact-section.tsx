@@ -1,8 +1,13 @@
 "use client"
 
-import { useState } from "react"
-import { motion } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Mail, Phone, MapPin, Send, Loader2, Check, AlertCircle } from "lucide-react"
+
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger)
+}
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -20,6 +25,80 @@ export function ContactSection() {
     const [isLoading, setIsLoading] = useState(false)
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [error, setError] = useState("")
+    const titleRef = useRef<HTMLDivElement>(null)
+    const leftRef = useRef<HTMLDivElement>(null)
+    const rightRef = useRef<HTMLDivElement>(null)
+    const successRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const isMobile = window.innerWidth < 768
+
+        if (titleRef.current) {
+            gsap.fromTo(
+                titleRef.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    scrollTrigger: {
+                        trigger: titleRef.current,
+                        start: "top 85%",
+                        once: true,
+                    },
+                }
+            )
+        }
+
+        if (leftRef.current) {
+            gsap.fromTo(
+                leftRef.current,
+                { opacity: 0, x: isMobile ? 0 : -30 },
+                {
+                    opacity: 1,
+                    x: 0,
+                    duration: 0.5,
+                    scrollTrigger: {
+                        trigger: leftRef.current,
+                        start: "top 85%",
+                        once: true,
+                    },
+                }
+            )
+        }
+
+        if (rightRef.current) {
+            gsap.fromTo(
+                rightRef.current,
+                { opacity: 0, x: isMobile ? 0 : 30 },
+                {
+                    opacity: 1,
+                    x: 0,
+                    duration: 0.5,
+                    delay: 0.1,
+                    scrollTrigger: {
+                        trigger: rightRef.current,
+                        start: "top 85%",
+                        once: true,
+                    },
+                }
+            )
+        }
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        }
+    }, [])
+
+    useEffect(() => {
+        if (isSubmitted && successRef.current) {
+            gsap.fromTo(
+                successRef.current,
+                { opacity: 0, scale: 0.9 },
+                { opacity: 1, scale: 1, duration: 0.3 }
+            )
+        }
+    }, [isSubmitted])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -49,27 +128,16 @@ export function ContactSection() {
         }
     }
     return (
-        <section id="contact" className="py-24 bg-white">
-            <div className="container mx-auto px-6">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="text-center mb-16"
-                >
-                    <h2 className="text-3xl md:text-4xl font-bold text-foreground">Parlons de votre projet</h2>
-                    <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">Prêt à donner vie à votre projet web ?</p>
-                </motion.div>
+        <section id="contact" className="py-16 sm:py-24 bg-white">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div ref={titleRef} className="text-center mb-12 sm:mb-16">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Parlons de votre projet</h2>
+                    <p className="mt-3 sm:mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">Prêt à donner vie à votre projet web ?</p>
+                </div>
 
-                <div className="grid lg:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
+                <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start max-w-5xl mx-auto">
                     {/* Left Content */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                    >
+                    <div ref={leftRef}>
                         <h3 className="text-2xl font-semibold text-foreground mb-6">Travaillons ensemble</h3>
                         <p className="text-muted-foreground leading-relaxed mb-8">
                             Que vous ayez une idée précise ou que vous soyez encore en phase de réflexion, je suis là pour vous
@@ -105,21 +173,15 @@ export function ContactSection() {
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
 
                     {/* Right Form */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.1 }}
-                    >
+                    <div ref={rightRef}>
                         <Card className="border-0 shadow-lg">
-                            <CardContent className="p-8">
+                            <CardContent className="p-6 sm:p-8">
                                 {isSubmitted ? (
-                                    <motion.div
-                                        initial={{ opacity: 0, scale: 0.9 }}
-                                        animate={{ opacity: 1, scale: 1 }}
+                                    <div
+                                        ref={successRef}
                                         className="text-center py-8"
                                     >
                                         <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -132,7 +194,7 @@ export function ContactSection() {
                                         <Button onClick={() => setIsSubmitted(false)} variant="outline">
                                             Envoyer un autre message
                                         </Button>
-                                    </motion.div>
+                                    </div>
                                 ) : (
                                     <form onSubmit={handleSubmit} className="space-y-6">
                                         {error && (
@@ -211,7 +273,7 @@ export function ContactSection() {
                                 )}
                             </CardContent>
                         </Card>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>

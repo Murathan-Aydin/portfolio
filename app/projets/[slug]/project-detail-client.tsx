@@ -1,6 +1,7 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useEffect, useRef } from "react"
+import { gsap } from "gsap"
 import { ArrowLeft, ExternalLink, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Project } from "@/lib/projects-data"
@@ -11,11 +12,85 @@ interface ProjectDetailClientProps {
 }
 
 export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
+    const containerRef = useRef<HTMLDivElement>(null)
+    const featuresRef = useRef<HTMLUListElement>(null)
+    const galleryRef = useRef<HTMLDivElement>(null)
+    const cta1Ref = useRef<HTMLDivElement>(null)
+    const cta2Ref = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const isMobile = window.innerWidth < 768
+
+        if (containerRef.current) {
+            gsap.fromTo(
+                containerRef.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                { opacity: 1, y: 0, duration: 0.5 }
+            )
+        }
+
+        if (featuresRef.current) {
+            const items = featuresRef.current.querySelectorAll("li")
+            gsap.fromTo(
+                items,
+                { opacity: 0, x: isMobile ? 0 : -20 },
+                {
+                    opacity: 1,
+                    x: 0,
+                    duration: 0.3,
+                    stagger: 0.05,
+                    delay: 0.2,
+                }
+            )
+        }
+
+        if (galleryRef.current) {
+            const images = galleryRef.current.querySelectorAll("img")
+            gsap.fromTo(
+                images,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.3,
+                    stagger: 0.05,
+                    delay: 0.3,
+                }
+            )
+        }
+
+        if (cta1Ref.current) {
+            gsap.fromTo(
+                cta1Ref.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                { opacity: 1, y: 0, duration: 0.4, delay: 0.4 }
+            )
+        }
+
+        if (cta2Ref.current) {
+            gsap.fromTo(
+                cta2Ref.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                { opacity: 1, y: 0, duration: 0.4, delay: 0.5 }
+            )
+        }
+
+        return () => {
+            gsap.killTweensOf([
+                containerRef.current,
+                featuresRef.current,
+                galleryRef.current,
+                cta1Ref.current,
+                cta2Ref.current,
+            ])
+        }
+    }, [])
+
     return (
         <>
-            <div className="pt-32 pb-24">
-                <div className="container mx-auto px-6">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <div className="pt-24 sm:pt-32 pb-16 sm:pb-24">
+                <div className="container mx-auto px-4 sm:px-6">
+                    <div ref={containerRef}>
                         <Link
                             href="/projets"
                             className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-8"
@@ -61,61 +136,51 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
 
                         <div className="grid md:grid-cols-2 gap-12 mb-16">
                             <div>
-                                <h2 className="text-2xl font-bold text-foreground mb-6">Fonctionnalités clés</h2>
-                                <ul className="space-y-4">
+                                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-6">Fonctionnalités clés</h2>
+                                <ul ref={featuresRef} className="space-y-4">
                                     {project.features.map((feature, index) => (
-                                        <motion.li
+                                        <li
                                             key={index}
-                                            initial={{ opacity: 0, x: -20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ duration: 0.3, delay: index * 0.1 }}
                                             className="flex items-start gap-3"
                                         >
                                             <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
                                                 <Check className="w-4 h-4 text-primary" />
                                             </span>
                                             <span className="text-muted-foreground">{feature}</span>
-                                        </motion.li>
+                                        </li>
                                     ))}
                                 </ul>
                             </div>
 
                             <div>
-                                <h2 className="text-2xl font-bold text-foreground mb-6">Galerie</h2>
-                                <div className="grid gap-4">
+                                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-6">Galerie</h2>
+                                <div ref={galleryRef} className="grid gap-4">
                                     {project.gallery.map((image, index) => (
-                                        <motion.img
+                                        <img
                                             key={index}
                                             src={image}
                                             alt={`${project.title} - Image ${index + 1}`}
                                             className="w-full rounded-lg shadow-md"
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.3, delay: 0.2 + index * 0.1 }}
                                         />
                                     ))}
                                 </div>
                             </div>
                         </div>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.5 }}
-                            className="bg-secondary/30 rounded-2xl p-8 mb-8"
+                        <div
+                            ref={cta1Ref}
+                            className="bg-secondary/30 rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8"
                         >
                             <p className="text-sm text-muted-foreground italic leading-relaxed">
                                 Site web réalisé pour une entreprise en Saône-et-Loire, optimisé pour le référencement local
                                 et la performance. Ce projet illustre mon expertise en développement web pour les entreprises
                                 locales à Mâcon et dans la région Bourgogne-Franche-Comté.
                             </p>
-                        </motion.div>
+                        </div>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.6 }}
-                            className="text-center bg-secondary/30 rounded-2xl p-12"
+                        <div
+                            ref={cta2Ref}
+                            className="text-center bg-secondary/30 rounded-2xl p-8 sm:p-12"
                         >
                             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Vous avez un projet similaire ?</h2>
                             <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
@@ -127,8 +192,8 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                                     Demander un devis gratuit
                                 </Button>
                             </Link>
-                        </motion.div>
-                    </motion.div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

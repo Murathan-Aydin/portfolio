@@ -1,8 +1,14 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useEffect, useRef } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Globe, ShoppingCart, Code2 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
+
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger)
+}
 
 const services = [
     {
@@ -25,51 +31,70 @@ const services = [
     },
 ]
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.15,
-        },
-    },
-}
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.5 },
-    },
-}
-
 export function ServicesSection() {
+    const titleRef = useRef<HTMLDivElement>(null)
+    const containerRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const isMobile = window.innerWidth < 768
+
+        // Animation du titre
+        if (titleRef.current) {
+            gsap.fromTo(
+                titleRef.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    scrollTrigger: {
+                        trigger: titleRef.current,
+                        start: "top 85%",
+                        once: true,
+                    },
+                }
+            )
+        }
+
+        // Animation des cartes avec stagger
+        if (containerRef.current) {
+            const cards = containerRef.current.querySelectorAll(".service-card")
+            gsap.fromTo(
+                cards,
+                { opacity: 0, y: isMobile ? 15 : 30 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.4,
+                    stagger: isMobile ? 0.05 : 0.1,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top 80%",
+                        once: true,
+                    },
+                }
+            )
+        }
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        }
+    }, [])
+
     return (
-        <section id="services" className="py-24 bg-secondary">
-            <div className="container mx-auto px-6">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="text-center mb-16"
-                >
-                    <h2 className="text-3xl md:text-4xl font-bold text-foreground">Services de développement web à Mâcon</h2>
-                    <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+        <section id="services" className="py-16 sm:py-24 bg-secondary">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div ref={titleRef} className="text-center mb-12 sm:mb-16">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Services de développement web à Mâcon</h2>
+                    <p className="mt-3 sm:mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
                         Des solutions web adaptées aux besoins des entreprises locales en Saône-et-Loire
                     </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    className="grid md:grid-cols-3 gap-8"
-                >
+                <div ref={containerRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                     {services.map((service) => (
-                        <motion.div key={service.title} variants={itemVariants}>
+                        <div key={service.title} className="service-card">
                             <Card className="group relative h-full bg-white border-0 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
                                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                                 <CardContent className="p-8">
@@ -80,9 +105,9 @@ export function ServicesSection() {
                                     <p className="text-muted-foreground leading-relaxed">{service.description}</p>
                                 </CardContent>
                             </Card>
-                        </motion.div>
+                        </div>
                     ))}
-                </motion.div>
+                </div>
             </div>
         </section>
     )

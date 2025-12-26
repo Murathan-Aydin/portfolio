@@ -1,7 +1,13 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useEffect, useRef } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger)
+}
 
 const faqs = [
     {
@@ -42,27 +48,61 @@ const faqs = [
 ]
 
 export function FAQSection() {
-    return (
-        <section id="faq" className="py-24 bg-secondary">
-            <div className="container mx-auto px-6">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="text-center mb-16"
-                >
-                    <h2 className="text-3xl md:text-4xl font-bold text-foreground">Questions fréquentes – Développeur web à Mâcon</h2>
-                    <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">Trouvez les réponses à vos questions sur la création de site internet à Mâcon</p>
-                </motion.div>
+    const titleRef = useRef<HTMLDivElement>(null)
+    const contentRef = useRef<HTMLDivElement>(null)
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                    className="max-w-3xl mx-auto"
-                >
+    useEffect(() => {
+        const isMobile = window.innerWidth < 768
+
+        if (titleRef.current) {
+            gsap.fromTo(
+                titleRef.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    scrollTrigger: {
+                        trigger: titleRef.current,
+                        start: "top 85%",
+                        once: true,
+                    },
+                }
+            )
+        }
+
+        if (contentRef.current) {
+            gsap.fromTo(
+                contentRef.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.4,
+                    delay: 0.1,
+                    scrollTrigger: {
+                        trigger: contentRef.current,
+                        start: "top 85%",
+                        once: true,
+                    },
+                }
+            )
+        }
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        }
+    }, [])
+
+    return (
+        <section id="faq" className="py-16 sm:py-24 bg-secondary">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div ref={titleRef} className="text-center mb-12 sm:mb-16">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Questions fréquentes – Développeur web à Mâcon</h2>
+                    <p className="mt-3 sm:mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">Trouvez les réponses à vos questions sur la création de site internet à Mâcon</p>
+                </div>
+
+                <div ref={contentRef} className="max-w-3xl mx-auto">
                     <Accordion type="single" collapsible className="space-y-4">
                         {faqs.map((faq, index) => (
                             <AccordionItem
@@ -77,7 +117,7 @@ export function FAQSection() {
                             </AccordionItem>
                         ))}
                     </Accordion>
-                </motion.div>
+                </div>
             </div>
         </section>
     )

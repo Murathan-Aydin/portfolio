@@ -1,51 +1,71 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useEffect, useRef } from "react"
+import { gsap } from "gsap"
 import { MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { FloatingBlobs } from "@/components/home/hero/floating-blobs"
 
 export function HeroSection() {
+    const contentRef = useRef<HTMLDivElement>(null)
+    const visualRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const isMobile = window.innerWidth < 768
+        
+        if (contentRef.current) {
+            gsap.fromTo(
+                contentRef.current,
+                { opacity: 0, y: isMobile ? 20 : 30 },
+                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+            )
+        }
+        
+        if (visualRef.current) {
+            gsap.fromTo(
+                visualRef.current,
+                { opacity: 0, scale: 0.95 },
+                { opacity: 1, scale: 1, duration: 0.6, delay: 0.1, ease: "power2.out" }
+            )
+        }
+    }, [])
+
     return (
         <section className="relative min-h-screen pt-24 pb-16 overflow-hidden bg-white">
-            <div className="container mx-auto px-6">
-                <div className="grid lg:grid-cols-2 gap-12 grid-rows-reverse items-center min-h-[calc(100vh-6rem)]">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[calc(100vh-6rem)]">
                     {/* Left Content */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="relative z-10"
+                    <div
+                        ref={contentRef}
+                        className="relative z-10 w-full"
                     >
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight text-balance">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight text-balance">
                             Développeur web freelance à Mâcon
                         </h1>
-                        <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-lg">
+                        <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-muted-foreground max-w-lg">
                             Création de sites modernes, performants et sur mesure pour les entreprises de Mâcon et de Saône-et-Loire. Accompagnement personnalisé et devis gratuit.
                         </p>
-                        <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6">
+                        <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
+                            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6">
                                 Demander un devis gratuit
                             </Button>
-                            <Button variant="outline" size="lg" className="border-2 text-lg px-8 py-6 bg-transparent">
+                            <Button variant="outline" size="lg" className="border-2 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 bg-transparent">
                                 Voir mes projets
                             </Button>
                         </div>
-                        <div className="mt-8 flex items-center gap-2 text-muted-foreground">
-                            <MapPin size={18} className="text-primary" />
+                        <div className="mt-6 sm:mt-8 flex items-center gap-2 text-sm sm:text-base text-muted-foreground">
+                            <MapPin size={18} className="text-primary flex-shrink-0" />
                             <span>Basé à Mâcon – Intervention en Saône-et-Loire</span>
                         </div>
-                    </motion.div>
+                    </div>
 
                     {/* Right Visual */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="relative h-[400px] lg:h-[500px]"
+                    <div
+                        ref={visualRef}
+                        className="relative h-[300px] sm:h-[400px] lg:h-[500px] w-full"
                     >
                         <FloatingBlobs />
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>

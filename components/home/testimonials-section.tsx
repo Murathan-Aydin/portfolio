@@ -1,8 +1,14 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useEffect, useRef } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Quote } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
+
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger)
+}
 
 const testimonials = [
     {
@@ -24,49 +30,66 @@ const testimonials = [
     },
 ]
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.15,
-        },
-    },
-}
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.5 },
-    },
-}
-
 export function TestimonialsSection() {
-    return (
-        <section id="avis" className="py-24 bg-white">
-            <div className="container mx-auto px-6">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="text-center mb-16"
-                >
-                    <h2 className="text-3xl md:text-4xl font-bold text-foreground">Ce que disent mes clients</h2>
-                    <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">La satisfaction client est ma priorité</p>
-                </motion.div>
+    const titleRef = useRef<HTMLDivElement>(null)
+    const containerRef = useRef<HTMLDivElement>(null)
 
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    className="grid md:grid-cols-3 gap-8"
-                >
+    useEffect(() => {
+        const isMobile = window.innerWidth < 768
+
+        if (titleRef.current) {
+            gsap.fromTo(
+                titleRef.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    scrollTrigger: {
+                        trigger: titleRef.current,
+                        start: "top 85%",
+                        once: true,
+                    },
+                }
+            )
+        }
+
+        if (containerRef.current) {
+            const testimonialCards = containerRef.current.querySelectorAll(".testimonial-card")
+            gsap.fromTo(
+                testimonialCards,
+                { opacity: 0, y: isMobile ? 15 : 30 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.4,
+                    stagger: isMobile ? 0.05 : 0.1,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top 80%",
+                        once: true,
+                    },
+                }
+            )
+        }
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        }
+    }, [])
+
+    return (
+        <section id="avis" className="py-16 sm:py-24 bg-white">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div ref={titleRef} className="text-center mb-12 sm:mb-16">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Ce que disent mes clients</h2>
+                    <p className="mt-3 sm:mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">La satisfaction client est ma priorité</p>
+                </div>
+
+                <div ref={containerRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                     {testimonials.map((testimonial, index) => (
-                        <motion.div key={index} variants={itemVariants}>
+                        <div key={index} className="testimonial-card">
                             <Card className="h-full border-0 shadow-sm hover:shadow-md transition-shadow duration-300">
                                 <CardContent className="p-8">
                                     <Quote className="w-10 h-10 text-primary/30 mb-4" />
@@ -77,9 +100,9 @@ export function TestimonialsSection() {
                                     </div>
                                 </CardContent>
                             </Card>
-                        </motion.div>
+                        </div>
                     ))}
-                </motion.div>
+                </div>
             </div>
         </section>
     )

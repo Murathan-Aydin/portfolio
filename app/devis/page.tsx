@@ -2,8 +2,8 @@
 
 import type React from "react"
 
-import { useState } from "react"
-import { motion } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
+import { gsap } from "gsap"
 import { Send, Check, Loader2, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -51,6 +51,29 @@ export default function DevisPage() {
         deadline: "",
         references: "",
     })
+    const containerRef = useRef<HTMLDivElement>(null)
+    const successRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (!isSubmitted && containerRef.current) {
+            const isMobile = window.innerWidth < 768
+            gsap.fromTo(
+                containerRef.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                { opacity: 1, y: 0, duration: 0.5 }
+            )
+        }
+    }, [isSubmitted])
+
+    useEffect(() => {
+        if (isSubmitted && successRef.current) {
+            gsap.fromTo(
+                successRef.current,
+                { opacity: 0, scale: 0.95 },
+                { opacity: 1, scale: 1, duration: 0.3 }
+            )
+        }
+    }, [isSubmitted])
 
     const handleServiceChange = (serviceId: string, checked: boolean) => {
         if (checked) {
@@ -93,13 +116,9 @@ export default function DevisPage() {
     if (isSubmitted) {
         return (
             <>
-                <div className="pt-32 pb-24">
-                    <div className="container mx-auto px-6">
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="max-w-2xl mx-auto text-center"
-                        >
+                <div className="pt-24 sm:pt-32 pb-16 sm:pb-24">
+                    <div className="container mx-auto px-4 sm:px-6">
+                        <div ref={successRef} className="max-w-2xl mx-auto text-center">
                             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
                                 <Check className="w-10 h-10 text-primary" />
                             </div>
@@ -114,7 +133,7 @@ export default function DevisPage() {
                             <a href="/">
                                 <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">Retour à l'accueil</Button>
                             </a>
-                        </motion.div>
+                        </div>
                     </div>
                 </div>
             </>
@@ -123,42 +142,28 @@ export default function DevisPage() {
 
     return (
         <>
-            <div className="pt-32 pb-24">
-                <div className="container mx-auto px-6">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="max-w-3xl mx-auto"
-                    >
-                        <div className="text-center mb-12">
-                            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Demander un devis</h1>
-                            <p className="text-lg text-muted-foreground">
+            <div className="pt-24 sm:pt-32 pb-16 sm:pb-24">
+                <div className="container mx-auto px-4 sm:px-6">
+                    <div ref={containerRef} className="max-w-3xl mx-auto">
+                        <div className="text-center mb-10 sm:mb-12">
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">Demander un devis</h1>
+                            <p className="text-base sm:text-lg text-muted-foreground">
                                 Décrivez votre projet et recevez une proposition personnalisée sous 48h ouvrés.
                             </p>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                                 * Champs obligatoires
                             </p>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-8">
+                        <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
                             {error && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="flex items-center gap-2 p-4 bg-destructive/10 text-destructive rounded-lg"
-                                >
-                                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                                <div className="flex items-center gap-2 p-3 sm:p-4 bg-destructive/10 text-destructive rounded-lg text-sm">
+                                    <AlertCircle className="w-4 sm:w-5 h-4 sm:h-5 flex-shrink-0" />
                                     {error}
-                                </motion.div>
+                                </div>
                             )}
 
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.1 }}
-                                className="bg-secondary rounded-2xl p-8"
-                            >
+                            <div className="bg-secondary rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Vos coordonnées</h2>
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
@@ -217,14 +222,9 @@ export default function DevisPage() {
                                         />
                                     </div>
                                 </div>
-                            </motion.div>
+                            </div>
 
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.2 }}
-                                className="bg-secondary rounded-2xl p-8"
-                            >
+                            <div className="bg-secondary rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Type de projet</h2>
                                 <RadioGroup
                                     value={formData.projectType}
@@ -243,14 +243,9 @@ export default function DevisPage() {
                                         </div>
                                     ))}
                                 </RadioGroup>
-                            </motion.div>
+                            </div>
 
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.3 }}
-                                className="bg-secondary rounded-2xl p-8"
-                            >
+                            <div className="bg-secondary rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Services souhaités</h2>
                                 <div className="grid md:grid-cols-2 gap-4">
                                     {services.map((service) => (
@@ -269,14 +264,9 @@ export default function DevisPage() {
                                         </div>
                                     ))}
                                 </div>
-                            </motion.div>
+                            </div>
 
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.4 }}
-                                className="bg-secondary rounded-2xl p-8"
-                            >
+                            <div className="bg-secondary rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Budget estimé</h2>
                                 <RadioGroup
                                     value={formData.budget}
@@ -295,14 +285,9 @@ export default function DevisPage() {
                                         </div>
                                     ))}
                                 </RadioGroup>
-                            </motion.div>
+                            </div>
 
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.5 }}
-                                className="bg-secondary rounded-2xl p-8"
-                            >
+                            <div className="bg-secondary rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Votre projet</h2>
                                 <div className="space-y-6">
                                     <div className="space-y-2">
@@ -339,16 +324,12 @@ export default function DevisPage() {
                                         />
                                     </div>
                                 </div>
-                            </motion.div>
+                            </div>
 
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.6 }}
-                            >
+                            <div>
                                 <Button
                                     type="submit"
-                                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-6 text-lg"
+                                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-5 sm:py-6 text-base sm:text-lg"
                                     disabled={isLoading}
                                 >
                                     {isLoading ? (

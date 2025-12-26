@@ -1,35 +1,19 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
+import { gsap } from "gsap"
 import { ArrowRight, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import type { Project } from "@/lib/types"
 import Link from "next/link"
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1,
-        },
-    },
-}
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.5 },
-    },
-}
-
 export default function ProjetsPage() {
     const [projects, setProjects] = useState<Project[]>([])
     const [isLoading, setIsLoading] = useState(true)
+    const titleRef = useRef<HTMLDivElement>(null)
+    const containerRef = useRef<HTMLDivElement>(null)
+    const ctaRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -50,36 +34,67 @@ export default function ProjetsPage() {
         fetchProjects()
     }, [])
 
+    useEffect(() => {
+        if (isLoading || projects.length === 0) return
+
+        const isMobile = window.innerWidth < 768
+
+        if (titleRef.current) {
+            gsap.fromTo(
+                titleRef.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                { opacity: 1, y: 0, duration: 0.5 }
+            )
+        }
+
+        if (containerRef.current) {
+            const cards = containerRef.current.querySelectorAll(".project-card")
+            gsap.fromTo(
+                cards,
+                { opacity: 0, y: isMobile ? 15 : 40 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.4,
+                    stagger: 0.05,
+                    delay: 0.2,
+                }
+            )
+        }
+
+        if (ctaRef.current) {
+            gsap.fromTo(
+                ctaRef.current,
+                { opacity: 0, y: isMobile ? 10 : 20 },
+                { opacity: 1, y: 0, duration: 0.4, delay: 0.5 }
+            )
+        }
+
+        return () => {
+            gsap.killTweensOf([titleRef.current, containerRef.current, ctaRef.current])
+        }
+    }, [isLoading, projects])
+
     return (
         <>
-            <div className="pt-32 pb-24">
-                <div className="container mx-auto px-6">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="text-center mb-16"
-                    >
-                        <h1 className="text-4xl md:text-5xl font-bold text-foreground">Projets web réalisés à Mâcon</h1>
-                        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <div className="pt-24 sm:pt-32 pb-16 sm:pb-24">
+                <div className="container mx-auto px-4 sm:px-6">
+                    <div ref={titleRef} className="text-center mb-12 sm:mb-16">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">Projets web réalisés à Mâcon</h1>
+                        <p className="mt-3 sm:mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
                             Découvrez une sélection de mes réalisations récentes pour des entreprises à Mâcon et en Saône-et-Loire.
                             Chaque projet est unique et conçu sur mesure pour répondre aux besoins spécifiques de mes clients locaux.
                         </p>
-                    </motion.div>
+                    </div>
 
                     {isLoading ? (
                         <div className="flex items-center justify-center py-12">
                             <Loader2 className="w-8 h-8 animate-spin text-primary" />
                         </div>
                     ) : (
-                        <motion.div
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                            className="grid md:grid-cols-2 gap-8"
-                        >
+                        <div ref={containerRef} className="grid sm:grid-cols-2 gap-6 sm:gap-8">
                             {projects.map((project) => (
-                                <motion.div key={project.slug} variants={itemVariants}>
+                                <div key={project.slug} className="project-card">
                                     <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-xl transition-all duration-300 h-full">
                                         <div className="relative overflow-hidden">
                                             <img
@@ -110,9 +125,9 @@ export default function ProjetsPage() {
                                             </Link>
                                         </CardContent>
                                     </Card>
-                                </motion.div>
+                                </div>
                             ))}
-                        </motion.div>
+                        </div>
                     )}
 
                     {!isLoading && projects.length === 0 && (
@@ -121,11 +136,9 @@ export default function ProjetsPage() {
                         </div>
                     )}
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.5 }}
-                        className="mt-20 text-center bg-secondary/30 rounded-2xl p-12"
+                    <div
+                        ref={ctaRef}
+                        className="mt-12 sm:mt-20 text-center bg-secondary/30 rounded-2xl p-8 sm:p-12"
                     >
                         <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Un projet en tête ?</h2>
                         <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
@@ -137,7 +150,7 @@ export default function ProjetsPage() {
                                 <ArrowRight className="ml-2 w-4 h-4" />
                             </Button>
                         </Link>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </>
