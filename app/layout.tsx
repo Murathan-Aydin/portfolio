@@ -5,6 +5,7 @@ import "./globals.css"
 import { LayoutWrapper } from "@/components/layout-wrapper"
 import { StructuredData } from "@/components/seo/structured-data"
 import { VercelAnalytics } from "@/components/vercel-analytics"
+import { AnalyticsProvider } from "@/components/analytics-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -59,6 +60,11 @@ export default function RootLayout({
     return (
         <html lang="fr">
             <body className={`font-sans antialiased`}>
+                <AnalyticsProvider
+                    clientId="hbmcarrelage"
+                    apiUrl="https://api.m-aydin.fr"
+                    excludePaths={["/admin", "/api"]}
+                />
                 <StructuredData />
                 <LayoutWrapper>{children}</LayoutWrapper>
                 <VercelAnalytics />
