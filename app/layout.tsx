@@ -61,7 +61,7 @@ export default function RootLayout({
         <html lang="fr">
             <body className={`font-sans antialiased`}>
                 <AnalyticsProvider
-                    clientId="hbmcarrelage"
+                    clientId="ma-dev"
                     apiUrl="https://api.m-aydin.fr"
                     excludePaths={["/admin", "/api"]}
                 />

@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 // Générer un ID visiteur unique (stocké dans localStorage)
 function getVisitorId(): string {
     if (typeof window === "undefined") return ""
-    
+
     let visitorId = localStorage.getItem("visitorId")
     if (!visitorId) {
         visitorId = `visitor_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`
@@ -18,7 +18,7 @@ function getVisitorId(): string {
 // Générer un ID de session (stocké dans sessionStorage)
 function getSessionId(): string {
     if (typeof window === "undefined") return ""
-    
+
     let sessionId = sessionStorage.getItem("sessionId")
     if (!sessionId) {
         sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`
@@ -30,7 +30,7 @@ function getSessionId(): string {
 // Détecter le type d'appareil
 function getDeviceType(): "desktop" | "mobile" | "tablet" {
     if (typeof window === "undefined") return "desktop"
-    
+
     const ua = navigator.userAgent.toLowerCase()
     if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
         return "tablet"
@@ -54,7 +54,8 @@ export function useAnalytics(options: UseAnalyticsOptions) {
     const startTimeRef = useRef(Date.now())
     const beforeUnloadHandlerRef = useRef<(() => void) | null>(null)
 
-    const API_URL = apiUrl || process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+    // Utiliser la route API proxy locale pour éviter les problèmes CORS
+    const TRACK_URL = "/api/track"
 
     useEffect(() => {
         // Ne pas tracker les routes exclues
@@ -71,8 +72,8 @@ export function useAnalytics(options: UseAnalyticsOptions) {
             const userAgent = navigator.userAgent
             const referrer = document.referrer || null
 
-            // Enregistrer la visite
-            fetch(`${API_URL}/api/track`, {
+            // Enregistrer la visite via la route API proxy locale
+            fetch(TRACK_URL, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -93,19 +94,19 @@ export function useAnalytics(options: UseAnalyticsOptions) {
             // Enregistrer la durée de visite quand l'utilisateur quitte la page
             const handleBeforeUnload = () => {
                 const duration = Math.floor((Date.now() - startTimeRef.current) / 1000) // en secondes
-                navigator.sendBeacon(
-                    `${API_URL}/api/track`,
-                    JSON.stringify({
-                        client: clientId,
-                        path: pathname,
-                        visitorId,
-                        sessionId,
-                        userAgent,
-                        referrer,
-                        device: getDeviceType(),
-                        duration,
-                    })
-                )
+                const data = JSON.stringify({
+                    client: clientId,
+                    path: pathname,
+                    visitorId,
+                    sessionId,
+                    userAgent,
+                    referrer,
+                    device: getDeviceType(),
+                    duration,
+                })
+                // sendBeacon nécessite un Blob pour les données JSON
+                const blob = new Blob([data], { type: "application/json" })
+                navigator.sendBeacon(TRACK_URL, blob)
             }
 
             window.addEventListener("beforeunload", handleBeforeUnload)
@@ -119,6 +120,6 @@ export function useAnalytics(options: UseAnalyticsOptions) {
                 beforeUnloadHandlerRef.current = null
             }
         }
-    }, [pathname, clientId, API_URL, excludePaths])
+    }, [pathname, clientId, excludePaths])
 }
 
