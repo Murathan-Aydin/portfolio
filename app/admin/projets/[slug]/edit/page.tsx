@@ -307,7 +307,7 @@ export default function EditProjectPage() {
                                                         className="inline-flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm"
                                                     >
                                                         {tag}
-                                                        <button type="button" onClick={() => removeTag(tag)} className="hover:text-destructive">
+                                                        <button type="button" onClick={() => removeTag(tag)} className="hover:text-destructive cursor-pointer">
                                                             <X className="w-3 h-3" />
                                                         </button>
                                                     </span>
@@ -343,7 +343,7 @@ export default function EditProjectPage() {
                                                         <button
                                                             type="button"
                                                             onClick={() => removeFeature(index)}
-                                                            className="text-muted-foreground hover:text-destructive"
+                                                            className="text-muted-foreground hover:text-destructive cursor-pointer"
                                                         >
                                                             <X className="w-4 h-4" />
                                                         </button>
@@ -405,7 +405,7 @@ export default function EditProjectPage() {
                                                                     setImagePreview(null)
                                                                 }
                                                             }}
-                                                            className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full p-1 hover:bg-destructive/90 transition-colors"
+                                                            className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full p-1 hover:bg-destructive/90 transition-colors cursor-pointer"
                                                         >
                                                             <X className="w-4 h-4" />
                                                         </button>

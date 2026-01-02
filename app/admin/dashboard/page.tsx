@@ -154,7 +154,7 @@ export default function AdminDashboardPage() {
                                                 <stat.icon className="w-6 h-6 text-primary" />
                                             </div>
                                             <div
-                                                className={`flex items-center gap-1 text-sm ${stat.trend === "up" ? "text-green-600" : "text-red-500"
+                                                className={`flex items-center gap-1 text-sm ${stat.trend === "up" ? "text-primary" : "text-red-500"
                                                     }`}
                                             >
                                                 {stat.trend === "up" ? (

@@ -197,7 +197,7 @@ export default function AdminAnalyticsPage() {
                                                 <stat.icon className="w-6 h-6 text-primary" />
                                             </div>
                                             <div
-                                                className={`flex items-center gap-1 text-sm ${stat.trend === "up" ? "text-green-600" : "text-red-500"
+                                                className={`flex items-center gap-1 text-sm ${stat.trend === "up" ? "text-primary" : "text-red-500"
                                                     }`}
                                             >
                                                 {stat.trend === "up" ? (
@@ -233,11 +233,11 @@ export default function AdminAnalyticsPage() {
                                             config={{
                                                 visitors: {
                                                     label: "Visiteurs",
-                                                    color: "#40c9a2",
+                                                    color: "#0BBAE6",
                                                 },
                                                 pageViews: {
                                                     label: "Pages vues",
-                                                    color: "#a3f7b5",
+                                                    color: "#5dd5f5",
                                                 },
                                             }}
                                             className="h-[300px]"
@@ -246,12 +246,12 @@ export default function AdminAnalyticsPage() {
                                                 <AreaChart data={analyticsData.visitorsData}>
                                                     <defs>
                                                         <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
-                                                            <stop offset="5%" stopColor="#40c9a2" stopOpacity={0.3} />
-                                                            <stop offset="95%" stopColor="#40c9a2" stopOpacity={0} />
+                                                            <stop offset="5%" stopColor="#0BBAE6" stopOpacity={0.3} />
+                                                            <stop offset="95%" stopColor="#0BBAE6" stopOpacity={0} />
                                                         </linearGradient>
                                                         <linearGradient id="colorPageViews" x1="0" y1="0" x2="0" y2="1">
-                                                            <stop offset="5%" stopColor="#a3f7b5" stopOpacity={0.3} />
-                                                            <stop offset="95%" stopColor="#a3f7b5" stopOpacity={0} />
+                                                            <stop offset="5%" stopColor="#5dd5f5" stopOpacity={0.3} />
+                                                            <stop offset="95%" stopColor="#5dd5f5" stopOpacity={0} />
                                                         </linearGradient>
                                                     </defs>
                                                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -261,7 +261,7 @@ export default function AdminAnalyticsPage() {
                                                     <Area
                                                         type="monotone"
                                                         dataKey="visitors"
-                                                        stroke="#40c9a2"
+                                                        stroke="#0BBAE6"
                                                         fillOpacity={1}
                                                         fill="url(#colorVisitors)"
                                                         strokeWidth={2}
@@ -269,7 +269,7 @@ export default function AdminAnalyticsPage() {
                                                     <Area
                                                         type="monotone"
                                                         dataKey="pageViews"
-                                                        stroke="#a3f7b5"
+                                                        stroke="#5dd5f5"
                                                         fillOpacity={1}
                                                         fill="url(#colorPageViews)"
                                                         strokeWidth={2}
@@ -386,7 +386,7 @@ export default function AdminAnalyticsPage() {
                                             config={{
                                                 visitors: {
                                                     label: "Visiteurs",
-                                                    color: "#40c9a2",
+                                                    color: "#0BBAE6",
                                                 },
                                             }}
                                             className="h-[250px]"
@@ -397,7 +397,7 @@ export default function AdminAnalyticsPage() {
                                                     <XAxis type="number" stroke="#6b7280" fontSize={12} />
                                                     <YAxis dataKey="source" type="category" stroke="#6b7280" fontSize={12} width={80} />
                                                     <ChartTooltip content={<ChartTooltipContent />} />
-                                                    <Bar dataKey="visitors" fill="#40c9a2" radius={[0, 4, 4, 0]} />
+                                                    <Bar dataKey="visitors" fill="#0BBAE6" radius={[0, 4, 4, 0]} />
                                                 </BarChart>
                                             </ResponsiveContainer>
                                         </ChartContainer>

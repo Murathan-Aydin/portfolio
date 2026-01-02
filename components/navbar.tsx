@@ -98,10 +98,10 @@ export function Navbar() {
                                 className="text-xl sm:text-2xl font-bold text-[#465a66]"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                MA<span className="text-[#40c9a2]">.DEV</span>
+                                MA<span className="text-[#0BBAE6]">.DEV</span>
                             </Link>
                             <button
-                                className="p-2"
+                                className="p-2 cursor-pointer"
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 aria-label="Fermer le menu"
                             >
@@ -149,7 +149,7 @@ export function Navbar() {
                 <nav className="container mx-auto px-4 sm:px-6 py-4">
                     <div className="flex items-center justify-between">
                         <Link href="/" className="text-xl sm:text-2xl font-bold text-[#465a66]">
-                            MA<span className="text-[#40c9a2]">.DEV</span>
+                            MA<span className="text-[#0BBAE6]">.DEV</span>
                         </Link>
 
                         <div className="hidden md:flex items-center gap-6 lg:gap-8">
@@ -170,7 +170,7 @@ export function Navbar() {
                         </div>
 
                         <button
-                            className="md:hidden p-2 relative z-50"
+                            className="md:hidden p-2 relative z-50 cursor-pointer"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             aria-label="Toggle menu"
                         >

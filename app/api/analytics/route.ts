@@ -190,9 +190,9 @@ export async function GET(request: NextRequest) {
         })
 
         const deviceData = [
-            { name: "Desktop", value: Math.round(((deviceCounts.get("desktop") || 0) / pageViews) * 100), color: "#40c9a2" },
-            { name: "Mobile", value: Math.round(((deviceCounts.get("mobile") || 0) / pageViews) * 100), color: "#a3f7b5" },
-            { name: "Tablet", value: Math.round(((deviceCounts.get("tablet") || 0) / pageViews) * 100), color: "#e5f9e0" },
+            { name: "Desktop", value: Math.round(((deviceCounts.get("desktop") || 0) / pageViews) * 100), color: "#0BBAE6" },
+            { name: "Mobile", value: Math.round(((deviceCounts.get("mobile") || 0) / pageViews) * 100), color: "#5dd5f5" },
+            { name: "Tablet", value: Math.round(((deviceCounts.get("tablet") || 0) / pageViews) * 100), color: "#e0f7fc" },
         ].filter((d) => d.value > 0)
 
         // Sources de trafic
