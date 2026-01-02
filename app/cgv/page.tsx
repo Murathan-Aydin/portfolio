@@ -33,13 +33,11 @@ export default function CGV() {
                         <section>
                             <h2 className="text-2xl font-semibold text-foreground mb-4">Article 3 - Tarifs et paiement</h2>
                             <p className="text-muted-foreground leading-relaxed">
-                                Les prix sont indiqués en euros hors taxes (HT). TVA non applicable, article 293 B du CGI (si
-                                applicable). Le paiement s'effectue selon les modalités suivantes :
+                                Les prix sont indiqués en euros (TVA non applicable, article 293 B du CGI). Le paiement s'effectue selon les modalités suivantes :
                             </p>
                             <ul className="text-muted-foreground space-y-2 mt-4 list-disc pl-6">
                                 <li>30% d'acompte à la signature du devis</li>
-                                <li>40% à la présentation de la maquette validée</li>
-                                <li>30% à la livraison du projet</li>
+                                <li>70% à la livraison du projet</li>
                             </ul>
                             <p className="text-muted-foreground leading-relaxed mt-4">
                                 Tout retard de paiement entraînera des pénalités de retard au taux légal en vigueur.
