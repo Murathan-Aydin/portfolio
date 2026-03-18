@@ -3,32 +3,38 @@
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Code2, Smartphone, Paintbrush, Cloud } from "lucide-react"
+import { Code2, LayoutDashboard, ShieldCheck } from "lucide-react"
 
 const services = [
     {
         icon: Code2,
-        title: "Développement Web",
-        description:
-            "Création de sites modernes, performants et sur-mesure pour tous types d'écrans.",
+        title: "Développement Web Moderne",
+        description: "Conception d'applications web rapides, dynamiques et optimisées avec des technologies récentes comme React et Next.js.",
+        bullets: [
+            "Interfaces fluides et responsive",
+            "Performance et optimisation SEO",
+            "Expérience utilisateur soignée",
+        ],
     },
     {
-        icon: Smartphone,
-        title: "Applications Mobiles",
-        description:
-            "Réalisation d'apps natives et cross-platform performantes et intuitives.",
+        icon: LayoutDashboard,
+        title: "Applications Web Interactives",
+        description: "Création de plateformes et outils web sur mesure, adaptés à vos objectifs métiers.",
+        bullets: [
+            "Dashboards et interfaces dynamiques",
+            "Intégration d'API et gestion de données",
+            "Fonctionnalités personnalisées",
+        ],
     },
     {
-        icon: Paintbrush,
-        title: "UI/UX Design",
-        description:
-            "Conception d'interfaces centrées sur l'utilisateur, claires et fluides.",
-    },
-    {
-        icon: Cloud,
-        title: "Architecture Cloud",
-        description:
-            "Mise en place d'infrastructures fiables et évolutives sur Amazon Web Services ou Google Cloud.",
+        icon: ShieldCheck,
+        title: "Architecture & Qualité du Code",
+        description: "Développement structuré pour garantir des projets fiables, évolutifs et maintenables.",
+        bullets: [
+            "Organisation claire et scalable",
+            "Bonnes pratiques (clean code, TypeScript)",
+            "Réutilisabilité des composants",
+        ],
     },
 ]
 
@@ -95,32 +101,40 @@ export function ServicesSection() {
                 {/* Titles */}
                 <div ref={titleRef} className="text-center mb-16">
                     <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-6">
-                        Services digitaux premium
+                        Services digitaux sur mesure
                     </h2>
                     <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                        Offrez à vos clients une expérience en ligne immersive, performante 
-                        et adaptée à vos objectifs stratégiques.
+                        Des solutions web modernes, performantes et pensées pour répondre concrètement à vos besoins.
                     </p>
                 </div>
 
                 {/* Cards Grid */}
-                <div ref={containerRef} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div ref={containerRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {services.map((service, idx) => (
                         <div key={idx} className="service-card flex">
                             <div className="w-full bg-white rounded-3xl p-8 sm:p-10 shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-2 transition-all duration-300">
-                                
+
                                 <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-8">
                                     <service.icon className="w-6 h-6 text-primary" />
                                 </div>
-                                
-                                <h3 className="text-xl font-bold text-slate-900 mb-4">
+
+                                <h3 className="text-xl font-bold text-slate-900 mb-3">
                                     {service.title}
                                 </h3>
-                                
-                                <p className="text-slate-500 text-sm leading-relaxed">
+
+                                <p className="text-slate-500 text-sm leading-relaxed mb-6">
                                     {service.description}
                                 </p>
-                                
+
+                                <ul className="space-y-2">
+                                    {service.bullets.map((bullet, i) => (
+                                        <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                                            {bullet}
+                                        </li>
+                                    ))}
+                                </ul>
+
                             </div>
                         </div>
                     ))}

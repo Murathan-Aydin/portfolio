@@ -14,7 +14,7 @@ export function Footer() {
             <div className="container mx-auto px-4 sm:px-6">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
                     <Link href="/" className="text-xl sm:text-2xl font-bold text-[#465a66]">
-                        MA<span className="text-[#0BBAE6]">.DEV</span>
+                        MA<span className="text-primary">.DEV</span>
                     </Link>
 
                     <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
