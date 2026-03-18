@@ -71,7 +71,7 @@ export function TimelineSection() {
                 <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-start">
 
                     {/* Left Column: Intro */}
-                    <div ref={leftRef} className="lg:col-span-5 sticky top-32 pr-0 lg:pr-8">
+                    <div ref={leftRef} className="lg:col-span-5 lg:sticky lg:top-32 pr-0 lg:pr-8">
                         <div className="inline-flex items-center gap-2 mb-4 text-xs font-bold tracking-[0.2em] text-primary uppercase">
                             MURATHAN AYDIN
                         </div>
@@ -129,12 +129,12 @@ export function TimelineSection() {
 
                         {/* Experience Tab */}
                         {activeTab === "experience" && (
-                            <div className="relative pl-8 sm:pl-12">
-                                <div className="absolute left-[15px] sm:left-[23px] top-4 bottom-8 w-0.5 bg-gray-100" />
+                            <div className="relative pl-12 sm:pl-14">
+                                <div className="absolute left-[19px] sm:left-[23px] top-4 bottom-8 w-0.5 bg-gray-100" />
                                 <div className="space-y-10">
 
                                     <div className="timeline-card relative">
-                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-primary border-4 border-background shadow-sm flex items-center justify-center z-10" />
+                                        <div className="absolute -left-[49px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-primary border-4 border-background shadow-sm flex items-center justify-center z-10" />
 
                                         <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow">
                                             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -171,7 +171,7 @@ export function TimelineSection() {
                                     </div>
 
                                     <div className="timeline-card relative">
-                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
+                                        <div className="absolute -left-[49px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
 
                                         <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow opacity-80 hover:opacity-100 transition-opacity">
                                             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -207,7 +207,7 @@ export function TimelineSection() {
 
                                     {showAllExp && (<>
                                     <div className="timeline-card relative">
-                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
+                                        <div className="absolute -left-[49px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
 
                                         <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow opacity-80 hover:opacity-100 transition-opacity">
                                             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -242,7 +242,7 @@ export function TimelineSection() {
                                     </div>
 
                                     <div className="timeline-card relative">
-                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
+                                        <div className="absolute -left-[49px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
 
                                         <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow opacity-80 hover:opacity-100 transition-opacity">
                                             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -294,13 +294,13 @@ export function TimelineSection() {
 
                         {/* Formation Tab */}
                         {activeTab === "formation" && (
-                            <div className="relative pl-8 sm:pl-12">
-                                <div className="absolute left-[15px] sm:left-[23px] top-4 bottom-8 w-0.5 bg-gray-100" />
+                            <div className="relative pl-12 sm:pl-14">
+                                <div className="absolute left-[19px] sm:left-[23px] top-4 bottom-8 w-0.5 bg-gray-100" />
                                 <div className="space-y-10">
 
                                     {/* Card 1 — Web@cadémie */}
                                     <div className="timeline-card relative">
-                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-cyan-400 border-4 border-background shadow-sm flex items-center justify-center z-10" />
+                                        <div className="absolute -left-[49px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-cyan-400 border-4 border-background shadow-sm flex items-center justify-center z-10" />
 
                                         <div className="bg-[#F0FDFB] border border-cyan-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow">
                                             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -309,7 +309,7 @@ export function TimelineSection() {
                                                     En cours
                                                 </div>
                                                 <span className="px-3 py-1 bg-cyan-500 text-white text-xs font-bold rounded-full">
-                                                    BAC+4 / BAC+5
+                                                    BAC+2
                                                 </span>
                                             </div>
                                             <h3 className="text-2xl font-bold text-foreground mb-2">
@@ -332,7 +332,7 @@ export function TimelineSection() {
 
                                     {/* Card 2 — Micro-soudure */}
                                     <div className="timeline-card relative">
-                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
+                                        <div className="absolute -left-[49px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
 
                                         <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm opacity-80 hover:opacity-100 transition-opacity">
                                             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -363,7 +363,7 @@ export function TimelineSection() {
 
                                     {showAllForm && (
                                     <div className="timeline-card relative">
-                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
+                                        <div className="absolute -left-[49px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
 
                                         <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm opacity-80 hover:opacity-100 transition-opacity">
                                             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
