@@ -3,13 +3,15 @@
 import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { CheckCircle2, ChevronDown, Briefcase, GraduationCap } from "lucide-react"
+import { CheckCircle2, Briefcase, GraduationCap, ChevronDown } from "lucide-react"
 
 export function TimelineSection() {
     const sectionRef = useRef<HTMLDivElement>(null)
     const leftRef = useRef<HTMLDivElement>(null)
     const rightRef = useRef<HTMLDivElement>(null)
     const [activeTab, setActiveTab] = useState<"experience" | "formation">("experience")
+    const [showAllExp, setShowAllExp] = useState(false)
+    const [showAllForm, setShowAllForm] = useState(false)
 
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger)
@@ -169,76 +171,123 @@ export function TimelineSection() {
                                     </div>
 
                                     <div className="timeline-card relative">
-                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-primary border-4 border-background shadow-sm flex items-center justify-center z-10" />
+                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
 
-                                        <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow">
+                                        <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow opacity-80 hover:opacity-100 transition-opacity">
                                             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                                                 <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
-                                                    <span className="w-2 h-2 rounded-full bg-primary" />
-                                                    Actuellement
+                                                    <span className="w-2 h-2 rounded-full bg-gray-400" />
+                                                    Passé
                                                 </div>
-                                                <span className="px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-full">
-                                                    ALTERNANCE
+                                                <span className="px-3 py-1 bg-gray-200 text-gray-600 text-xs font-bold rounded-full">
+                                                    INTÉRIM
                                                 </span>
                                             </div>
                                             <h3 className="text-2xl font-bold text-foreground mb-2">
-                                                Operateur polyvalent
+                                                Opérateur Polyvalent
                                             </h3>
-                                            <p className="text-primary font-semibold text-sm mb-4">
-                                                2023 - 2024 • SIMIRE | Bressor | Lamberet
+                                            <p className="text-gray-500 font-semibold text-sm mb-4">
+                                                Juin 2023 - Novembre 2024 • SIMIRE | Bressor | Lamberet
                                             </p>
                                             <div className="text-muted-foreground leading-relaxed text-sm mb-6">
-                                                <p>Conception et développement de solutions web et IoT dans le secteur de l&apos;énergie.</p>
+                                                <p>Missions en intérim dans différentes industries.</p>
                                                 <ul className="list-disc list-inside space-y-2 text-muted-foreground text-sm pl-4 mt-2">
-                                                    <li>Développement d&apos;APIs en PHP et Python (traitement de données en push)</li>
-                                                    <li>Automatisation de processus (SFTP, CRON)</li>
-                                                    <li>Mise en place d&apos;alertes (Grafana, PHPMailer)</li>
-                                                    <li>Déploiement sur serveurs Linux (VM / VPS) avec Git</li>
-                                                    <li>Collecte et gestion de données énergétiques via API</li>
+                                                    <li>Entreprise Simire : Fabrication et assemblage de chaises</li>
+                                                    <li>Entreprise Bressors : Production en fromagerie industrielle</li>
+                                                    <li>Entreprise Lamberet : Assemblage de remorques frigorifiques</li>
                                                 </ul>
                                             </div>
                                             <div className="flex flex-wrap gap-2">
-                                                <span className="px-3 py-1.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg">React</span>
-                                                <span className="px-3 py-1.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg">Next.js</span>
-                                                <span className="px-3 py-1.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg">Tailwind</span>
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Industrie</span>
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Production</span>
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Assemblage</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {showAllExp && (<>
+                                    <div className="timeline-card relative">
+                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
+
+                                        <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow opacity-80 hover:opacity-100 transition-opacity">
+                                            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                                                <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+                                                    <span className="w-2 h-2 rounded-full bg-gray-400" />
+                                                    Passé
+                                                </div>
+                                                <span className="px-3 py-1 bg-gray-200 text-gray-600 text-xs font-bold rounded-full">
+                                                    RESPONSABLE
+                                                </span>
+                                            </div>
+                                            <h3 className="text-2xl font-bold text-foreground mb-2">
+                                                {"Responsable Magasin & Réparations"}
+                                            </h3>
+                                            <p className="text-gray-500 font-semibold text-sm mb-4">
+                                                Janvier 2022 - 2023 • Phone Store Academy
+                                            </p>
+                                            <div className="text-muted-foreground leading-relaxed text-sm mb-6">
+                                                <p>{"Gestion opérationnelle d'un point de vente et accompagnement client."}</p>
+                                                <ul className="list-disc list-inside space-y-2 text-muted-foreground text-sm pl-4 mt-2">
+                                                    <li>Encadrement de stagiaires et apprentis</li>
+                                                    <li>Gestion des réparations et de la relation client</li>
+                                                    <li>{"Création d'un site web et d'un outil interne en autodidacte"}</li>
+                                                </ul>
+                                            </div>
+                                            <div className="flex flex-wrap gap-2">
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Vente</span>
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Gestion</span>
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Relation client</span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="timeline-card relative">
-                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-primary border-4 border-background shadow-sm flex items-center justify-center z-10" />
+                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
 
-                                        <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow">
+                                        <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow opacity-80 hover:opacity-100 transition-opacity">
                                             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                                                 <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
-                                                    <span className="w-2 h-2 rounded-full bg-primary" />
-                                                    2022 - 2023
+                                                    <span className="w-2 h-2 rounded-full bg-gray-400" />
+                                                    Passé
                                                 </div>
-                                                <span className="px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-full">
-                                                    Résponsable de magasin
+                                                <span className="px-3 py-1 bg-gray-200 text-gray-600 text-xs font-bold rounded-full">
+                                                    APPRENTI VENDEUR
                                                 </span>
                                             </div>
                                             <h3 className="text-2xl font-bold text-foreground mb-2">
-                                                Employé polyvalent - Vente & Service
+                                                Apprenti Vendeur
                                             </h3>
-                                            <p className="text-primary font-semibold text-sm mb-4">
-                                                Janvier 2022 - 2023 • Phone Store Acedemy
+                                            <p className="text-gray-500 font-semibold text-sm mb-4">
+                                                Juillet 2019 - Juillet 2021 • Solution Phone
                                             </p>
                                             <div className="text-muted-foreground leading-relaxed text-sm mb-6">
-                                                <p>Gestion opérationnelle d&apos;un point de vente et accompagnement client.</p>
+                                                <p>Réparation, maintenance et vente en magasin de téléphonie.</p>
                                                 <ul className="list-disc list-inside space-y-2 text-muted-foreground text-sm pl-4 mt-2">
-                                                    <li>Encadrement de stagiaires et apprentis)</li>
-                                                    <li>Gestion des réparations et de la relation client</li>
-                                                    <li>Création d&apos;un site web et d&apos;un outils interne en autodidacte</li>
+                                                    <li>Réparation et maintenance informatique</li>
+                                                    <li>Vente accessoires et services</li>
+                                                    <li>Accueil et conseil clients</li>
                                                 </ul>
                                             </div>
                                             <div className="flex flex-wrap gap-2">
-                                                <span className="px-3 py-1.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg">React</span>
-                                                <span className="px-3 py-1.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg">Next.js</span>
-                                                <span className="px-3 py-1.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg">Tailwind</span>
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Vente</span>
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Réparation</span>
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Relation client</span>
                                             </div>
                                         </div>
                                     </div>
+                                    </>)}
+
+                                    {!showAllExp && (
+                                        <button
+                                            onClick={() => setShowAllExp(true)}
+                                            className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer group ml-1"
+                                        >
+                                            <span className="w-8 h-8 rounded-full bg-gray-100 group-hover:bg-gray-200 flex items-center justify-center transition-colors">
+                                                <ChevronDown className="w-4 h-4" />
+                                            </span>
+                                            Voir 2 expériences de plus
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -249,6 +298,7 @@ export function TimelineSection() {
                                 <div className="absolute left-[15px] sm:left-[23px] top-4 bottom-8 w-0.5 bg-gray-100" />
                                 <div className="space-y-10">
 
+                                    {/* Card 1 — Web@cadémie */}
                                     <div className="timeline-card relative">
                                         <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-cyan-400 border-4 border-background shadow-sm flex items-center justify-center z-10" />
 
@@ -263,18 +313,13 @@ export function TimelineSection() {
                                                 </span>
                                             </div>
                                             <h3 className="text-2xl font-bold text-foreground mb-2">
-                                                Expert en Technologies de l&apos;Information
+                                                {"Développeur Web — Web@cadémie"}
                                             </h3>
                                             <p className="text-cyan-600 font-semibold text-sm mb-4">
-                                                Nov 2024 - 2026 • Epitech • Web@cademie
+                                                2024 - 2026 • Epitech • Web@cadémie
                                             </p>
                                             <div className="text-muted-foreground leading-relaxed text-sm mb-6">
-                                                <p>Réalisation de projets web complets dans un environnement pédagogique orienté pratique.</p>
-                                                <ul className="list-disc list-inside space-y-2 text-muted-foreground text-sm pl-4 mt-2">
-                                                    <li>Applications web (gestion, e-commerce, réseau social, chat)</li>
-                                                    <li>Développement full-stack (React, Node.js, PHP)</li>
-                                                    <li>Travail en méthodologie Agile</li>
-                                                </ul>
+                                                <p>Formation intensive orientée pratique, axée sur le développement full-stack, {"l'architecture"} logicielle et le travail en méthodologie Agile.</p>
                                             </div>
                                             <div className="flex flex-wrap gap-2">
                                                 <span className="px-3 py-1.5 bg-cyan-100 text-cyan-800 text-xs font-semibold rounded-lg">PHP | Laravel</span>
@@ -285,10 +330,40 @@ export function TimelineSection() {
                                         </div>
                                     </div>
 
+                                    {/* Card 2 — Micro-soudure */}
                                     <div className="timeline-card relative">
-                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-200 border-4 border-background flex items-center justify-center z-10 text-gray-400">
-                                            <ChevronDown className="w-4 h-4" />
+                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
+
+                                        <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm opacity-80 hover:opacity-100 transition-opacity">
+                                            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                                                <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+                                                    <span className="w-2 h-2 rounded-full bg-gray-400" />
+                                                    Passé
+                                                </div>
+                                                <span className="px-3 py-1 bg-gray-200 text-gray-600 text-xs font-bold rounded-full">
+                                                    CERTIFICATION
+                                                </span>
+                                            </div>
+                                            <h3 className="text-xl font-bold text-foreground mb-2">
+                                                {"Formation Micro-soudure"}
+                                            </h3>
+                                            <p className="text-gray-600 font-semibold text-sm mb-4">
+                                                Novembre 2021 - Décembre 2021 • C.F.T.M Lyon
+                                            </p>
+                                            <div className="text-muted-foreground leading-relaxed text-sm mb-6">
+                                                <p>{"Formation technique spécialisée dans la réparation électronique de précision et la manipulation de composants sur circuits."}</p>
+                                            </div>
+                                            <div className="flex flex-wrap gap-2">
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Électronique</span>
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Micro-soudure</span>
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Réparation</span>
+                                            </div>
                                         </div>
+                                    </div>
+
+                                    {showAllForm && (
+                                    <div className="timeline-card relative">
+                                        <div className="absolute -left-[45px] sm:-left-[53px] top-6 w-8 h-8 rounded-full bg-gray-300 border-4 border-background shadow-sm flex items-center justify-center z-10" />
 
                                         <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-3xl shadow-sm opacity-80 hover:opacity-100 transition-opacity">
                                             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -301,26 +376,34 @@ export function TimelineSection() {
                                                 </span>
                                             </div>
                                             <h3 className="text-xl font-bold text-foreground mb-2">
-                                                CAP Vente
+                                                CAP Vente multifonction
                                             </h3>
                                             <p className="text-gray-600 font-semibold text-sm mb-4">
-                                                CAP Vente multifonction
+                                                2019 - 2021 • CIFA Jean-Lameloise
                                             </p>
                                             <div className="text-muted-foreground leading-relaxed text-sm mb-6">
-                                                <p>Gestion opérationnelle d&apos;un point de vente et accompagnement client.</p>
-                                                <ul className="list-disc list-inside space-y-2 text-muted-foreground text-sm pl-4 mt-2">
-                                                    <li>Encadrement de stagiaires et apprentis</li>
-                                                    <li>Gestion des réparations et de la relation client</li>
-                                                    <li>{"Création d'un site web en autodidacte"}</li>
-                                                </ul>
+                                                <p>{"Formation aux techniques de vente, relation client et gestion commerciale, avec premières expériences en environnement professionnel."}</p>
                                             </div>
                                             <div className="flex flex-wrap gap-2">
                                                 <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Vente</span>
-                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">SQL</span>
-                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Algorithmique</span>
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Relation client</span>
+                                                <span className="px-3 py-1.5 bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg">Gestion commerciale</span>
                                             </div>
                                         </div>
                                     </div>
+                                    )}
+
+                                    {!showAllForm && (
+                                        <button
+                                            onClick={() => setShowAllForm(true)}
+                                            className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer group ml-1"
+                                        >
+                                            <span className="w-8 h-8 rounded-full bg-gray-100 group-hover:bg-gray-200 flex items-center justify-center transition-colors">
+                                                <ChevronDown className="w-4 h-4" />
+                                            </span>
+                                            Voir 1 formation de plus
+                                        </button>
+                                    )}
 
                                 </div>
                             </div>
