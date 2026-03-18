@@ -61,9 +61,9 @@ export default function AdminAnalyticsPage() {
                 }
 
                 setAnalyticsData(result.data)
-            } catch (err: any) {
+            } catch (err) {
                 console.error("Error fetching analytics:", err)
-                setError(err.message || "Erreur lors du chargement des données")
+                setError(err instanceof Error ? err.message : "Erreur lors du chargement des données")
             } finally {
                 setIsLoading(false)
             }

@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { config } from "@/lib/config"
+import Link from "next/link"
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({
@@ -83,9 +84,9 @@ export default function ContactPage() {
 
             setIsSubmitted(true)
             setFormData({ name: "", email: "", subject: "", message: "" })
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error sending message:", error)
-            setError(error.message || "Erreur lors de l'envoi du message")
+            setError(error instanceof Error ? error.message : "Erreur lors de l'envoi du message")
         } finally {
             setIsLoading(false)
         }
@@ -106,9 +107,9 @@ export default function ContactPage() {
                         <Button onClick={() => setIsSubmitted(false)} variant="outline" className="mr-4">
                             Envoyer un autre message
                         </Button>
-                        <a href="/">
-                            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">Retour à l'accueil</Button>
-                        </a>
+                        <Link href="/">
+                            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">{"Retour à l'accueil"}</Button>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -132,8 +133,7 @@ export default function ContactPage() {
                         <div ref={leftRef}>
                             <h2 className="text-2xl font-semibold text-foreground mb-6">Travaillons ensemble</h2>
                             <p className="text-muted-foreground leading-relaxed mb-8">
-                                Que vous ayez une idée précise ou que vous soyez encore en phase de réflexion, je suis là pour vous
-                                accompagner. N'hésitez pas à me contacter pour discuter de votre projet.
+                                {"Que vous ayez une idée précise ou que vous soyez encore en phase de réflexion, je suis là pour vous accompagner. N'hésitez pas à me contacter pour discuter de votre projet."}
                             </p>
 
                             <div className="space-y-6">

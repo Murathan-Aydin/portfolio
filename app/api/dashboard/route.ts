@@ -39,7 +39,7 @@ function getRelativeTime(date: Date): string {
 }
 
 // GET - Récupérer les statistiques du dashboard
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
     try {
         // Vérifier l'authentification
         const session = await getServerSession(authOptions)
@@ -163,7 +163,7 @@ export async function GET(request: NextRequest) {
         // Ajouter les nouveaux visiteurs à l'activité récente
         Array.from(uniqueRecentVisitors.entries())
             .slice(0, 2)
-            .forEach(([_, date]) => {
+            .forEach(([, date]) => {
                 recentActivity.push({
                     action: "Nouveau visiteur unique",
                     project: "-",
@@ -227,7 +227,7 @@ export async function GET(request: NextRequest) {
                 })),
             },
         })
-    } catch (error: any) {
+    } catch (error) {
         console.error("Error fetching dashboard data:", error)
         return NextResponse.json({ success: false, error: "Erreur lors de la récupération des données" }, { status: 500 })
     }

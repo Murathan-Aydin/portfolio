@@ -5,7 +5,7 @@ import connectDB from "@/lib/mongodb"
 import Project from "@/models/Project"
 
 // GET - Récupérer tous les projets
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
     try {
         await connectDB()
 
@@ -61,9 +61,9 @@ export async function POST(request: NextRequest) {
         })
 
         return NextResponse.json({ success: true, data: project }, { status: 201 })
-    } catch (error: any) {
+    } catch (error) {
         console.error("Error creating project:", error)
-        if (error.code === 11000) {
+        if ((error as { code?: number }).code === 11000) {
             return NextResponse.json({ success: false, error: "Un projet avec ce slug existe déjà" }, { status: 400 })
         }
         return NextResponse.json({ success: false, error: "Erreur lors de la création du projet" }, { status: 500 })

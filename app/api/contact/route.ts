@@ -62,7 +62,7 @@ ${message}
             { success: true, message: "Votre message a été envoyé avec succès. Je vous recontacterai sous 24h." },
             { status: 200 }
         )
-    } catch (error: any) {
+    } catch (error) {
         console.error("Error sending email:", error)
         return NextResponse.json(
             { success: false, error: "Erreur lors de l'envoi du message. Veuillez réessayer plus tard." },

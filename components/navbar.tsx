@@ -29,13 +29,13 @@ export function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
 
-    // Animation d'entrée du header
+    // Animation d'entrée du header — opacity only to avoid flash on refresh
     useEffect(() => {
         if (headerRef.current) {
             gsap.fromTo(
                 headerRef.current,
-                { y: -100 },
-                { y: 0, duration: 0.6, ease: "power2.out" }
+                { opacity: 0, y: -20 },
+                { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", clearProps: "transform" }
             )
         }
     }, [])
@@ -98,7 +98,7 @@ export function Navbar() {
                                 className="text-xl sm:text-2xl font-bold text-[#465a66]"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                MA<span className="text-[#0BBAE6]">.DEV</span>
+                                MA<span className="text-primary">.DEV</span>
                             </Link>
                             <button
                                 className="p-2 cursor-pointer"
@@ -149,7 +149,7 @@ export function Navbar() {
                 <nav className="container mx-auto px-4 sm:px-6 py-4">
                     <div className="flex items-center justify-between">
                         <Link href="/" className="text-xl sm:text-2xl font-bold text-[#465a66]">
-                            MA<span className="text-[#0BBAE6]">.DEV</span>
+                            MA<span className="text-primary">.DEV</span>
                         </Link>
 
                         <div className="hidden md:flex items-center gap-6 lg:gap-8">

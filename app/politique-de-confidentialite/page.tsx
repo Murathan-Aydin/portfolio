@@ -17,9 +17,7 @@ export default function PolitiqueConfidentialite() {
                         <section>
                             <h2 className="text-2xl font-semibold text-foreground mb-4">1. Introduction</h2>
                             <p className="text-muted-foreground leading-relaxed">
-                                MA.DEV s'engage à protéger la vie privée des utilisateurs de son site. Cette politique de
-                                confidentialité explique comment nous collectons, utilisons et protégeons vos données personnelles
-                                conformément au Règlement Général sur la Protection des Données (RGPD).
+                                {"MA.DEV s'engage à protéger la vie privée des utilisateurs de son site. Cette politique de confidentialité explique comment nous collectons, utilisons et protégeons vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD)."}
                             </p>
                         </section>
 
@@ -30,7 +28,7 @@ export default function PolitiqueConfidentialite() {
                                 <li>Nom et prénom</li>
                                 <li>Adresse email</li>
                                 <li>Numéro de téléphone</li>
-                                <li>Nom de l'entreprise</li>
+                                <li>{"Nom de l'entreprise"}</li>
                                 <li>Informations relatives à votre projet</li>
                                 <li>Données de navigation (cookies, adresse IP)</li>
                             </ul>
@@ -50,8 +48,7 @@ export default function PolitiqueConfidentialite() {
                         <section>
                             <h2 className="text-2xl font-semibold text-foreground mb-4">4. Base légale</h2>
                             <p className="text-muted-foreground leading-relaxed">
-                                Le traitement de vos données repose sur votre consentement et/ou l'exécution d'un contrat. Vous pouvez
-                                retirer votre consentement à tout moment en nous contactant.
+                                {"Le traitement de vos données repose sur votre consentement et/ou l'exécution d'un contrat. Vous pouvez retirer votre consentement à tout moment en nous contactant."}
                             </p>
                         </section>
 
@@ -69,12 +66,12 @@ export default function PolitiqueConfidentialite() {
                                 Conformément au RGPD, vous disposez des droits suivants :
                             </p>
                             <ul className="text-muted-foreground space-y-2 mt-4 list-disc pl-6">
-                                <li>Droit d'accès à vos données</li>
+                                <li>{"Droit d'accès à vos données"}</li>
                                 <li>Droit de rectification</li>
-                                <li>Droit à l'effacement</li>
-                                <li>Droit à la limitation du traitement</li>
+                                <li>{"Droit à l'effacement"}</li>
+                                <li>{"Droit à la limitation du traitement"}</li>
                                 <li>Droit à la portabilité</li>
-                                <li>Droit d'opposition</li>
+                                <li>{"Droit d'opposition"}</li>
                             </ul>
                             <p className="text-muted-foreground leading-relaxed mt-4">
                                 Pour exercer ces droits, contactez-nous à : {config.email}
@@ -82,28 +79,22 @@ export default function PolitiqueConfidentialite() {
                         </section>
 
                         <section>
-                            <h2 className="text-2xl font-semibold text-foreground mb-4">7. Cookies et outils de mesure d'audience</h2>
+                            <h2 className="text-2xl font-semibold text-foreground mb-4">{"7. Cookies et outils de mesure d'audience"}</h2>
                             <p className="text-muted-foreground leading-relaxed mb-4">
-                                Notre site utilise des cookies et des outils de mesure d'audience à des fins statistiques pour
-                                comprendre comment les visiteurs utilisent le site et améliorer l'expérience utilisateur.
+                                {"Notre site utilise des cookies et des outils de mesure d'audience à des fins statistiques pour comprendre comment les visiteurs utilisent le site et améliorer l'expérience utilisateur."}
                             </p>
                             <p className="text-muted-foreground leading-relaxed mb-4">
-                                Nous utilisons notamment Vercel Analytics, un service d'analyse de trafic qui collecte des données
-                                anonymisées sur la navigation (pages visitées, durée de visite, provenance du trafic). Ces données
-                                sont traitées de manière agrégée et anonyme, sans permettre l'identification des visiteurs.
+                                {"Nous utilisons notamment Vercel Analytics, un service d'analyse de trafic qui collecte des données anonymisées sur la navigation (pages visitées, durée de visite, provenance du trafic). Ces données sont traitées de manière agrégée et anonyme, sans permettre l'identification des visiteurs."}
                             </p>
                             <p className="text-muted-foreground leading-relaxed">
-                                Vous pouvez configurer votre navigateur pour refuser les cookies ou être alerté lorsqu'un cookie
-                                est envoyé. Notez que le refus des cookies peut affecter certaines fonctionnalités du site.
+                                {"Vous pouvez configurer votre navigateur pour refuser les cookies ou être alerté lorsqu'un cookie est envoyé. Notez que le refus des cookies peut affecter certaines fonctionnalités du site."}
                             </p>
                         </section>
 
                         <section>
                             <h2 className="text-2xl font-semibold text-foreground mb-4">8. Hébergement et traitement des données</h2>
                             <p className="text-muted-foreground leading-relaxed mb-4">
-                                Les données collectées sont hébergées et traitées selon les prestataires utilisés pour l'hébergement
-                                du site et les services associés. Ces prestataires peuvent être situés dans l'Union Européenne ou
-                                en dehors, conformément aux garanties prévues par le RGPD.
+                                {"Les données collectées sont hébergées et traitées selon les prestataires utilisés pour l'hébergement du site et les services associés. Ces prestataires peuvent être situés dans l'Union Européenne ou en dehors, conformément aux garanties prévues par le RGPD."}
                             </p>
                             <p className="text-muted-foreground leading-relaxed">
                                 Nous nous assurons que tous nos prestataires respectent les standards de protection des données

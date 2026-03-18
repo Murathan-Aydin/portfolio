@@ -31,7 +31,7 @@ export function AdminSidebar() {
 
   // Fermer le menu quand on change de page sur mobile
   useEffect(() => {
-    setIsOpen(false)
+    setTimeout(() => setIsOpen(false), 0)
   }, [pathname])
 
   return (

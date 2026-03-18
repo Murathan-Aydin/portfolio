@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
+import Link from "next/link"
 
 const projectTypes = [
     { id: "site-vitrine", label: "Site vitrine" },
@@ -106,9 +107,9 @@ export default function DevisPage() {
             }
 
             setIsSubmitted(true)
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error sending devis:", error)
-            setError(error.message || "Erreur lors de l'envoi de la demande")
+            setError(error instanceof Error ? error.message : "Erreur lors de l'envoi de la demande")
         } finally {
             setIsLoading(false)
         }
@@ -131,9 +132,9 @@ export default function DevisPage() {
                             <Button onClick={() => setIsSubmitted(false)} variant="outline" className="mr-4">
                                 Nouvelle demande
                             </Button>
-                            <a href="/">
-                                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">Retour à l'accueil</Button>
-                            </a>
+                            <Link href="/">
+                                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">{"Retour à l'accueil"}</Button>
+                            </Link>
                         </div>
                     </div>
                 </div>

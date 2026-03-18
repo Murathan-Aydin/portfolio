@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
         if (!existsSync(imagesDir)) {
             try {
                 await mkdir(imagesDir, { recursive: true, mode: 0o755 })
-            } catch (mkdirError: any) {
+            } catch (mkdirError) {
                 console.error("Error creating images directory:", mkdirError)
                 // Si le dossier ne peut pas être créé, on essaie quand même d'écrire le fichier
                 // (peut-être que le dossier existe mais existsSync a échoué)
@@ -66,10 +66,10 @@ export async function POST(request: NextRequest) {
             await chmod(filepath, 0o644).catch((err) => {
                 console.warn("Could not set file permissions:", err)
             })
-        } catch (writeError: any) {
+        } catch (writeError) {
             console.error("Error writing file:", writeError)
             // Vérifier si c'est un problème de permissions ou de dossier
-            if (writeError.code === "ENOENT" || writeError.code === "EACCES") {
+            if ((writeError as { code?: string }).code === "ENOENT" || (writeError as { code?: string }).code === "EACCES") {
                 return NextResponse.json(
                     {
                         success: false,
@@ -90,10 +90,10 @@ export async function POST(request: NextRequest) {
             filename: filename,
             size: webpBuffer.length,
         })
-    } catch (error: any) {
+    } catch (error) {
         console.error("Error uploading image:", error)
         return NextResponse.json(
-            { success: false, error: error.message || "Erreur lors de l'upload de l'image" },
+            { success: false, error: error instanceof Error ? error.message : "Erreur lors de l'upload de l'image" },
             { status: 500 }
         )
     }

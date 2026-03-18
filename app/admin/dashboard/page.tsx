@@ -41,9 +41,9 @@ export default function AdminDashboardPage() {
                 }
 
                 setDashboardData(result.data)
-            } catch (err: any) {
+            } catch (err) {
                 console.error("Error fetching dashboard data:", err)
-                setError(err.message || "Erreur lors du chargement des données")
+                setError(err instanceof Error ? err.message : "Erreur lors du chargement des données")
             } finally {
                 setIsLoading(false)
             }

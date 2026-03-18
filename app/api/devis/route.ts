@@ -126,7 +126,7 @@ ${references ? `Sites de référence :\n${references}` : ""}
             { success: true, message: "Votre demande de devis a été envoyée avec succès. Je vous recontacterai sous 48h." },
             { status: 200 }
         )
-    } catch (error: any) {
+    } catch (error) {
         console.error("Error sending email:", error)
         return NextResponse.json(
             { success: false, error: "Erreur lors de l'envoi de la demande. Veuillez réessayer plus tard." },

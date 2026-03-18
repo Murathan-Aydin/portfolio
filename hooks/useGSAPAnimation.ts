@@ -31,29 +31,25 @@ export function useGSAPAnimation(
         }
 
         const element = ref.current
-
-        if (options.trigger || options.start) {
-            // Animation avec ScrollTrigger
-            const animationInstance = animation(element)
-
-            ScrollTrigger.create({
-                trigger: options.trigger || element,
-                start: options.start || "top 80%",
-                end: options.end,
-                animation: animationInstance,
-                once,
-            })
-
-            return () => {
-                ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        const ctx = gsap.context(() => {
+            if (options.trigger || options.start) {
+                // Animation avec ScrollTrigger
+                const animationInstance = animation(element)
+                ScrollTrigger.create({
+                    trigger: options.trigger || element,
+                    start: options.start || "top 80%",
+                    end: options.end,
+                    animation: animationInstance,
+                    once,
+                    invalidateOnRefresh: true,
+                })
+            } else {
+                // Animation simple
+                animation(element)
             }
-        } else {
-            // Animation simple
-            const animationInstance = animation(element)
-            return () => {
-                animationInstance.kill()
-            }
-        }
+        })
+
+        return () => ctx.revert()
     }, [])
 
     return ref
@@ -76,27 +72,26 @@ export function useStaggerAnimation(
         }
 
         const container = containerRef.current
-        const elements = container.querySelectorAll(selector)
+        const ctx = gsap.context(() => {
+            const elements = container.querySelectorAll(selector)
+            if (elements.length === 0) return
 
-        if (elements.length === 0) return
+            const timeline = gsap.timeline({
+                scrollTrigger: {
+                    trigger: options.trigger || container,
+                    start: options.start || "top 80%",
+                    end: options.end,
+                    once,
+                    invalidateOnRefresh: true,
+                },
+            })
 
-        const timeline = gsap.timeline({
-            scrollTrigger: {
-                trigger: options.trigger || container,
-                start: options.start || "top 80%",
-                end: options.end,
-                once,
-            },
-        })
+            elements.forEach((element, index) => {
+                timeline.add(animation(element), index * 0.1)
+            })
+        }, containerRef)
 
-        elements.forEach((element, index) => {
-            timeline.add(animation(element), index * 0.1)
-        })
-
-        return () => {
-            timeline.kill()
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-        }
+        return () => ctx.revert()
     }, [])
 
     return containerRef

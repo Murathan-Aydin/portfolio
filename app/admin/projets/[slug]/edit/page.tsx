@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { useRouter, useParams } from "next/navigation"
-import { Save, ArrowLeft, Plus, X, Loader2, ImageIcon } from "lucide-react"
+import { Save, ArrowLeft, Plus, X, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -114,9 +114,9 @@ export default function EditProjectPage() {
             // Mettre à jour l'URL de l'image et la preview
             setFormData({ ...formData, image: data.url })
             setImagePreview(data.url)
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error uploading image:", error)
-            alert(error.message || "Erreur lors de l'upload de l'image")
+            alert(error instanceof Error ? error.message : "Erreur lors de l'upload de l'image")
         } finally {
             setIsUploadingImage(false)
         }
@@ -142,9 +142,9 @@ export default function EditProjectPage() {
             }
 
             router.push("/admin/projets")
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error updating project:", error)
-            alert(error.message || "Erreur lors de la mise à jour du projet")
+            alert(error instanceof Error ? error.message : "Erreur lors de la mise à jour du projet")
         } finally {
             setIsLoading(false)
         }
@@ -383,14 +383,14 @@ export default function EditProjectPage() {
                                                     )}
                                                 </div>
                                                 <p className="text-xs text-muted-foreground">
-                                                    Formats acceptés : PNG, JPG, JPEG, WEBP (jusqu'à 100MB). L'image sera automatiquement convertie en WebP.
+                                                    {"Formats acceptés : PNG, JPG, JPEG, WEBP (jusqu'à 100MB). L'image sera automatiquement convertie en WebP."}
                                                 </p>
                                             </div>
 
                                             {/* Preview de l'image */}
                                             {(imagePreview || formData.image) && (
                                                 <div className="space-y-2">
-                                                    <Label>Aperçu de l'image</Label>
+                                                    <Label>{"Aperçu de l'image"}</Label>
                                                     <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-border">
                                                         <img
                                                             src={imagePreview || formData.image}

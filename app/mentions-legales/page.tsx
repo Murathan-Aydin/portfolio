@@ -54,7 +54,7 @@ export default function MentionsLegales() {
                                     <strong>Société :</strong> {config.hostName}
                                 </li>
                                 <li>
-                                    <strong>Type d'hébergement :</strong> {config.hostType}
+                                    <strong>{"Type d'hébergement :"}</strong> {config.hostType}
                                 </li>
                                 <li>
                                     <strong>Adresse :</strong> {config.hostAddress}
@@ -68,28 +68,21 @@ export default function MentionsLegales() {
                         <section>
                             <h2 className="text-2xl font-semibold text-foreground mb-4">3. Propriété intellectuelle</h2>
                             <p className="text-muted-foreground leading-relaxed">
-                                L'ensemble du contenu de ce site (textes, images, vidéos, logos, icônes, sons, logiciels, etc.) est la
-                                propriété exclusive de MA.DEV ou de ses partenaires. Toute reproduction, représentation, modification,
-                                publication, adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé
-                                utilisé, est interdite sauf autorisation écrite préalable.
+                                {"L'ensemble du contenu de ce site (textes, images, vidéos, logos, icônes, sons, logiciels, etc.) est la propriété exclusive de MA.DEV ou de ses partenaires. Toute reproduction, représentation, modification, publication, adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite sauf autorisation écrite préalable."}
                             </p>
                         </section>
 
                         <section>
                             <h2 className="text-2xl font-semibold text-foreground mb-4">4. Responsabilité</h2>
                             <p className="text-muted-foreground leading-relaxed">
-                                MA.DEV s'efforce de fournir sur son site des informations aussi précises que possible. Toutefois, il ne
-                                pourra être tenu responsable des omissions, des inexactitudes et des carences dans la mise à jour,
-                                qu'elles soient de son fait ou du fait des tiers partenaires qui lui fournissent ces informations.
+                                {"MA.DEV s'efforce de fournir sur son site des informations aussi précises que possible. Toutefois, il ne pourra être tenu responsable des omissions, des inexactitudes et des carences dans la mise à jour, qu'elles soient de son fait ou du fait des tiers partenaires qui lui fournissent ces informations."}
                             </p>
                         </section>
 
                         <section>
                             <h2 className="text-2xl font-semibold text-foreground mb-4">5. Liens hypertextes</h2>
                             <p className="text-muted-foreground leading-relaxed">
-                                Le site peut contenir des liens hypertextes vers d'autres sites. MA.DEV n'exerce aucun contrôle sur ces
-                                sites et décline toute responsabilité quant à leur contenu ou aux éventuels dommages résultant de leur
-                                utilisation.
+                                {"Le site peut contenir des liens hypertextes vers d'autres sites. MA.DEV n'exerce aucun contrôle sur ces sites et décline toute responsabilité quant à leur contenu ou aux éventuels dommages résultant de leur utilisation."}
                             </p>
                         </section>
 

@@ -44,7 +44,7 @@ function getDeviceType(): "desktop" | "mobile" | "tablet" {
 // Hook pour tracker les visites
 export function useAnalytics() {
     const pathname = usePathname()
-    const startTimeRef = useRef(Date.now())
+    const startTimeRef = useRef(0)
     const beforeUnloadHandlerRef = useRef<(() => void) | null>(null)
 
     useEffect(() => {

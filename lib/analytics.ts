@@ -49,9 +49,9 @@ interface UseAnalyticsOptions {
 
 // Hook pour tracker les visites
 export function useAnalytics(options: UseAnalyticsOptions) {
-    const { clientId, apiUrl, excludePaths = ["/admin", "/api"] } = options
+    const { clientId, excludePaths = ["/admin", "/api"] } = options
     const pathname = usePathname()
-    const startTimeRef = useRef(Date.now())
+    const startTimeRef = useRef(0)
     const beforeUnloadHandlerRef = useRef<(() => void) | null>(null)
 
     // Utiliser la route API proxy locale pour éviter les problèmes CORS

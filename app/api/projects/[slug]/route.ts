@@ -72,9 +72,9 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         }
 
         return NextResponse.json({ success: true, data: project }, { status: 200 })
-    } catch (error: any) {
+    } catch (error) {
         console.error("Error updating project:", error)
-        if (error.code === 11000) {
+        if ((error as { code?: number }).code === 11000) {
             return NextResponse.json({ success: false, error: "Un projet avec ce slug existe déjà" }, { status: 400 })
         }
         return NextResponse.json({ success: false, error: "Erreur lors de la mise à jour du projet" }, { status: 500 })

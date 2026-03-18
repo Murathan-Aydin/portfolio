@@ -82,9 +82,9 @@ export default function AdminProjectsPage() {
 
             setProjects(projects.filter((p) => p.slug !== deleteProject.slug))
             setDeleteProject(null)
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error deleting project:", error)
-            alert(error.message || "Erreur lors de la suppression du projet")
+            alert(error instanceof Error ? error.message : "Erreur lors de la suppression du projet")
         }
     }
 
@@ -210,7 +210,7 @@ export default function AdminProjectsPage() {
                         <AlertDialogHeader>
                             <AlertDialogTitle>Supprimer ce projet ?</AlertDialogTitle>
                             <AlertDialogDescription>
-                                Êtes-vous sûr de vouloir supprimer "{deleteProject?.title}" ? Cette action est irréversible.
+                                {`Êtes-vous sûr de vouloir supprimer "${deleteProject?.title}" ? Cette action est irréversible.`}
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

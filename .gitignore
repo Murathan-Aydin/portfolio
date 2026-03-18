@@ -42,3 +42,6 @@ next-env.d.ts
 # Ignorer les fichiers uploadés mais garder le dossier
 public/images/projets/*
 !public/images/projets/.gitkeep
+
+# ignore
+CLAUDE.md

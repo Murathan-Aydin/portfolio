@@ -1,30 +1,28 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
 import "./globals.css"
 import { LayoutWrapper } from "@/components/layout-wrapper"
 import { StructuredData } from "@/components/seo/structured-data"
 import { VercelAnalytics } from "@/components/vercel-analytics"
 import { AnalyticsProvider } from "@/components/analytics-provider"
 
-const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-    title: "Développeur Web Freelance à Mâcon | Création Site Internet Saône-et-Loire",
+    title: "Murathan Aydin | Développeur Fullstack",
     description:
-        "Développeur web freelance à Mâcon spécialisé dans la création de sites internet modernes et performants. Accompagnement personnalisé pour artisans, commerçants et PME en Saône-et-Loire. Devis gratuit.",
+        "Portfolio de Murathan Aydin, développeur Fullstack en alternance chez OID Consultants et étudiant à Epitech. Découvrez mes projets et mon parcours.",
     keywords: [
-        "développeur web Mâcon",
-        "création site internet Mâcon",
-        "freelance web Saône-et-Loire",
-        "développeur web Bourgogne",
-        "création site web Mâcon",
-        "développeur freelance Mâcon",
-        "site internet Mâcon",
+        "développeur fullstack",
+        "portfolio développeur",
+        "alternant développeur",
+        "Epitech",
+        "développeur web",
+        "React",
+        "Next.js",
     ],
     openGraph: {
-        title: "Développeur Web Freelance à Mâcon | MA.DEV",
-        description: "Création de sites web modernes et performants à Mâcon et en Saône-et-Loire. Devis gratuit.",
+        title: "Murathan Aydin | Développeur Fullstack",
+        description: "Portfolio de Murathan Aydin, développeur Fullstack.",
         locale: "fr_FR",
         type: "website",
     },

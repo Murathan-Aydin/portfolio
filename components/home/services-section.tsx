@@ -3,111 +3,129 @@
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Globe, ShoppingCart, Code2 } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
-
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger)
-}
+import { Code2, Smartphone, Paintbrush, Cloud } from "lucide-react"
 
 const services = [
     {
-        icon: Globe,
-        title: "Site vitrine",
-        description:
-            "Un site web professionnel pour présenter votre activité, vos services et vos valeurs. Design moderne et optimisé pour le référencement.",
-    },
-    {
-        icon: ShoppingCart,
-        title: "E-commerce",
-        description:
-            "Boutique en ligne performante avec gestion des produits, paiements sécurisés et expérience utilisateur optimisée pour convertir.",
-    },
-    {
         icon: Code2,
-        title: "Développement sur mesure",
+        title: "Développement Web",
         description:
-            "Applications web personnalisées selon vos besoins spécifiques. Solutions techniques adaptées à votre métier.",
+            "Création de sites modernes, performants et sur-mesure pour tous types d'écrans.",
+    },
+    {
+        icon: Smartphone,
+        title: "Applications Mobiles",
+        description:
+            "Réalisation d'apps natives et cross-platform performantes et intuitives.",
+    },
+    {
+        icon: Paintbrush,
+        title: "UI/UX Design",
+        description:
+            "Conception d'interfaces centrées sur l'utilisateur, claires et fluides.",
+    },
+    {
+        icon: Cloud,
+        title: "Architecture Cloud",
+        description:
+            "Mise en place d'infrastructures fiables et évolutives sur Amazon Web Services ou Google Cloud.",
     },
 ]
 
 export function ServicesSection() {
+    const sectionRef = useRef<HTMLDivElement>(null)
     const titleRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        const isMobile = window.innerWidth < 768
+        gsap.registerPlugin(ScrollTrigger)
 
-        // Animation du titre
-        if (titleRef.current) {
-            gsap.fromTo(
-                titleRef.current,
-                { opacity: 0, y: isMobile ? 10 : 20 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.5,
-                    scrollTrigger: {
-                        trigger: titleRef.current,
-                        start: "top 85%",
-                        once: true,
-                    },
-                }
-            )
-        }
+        const ctx = gsap.context(() => {
+            const isMobile = window.innerWidth < 768
 
-        // Animation des cartes avec stagger
-        if (containerRef.current) {
-            const cards = containerRef.current.querySelectorAll(".service-card")
-            gsap.fromTo(
-                cards,
-                { opacity: 0, y: isMobile ? 15 : 30 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.4,
-                    stagger: isMobile ? 0.05 : 0.1,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: containerRef.current,
-                        start: "top 80%",
-                        once: true,
-                    },
-                }
-            )
-        }
+            if (titleRef.current) {
+                gsap.fromTo(
+                    titleRef.current.children,
+                    { opacity: 0, y: isMobile ? 10 : 20 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        stagger: 0.1,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: titleRef.current,
+                            start: "top 85%",
+                            once: true,
+                            invalidateOnRefresh: true,
+                        },
+                    }
+                )
+            }
 
-        return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-        }
+            if (containerRef.current) {
+                const cards = containerRef.current.querySelectorAll(".service-card")
+                gsap.fromTo(
+                    cards,
+                    { opacity: 0, y: isMobile ? 20 : 30 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        stagger: 0.15,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: containerRef.current,
+                            start: "top 75%",
+                            once: true,
+                            invalidateOnRefresh: true,
+                        },
+                    }
+                )
+            }
+        }, sectionRef)
+
+        return () => ctx.revert()
     }, [])
 
     return (
-        <section id="services" className="py-16 sm:py-24 bg-secondary">
-            <div className="container mx-auto px-4 sm:px-6">
-                <div ref={titleRef} className="text-center mb-12 sm:mb-16">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Services de développement web à Mâcon</h2>
-                    <p className="mt-3 sm:mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-                        Des solutions web adaptées aux besoins des entreprises locales en Saône-et-Loire
+        <section id="services" className="py-24 sm:py-32 bg-[#F8FAFC]" ref={sectionRef}>
+            <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+                
+                {/* Titles */}
+                <div ref={titleRef} className="text-center mb-16">
+                    <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-6">
+                        Services digitaux premium
+                    </h2>
+                    <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+                        Offrez à vos clients une expérience en ligne immersive, performante 
+                        et adaptée à vos objectifs stratégiques.
                     </p>
                 </div>
 
-                <div ref={containerRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                    {services.map((service) => (
-                        <div key={service.title} className="service-card">
-                            <Card className="group relative h-full bg-white border-0 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
-                                <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                                <CardContent className="p-8">
-                                    <div className="w-14 h-14 rounded-2xl bg-secondary flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-colors duration-300">
-                                        <service.icon className="w-7 h-7 text-primary" />
-                                    </div>
-                                    <h3 className="text-xl font-semibold text-foreground mb-3">{service.title}</h3>
-                                    <p className="text-muted-foreground leading-relaxed">{service.description}</p>
-                                </CardContent>
-                            </Card>
+                {/* Cards Grid */}
+                <div ref={containerRef} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {services.map((service, idx) => (
+                        <div key={idx} className="service-card flex">
+                            <div className="w-full bg-white rounded-3xl p-8 sm:p-10 shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-2 transition-all duration-300">
+                                
+                                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-8">
+                                    <service.icon className="w-6 h-6 text-primary" />
+                                </div>
+                                
+                                <h3 className="text-xl font-bold text-slate-900 mb-4">
+                                    {service.title}
+                                </h3>
+                                
+                                <p className="text-slate-500 text-sm leading-relaxed">
+                                    {service.description}
+                                </p>
+                                
+                            </div>
                         </div>
                     ))}
                 </div>
+
             </div>
         </section>
     )

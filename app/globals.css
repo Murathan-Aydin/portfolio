@@ -6,38 +6,38 @@
 /* Updated design tokens for MA.DEV brand colors */
 :root {
     --background: #ffffff;
-    --foreground: #1a1a1a;
+    --foreground: #020617; /* Slate 950 */
     --card: #ffffff;
-    --card-foreground: #1a1a1a;
+    --card-foreground: #020617;
     --popover: #ffffff;
-    --popover-foreground: #1a1a1a;
-    --primary: #0BBAE6;
+    --popover-foreground: #020617;
+    --primary: #1d4ed8; /* Vibrant Blue for brand */
     --primary-foreground: #ffffff;
-    --secondary: #e0f7fc;
-    --secondary-foreground: #1a1a1a;
-    --muted: #e0f7fc;
-    --muted-foreground: #6b7280;
-    --accent: #5dd5f5;
-    --accent-foreground: #1a1a1a;
-    --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: #e5e7eb;
-    --input: #e5e7eb;
-    --ring: #0BBAE6;
+    --secondary: #f8fafc; /* Very light slate for alternating sections */
+    --secondary-foreground: #0f172a;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --accent: #eff6ff; /* light blue */
+    --accent-foreground: #1d4ed8;
+    --destructive: #ef4444;
+    --destructive-foreground: #f8fafc;
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --ring: #1d4ed8;
     --chart-1: oklch(0.646 0.222 41.116);
     --chart-2: oklch(0.6 0.118 184.704);
     --chart-3: oklch(0.398 0.07 227.392);
     --chart-4: oklch(0.828 0.189 84.429);
     --chart-5: oklch(0.769 0.188 70.08);
     --radius: 0.75rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+    --sidebar: #f8fafc;
+    --sidebar-foreground: #0f172a;
+    --sidebar-primary: #1d4ed8;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #f1f5f9;
+    --sidebar-accent-foreground: #0f172a;
+    --sidebar-border: #e2e8f0;
+    --sidebar-ring: #1d4ed8;
 }
 
 @theme inline {

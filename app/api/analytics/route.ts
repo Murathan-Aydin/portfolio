@@ -224,7 +224,7 @@ export async function GET(request: NextRequest) {
                 sourceData,
             },
         })
-    } catch (error: any) {
+    } catch (error) {
         console.error("Error fetching analytics:", error)
         return NextResponse.json({ success: false, error: "Erreur lors de la récupération des statistiques" }, { status: 500 })
     }
@@ -256,7 +256,7 @@ export async function POST(request: NextRequest) {
         })
 
         return NextResponse.json({ success: true, data: analytics }, { status: 201 })
-    } catch (error: any) {
+    } catch (error) {
         console.error("Error saving analytics:", error)
         return NextResponse.json({ success: false, error: "Erreur lors de l'enregistrement" }, { status: 500 })
     }

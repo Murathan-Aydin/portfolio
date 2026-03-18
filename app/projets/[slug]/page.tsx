@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             title: `${project.title} | MA.DEV`,
             description: project.description,
         }
-    } catch (error) {
+    } catch {
         return {
             title: "Projet | MA.DEV",
         }
@@ -40,21 +40,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params
+    let projectData = null
+
     try {
-        const { slug } = await params
         await connectDB()
         const project = await Project.findOne({ slug }).lean()
-
-        if (!project) {
-            notFound()
+        if (project) {
+            projectData = JSON.parse(JSON.stringify(project))
         }
-
-        // Convertir l'objet MongoDB en objet JavaScript simple
-        const projectData = JSON.parse(JSON.stringify(project))
-
-        return <ProjectDetailClient project={projectData} />
     } catch (error) {
         console.error("Error fetching project:", error)
+    }
+
+    if (!projectData) {
         notFound()
     }
+
+    return <ProjectDetailClient project={projectData!} />
 }

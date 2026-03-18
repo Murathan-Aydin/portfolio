@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
             }
             return session
         },
-        async signIn({ user, account, profile, email, credentials }) {
+        async signIn() {
             return true
         },
         async redirect({ url, baseUrl }) {

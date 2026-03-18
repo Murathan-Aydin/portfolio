@@ -3,19 +3,13 @@
 import { useState, useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { ExternalLink } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { ArrowRight } from "lucide-react"
 import type { Project } from "@/lib/types"
 import Link from "next/link"
 
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger)
-}
-
 export function ProjectsSection() {
     const [projects, setProjects] = useState<Project[]>([])
-    const titleRef = useRef<HTMLDivElement>(null)
+    const headerRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -25,8 +19,7 @@ export function ProjectsSection() {
                 const data = await response.json()
 
                 if (data.success) {
-                    // Prendre seulement les 4 premiers projets
-                    setProjects(data.data.slice(0, 4))
+                    setProjects(data.data.slice(0, 3)) // Only show 3 matching the mockup
                 }
             } catch (error) {
                 console.error("Error fetching projects:", error)
@@ -39,102 +32,120 @@ export function ProjectsSection() {
     useEffect(() => {
         if (projects.length === 0) return
 
-        const isMobile = window.innerWidth < 768
+        gsap.registerPlugin(ScrollTrigger)
 
-        // Animation du titre
-        if (titleRef.current) {
-            gsap.fromTo(
-                titleRef.current,
-                { opacity: 0, y: isMobile ? 10 : 20 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.5,
-                    scrollTrigger: {
-                        trigger: titleRef.current,
-                        start: "top 85%",
-                        once: true,
-                    },
-                }
-            )
-        }
+        const ctx = gsap.context(() => {
+            const isMobile = window.innerWidth < 768
 
-        // Animation des projets avec stagger
-        if (containerRef.current) {
-            const projectCards = containerRef.current.querySelectorAll(".project-card")
-            gsap.fromTo(
-                projectCards,
-                { opacity: 0, y: isMobile ? 20 : 40 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.4,
-                    stagger: isMobile ? 0.05 : 0.1,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: containerRef.current,
-                        start: "top 80%",
-                        once: true,
-                    },
-                }
-            )
-        }
+            if (headerRef.current) {
+                gsap.fromTo(
+                    headerRef.current.children,
+                    { opacity: 0, y: isMobile ? 10 : 20 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        stagger: 0.1,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: headerRef.current,
+                            start: "top 85%",
+                            once: true,
+                            invalidateOnRefresh: true,
+                        },
+                    }
+                )
+            }
 
-        return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-        }
+            if (containerRef.current) {
+                const projectCards = containerRef.current.querySelectorAll(".project-card")
+                gsap.fromTo(
+                    projectCards,
+                    { opacity: 0, y: isMobile ? 20 : 30 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        stagger: 0.15,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: containerRef.current,
+                            start: "top 80%",
+                            once: true,
+                            invalidateOnRefresh: true,
+                        },
+                    }
+                )
+            }
+        }, containerRef)
+
+        // Refresh after setting up new triggers — in case section is already in viewport
+        requestAnimationFrame(() => ScrollTrigger.refresh())
+
+        return () => ctx.revert()
     }, [projects])
 
     return (
-        <section id="projets" className="py-16 sm:py-24 bg-white">
-            <div className="container mx-auto px-4 sm:px-6">
-                <div ref={titleRef} className="text-center mb-12 sm:mb-16">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Projets web réalisés à Mâcon et en Saône-et-Loire</h2>
-                    <p className="mt-3 sm:mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-                        Découvrez quelques-unes de mes réalisations pour des entreprises locales
-                    </p>
+        <section id="projets" className="py-24 sm:py-32 bg-white relative">
+            <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+                
+                {/* Header (Text left, Link right) */}
+                <div ref={headerRef} className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+                    <div className="max-w-2xl">
+                        <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4">
+                            Projets récents
+                        </h2>
+                        <p className="text-lg text-slate-500 leading-relaxed">
+                            Une sélection de mes travaux, explorant divers univers et empilant des technologies performantes.
+                        </p>
+                    </div>
+                    <Link href="/projets" className="inline-flex items-center text-primary font-bold hover:underline underline-offset-4 group whitespace-nowrap">
+                        Voir tous mes travaux
+                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Link>
                 </div>
 
-                {projects.length > 0 && (
-                    <div ref={containerRef} className="grid sm:grid-cols-2 gap-6 sm:gap-8">
-                        {projects.map((project) => (
-                            <div key={project._id || project.slug} className="project-card">
-                                <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-xl transition-all duration-300">
-                                    <div className="relative overflow-hidden">
+                {/* Projects Grid Container */}
+                <div ref={containerRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {projects.length > 0 ? (
+                        projects.map((project) => (
+                            <Link href={`/projets/${project.slug}`} key={project._id || project.slug} className="group project-card block">
+                                <div className="flex flex-col h-full cursor-pointer">
+                                    <div className="relative overflow-hidden aspect-[4/3] rounded-3xl bg-slate-100 mb-6">
                                         <img
                                             src={project.image || "/placeholder.svg"}
                                             alt={project.title}
-                                            className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                     </div>
-                                    <CardContent className="p-6">
-                                        <h3 className="text-xl font-semibold text-foreground mb-3">{project.title}</h3>
-                                        <p className="text-sm text-muted-foreground mb-3">
+                                    
+                                    <div className="flex flex-col">
+                                        <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors">
+                                            {project.title}
+                                        </h3>
+                                        <p className="text-slate-500 text-sm line-clamp-2 leading-relaxed mb-3">
                                             {project.description}
                                         </p>
-                                        <div className="flex flex-wrap gap-2 mb-4">
-                                            {project.tags.slice(0, 3).map((tag) => (
-                                                <span key={tag} className="px-3 py-1 text-sm bg-secondary text-foreground rounded-full">
-                                                    {tag}
-                                                </span>
-                                            ))}
+                                        <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mt-auto">
+                                            {project.tags.slice(0, 3).join(" • ")}
                                         </div>
-                                        <p className="text-xs text-muted-foreground mb-4 italic">
-                                            Projet web réalisé pour une entreprise en Saône-et-Loire, optimisé pour le référencement local et la performance.
-                                        </p>
-                                        <Link href={`/projets/${project.slug}`}>
-                                            <Button variant="ghost" className="group/btn text-primary hover:text-primary/80 p-0">
-                                                Voir le projet
-                                                <ExternalLink className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                                            </Button>
-                                        </Link>
-                                    </CardContent>
-                                </Card>
+                                    </div>
+                                </div>
+                            </Link>
+                        ))
+                    ) : (
+                        // Fallback UI if no projects are loaded yet to maintain layout structure
+                        Array.from({ length: 3 }).map((_, i) => (
+                            <div key={i} className="project-card flex flex-col h-full animate-pulse">
+                                <div className="aspect-[4/3] rounded-3xl bg-slate-100 mb-6 w-full" />
+                                <div className="h-6 w-3/4 bg-slate-100 rounded mb-2" />
+                                <div className="h-4 w-full bg-slate-100 rounded mb-1" />
+                                <div className="h-4 w-5/6 bg-slate-100 rounded" />
                             </div>
-                        ))}
-                    </div>
-                )}
+                        ))
+                    )}
+                </div>
+
             </div>
         </section>
     )

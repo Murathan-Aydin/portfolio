@@ -3,146 +3,126 @@
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Search, Palette, Code, Rocket } from "lucide-react"
-
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger)
-}
 
 const steps = [
     {
-        icon: Search,
         number: "01",
-        title: "Analyse",
-        description: "Étude de vos besoins, objectifs et cible pour définir la meilleure stratégie.",
+        title: "Découverte",
+        description: "Analyse de vos besoins, de vos objectifs et de votre audience pour définir une stratégie adaptée.",
     },
     {
-        icon: Palette,
         number: "02",
-        title: "Design",
-        description: "Création de maquettes modernes et ergonomiques validées ensemble.",
+        title: "Conception",
+        description: "Création de maquettes et de prototypes pour valider l'expérience utilisateur et l'interface.",
     },
     {
-        icon: Code,
         number: "03",
         title: "Développement",
-        description: "Développement sur mesure avec les technologies les plus performantes.",
+        description: "Développement agile avec des technologies modernes en garantissant performance et sécurité.",
     },
     {
-        icon: Rocket,
         number: "04",
-        title: "Mise en ligne",
-        description: "Déploiement, tests et accompagnement pour un lancement réussi.",
+        title: "Lancement",
+        description: "Mise en ligne, tests de qualité, et accompagnement pour une prise en main optimale.",
     },
 ]
 
 export function MethodSection() {
-    const titleRef = useRef<HTMLDivElement>(null)
+    const sectionRef = useRef<HTMLDivElement>(null)
+    const headerRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
-    const progressLineRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        const isMobile = window.innerWidth < 768
+        gsap.registerPlugin(ScrollTrigger)
 
-        if (titleRef.current) {
-            gsap.fromTo(
-                titleRef.current,
-                { opacity: 0, y: isMobile ? 10 : 20 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.5,
-                    scrollTrigger: {
-                        trigger: titleRef.current,
-                        start: "top 85%",
-                        once: true,
-                    },
-                }
-            )
-        }
+        const ctx = gsap.context(() => {
+            const isMobile = window.innerWidth < 768
 
-        if (progressLineRef.current && !isMobile) {
-            gsap.fromTo(
-                progressLineRef.current,
-                { scaleX: 0 },
-                {
-                    scaleX: 1,
-                    duration: 0.8,
-                    delay: 0.3,
-                    transformOrigin: "left",
-                    scrollTrigger: {
-                        trigger: containerRef.current,
-                        start: "top 80%",
-                        once: true,
-                    },
-                }
-            )
-        }
+            if (headerRef.current) {
+                gsap.fromTo(
+                    headerRef.current.children,
+                    { opacity: 0, y: isMobile ? 10 : 20 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        stagger: 0.1,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: headerRef.current,
+                            start: "top 85%",
+                            once: true,
+                            invalidateOnRefresh: true,
+                        },
+                    }
+                )
+            }
 
-        if (containerRef.current) {
-            const stepCards = containerRef.current.querySelectorAll(".step-card")
-            gsap.fromTo(
-                stepCards,
-                { opacity: 0, y: isMobile ? 15 : 30 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.4,
-                    stagger: isMobile ? 0.05 : 0.1,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: containerRef.current,
-                        start: "top 80%",
-                        once: true,
-                    },
-                }
-            )
-        }
+            if (containerRef.current) {
+                const stepCards = containerRef.current.querySelectorAll(".method-step")
+                gsap.fromTo(
+                    stepCards,
+                    { opacity: 0, x: isMobile ? 0 : 30, y: isMobile ? 20 : 0 },
+                    {
+                        opacity: 1,
+                        x: 0,
+                        y: 0,
+                        duration: 0.8,
+                        stagger: 0.15,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: containerRef.current,
+                            start: "top 80%",
+                            once: true,
+                            invalidateOnRefresh: true,
+                        },
+                    }
+                )
+            }
+        }, sectionRef)
 
-        return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-        }
+        return () => ctx.revert()
     }, [])
 
     return (
-        <section id="methode" className="py-16 sm:py-24 bg-secondary">
-            <div className="container mx-auto px-4 sm:px-6">
-                <div ref={titleRef} className="text-center mb-12 sm:mb-16">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Méthode de travail</h2>
-                    <p className="mt-3 sm:mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-                        Un processus clair et transparent pour votre projet
+        <section id="methode" className="py-24 sm:py-32 bg-[#0F172A] relative overflow-hidden" ref={sectionRef}>
+            <div className="container mx-auto px-4 sm:px-6 max-w-7xl relative z-10">
+                
+                {/* Header */}
+                <div ref={headerRef} className="mb-20 max-w-3xl">
+                    <h2 className="text-4xl sm:text-5xl font-extrabold text-white mb-6">
+                        Ma méthode de travail
+                    </h2>
+                    <p className="text-lg text-slate-400 leading-relaxed">
+                        Une approche pragmatique pour garantir le succès de vos projets, de l&apos;idée à la mise en ligne.
                     </p>
                 </div>
 
-                <div className="relative">
-                    {/* Progress Line */}
-                    <div className="hidden lg:block absolute top-24 left-0 right-0 h-0.5 bg-primary/20">
-                        <div
-                            ref={progressLineRef}
-                            className="h-full bg-primary origin-left"
-                        />
-                    </div>
-
-                    <div ref={containerRef} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-                        {steps.map((step) => (
-                            <div
-                                key={step.title}
-                                className="relative step-card"
-                            >
-                                <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
-                                    <div className="relative z-10 w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
-                                        <step.icon className="w-8 h-8 text-primary" />
-                                        <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center">
-                                            {step.number}
-                                        </span>
-                                    </div>
-                                    <h3 className="text-xl font-semibold text-foreground mb-2">{step.title}</h3>
-                                    <p className="text-muted-foreground leading-relaxed">{step.description}</p>
-                                </div>
+                {/* Steps */}
+                <div ref={containerRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+                    {steps.map((step) => (
+                        <div key={step.number} className="method-step flex flex-col">
+                            {/* Huge background number */}
+                            <div className="text-7xl font-black text-white/5 mb-2 -ml-2 select-none tracking-tighter">
+                                {step.number}
                             </div>
-                        ))}
-                    </div>
+                            
+                            {/* Title with blue line */}
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-6 h-[2px] bg-primary rounded-full" />
+                                <h3 className="text-xl font-bold text-white">
+                                    {step.title}
+                                </h3>
+                            </div>
+                            
+                            {/* Description */}
+                            <p className="text-slate-400 text-sm leading-relaxed pr-4">
+                                {step.description}
+                            </p>
+                        </div>
+                    ))}
                 </div>
+
             </div>
         </section>
     )
