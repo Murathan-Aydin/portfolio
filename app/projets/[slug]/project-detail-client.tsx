@@ -169,7 +169,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
 
                         <div
                             ref={cta1Ref}
-                            className="bg-secondary/30 rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8"
+                            className="bg-secondary/40 backdrop-blur-md border rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8"
                         >
                             <p className="text-sm text-muted-foreground italic leading-relaxed">
                                 Site web réalisé pour une entreprise en Saône-et-Loire, optimisé pour le référencement local
@@ -180,7 +180,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
 
                         <div
                             ref={cta2Ref}
-                            className="text-center bg-secondary/30 rounded-2xl p-8 sm:p-12"
+                            className="text-center bg-secondary/40 backdrop-blur-md border rounded-2xl p-8 sm:p-12"
                         >
                             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Vous avez un projet similaire ?</h2>
                             <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
