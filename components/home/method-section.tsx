@@ -102,7 +102,7 @@ export function MethodSection() {
                     {steps.map((step) => (
                         <div key={step.number} className="method-step flex flex-col">
                             {/* Huge background number */}
-                            <div className="text-7xl font-black text-white/5 mb-2 -ml-2 select-none tracking-tighter">
+                            <div className="text-7xl font-black text-white/10 mb-2 -ml-2 select-none tracking-tighter">
                                 {step.number}
                             </div>
                             
