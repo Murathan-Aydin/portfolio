@@ -8,11 +8,11 @@ import { AnalyticsProvider } from "@/components/analytics-provider"
 import BgAnimate from "@/components/bg-animate"
 
 export const metadata: Metadata = {
-    title: "Murathan Aydin | Développeur Fullstack",
+    title: "Murathan Aydin | Développeur Full-Stack",
     description:
-        "Portfolio de Murathan Aydin, développeur Fullstack en alternance chez OID Consultants et étudiant à Epitech. Découvrez mes projets et mon parcours.",
+        "Portfolio de Murathan Aydin, développeur Full-Stack en alternance chez OID Consultants et étudiant à Epitech. Découvrez mes projets et mon parcours.",
     keywords: [
-        "développeur fullstack",
+        "développeur Full-Stack",
         "portfolio développeur",
         "alternant développeur",
         "Epitech",
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
         "Next.js",
     ],
     openGraph: {
-        title: "Murathan Aydin | Développeur Fullstack",
-        description: "Portfolio de Murathan Aydin, développeur Fullstack.",
+        title: "Murathan Aydin | Développeur Full-Stack",
+        description: "Portfolio de Murathan Aydin, développeur Full-Stack.",
         locale: "fr_FR",
         type: "website",
     },

@@ -9,7 +9,7 @@ import { ArrowDown } from "lucide-react"
 
 const TEXTS = [
     `Je suis Murathan`,
-    `Développeur FullStack`,
+    `Développeur Full-Stack`,
     `Je crée des expériences digitales uniques et innovantes.`// il faut un texte court
 ]
 
