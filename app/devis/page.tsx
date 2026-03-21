@@ -160,12 +160,12 @@ export default function DevisPage() {
                         <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
                             {error && (
                                 <div className="flex items-center gap-2 p-3 sm:p-4 bg-destructive/10 text-destructive rounded-lg text-sm">
-                                    <AlertCircle className="w-4 sm:w-5 h-4 sm:h-5 flex-shrink-0" />
+                                    <AlertCircle className="w-4 sm:w-5 h-4 sm:h-5 shrink-0" />
                                     {error}
                                 </div>
                             )}
 
-                            <div className="bg-card/50 backdrop-blur-md border border-white/5 rounded-2xl p-6 sm:p-8">
+                            <div className="bg-card/50 backdrop-blur-md border rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Vos coordonnées</h2>
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
@@ -176,7 +176,6 @@ export default function DevisPage() {
                                             value={formData.firstName}
                                             onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                                             required
-                                            className="border-primary/50"
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -187,7 +186,6 @@ export default function DevisPage() {
                                             value={formData.lastName}
                                             onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                                             required
-                                            className="border-primary/50"
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -199,7 +197,6 @@ export default function DevisPage() {
                                             value={formData.email}
                                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                             required
-                                            className="border-primary/50"
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -210,7 +207,6 @@ export default function DevisPage() {
                                             placeholder="06 00 00 00 00"
                                             value={formData.phone}
                                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                            className="border-primary/50"
                                         />
                                     </div>
                                     <div className="space-y-2 md:col-span-2">
@@ -220,13 +216,12 @@ export default function DevisPage() {
                                             placeholder="Nom de votre entreprise"
                                             value={formData.company}
                                             onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                                            className="border-primary/50"
                                         />
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-card/50 backdrop-blur-md border border-white/5 rounded-2xl p-6 sm:p-8">
+                            <div className="bg-card/50 backdrop-blur-md border rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Type de projet</h2>
                                 <RadioGroup
                                     value={formData.projectType}
@@ -237,7 +232,7 @@ export default function DevisPage() {
                                         <Label
                                             key={type.id}
                                             htmlFor={type.id}
-                                            className="flex items-center space-x-3 bg-background/50 rounded-lg p-4 border border-white/10 hover:border-primary/50 transition-colors cursor-pointer"
+                                            className="flex items-center space-x-3 bg-background/20 rounded-lg p-4 border border-white/10 hover:border-primary/50 transition-colors cursor-pointer"
                                         >
                                             <RadioGroupItem value={type.id} id={type.id} />
                                             <span>{type.label}</span>
@@ -246,14 +241,14 @@ export default function DevisPage() {
                                 </RadioGroup>
                             </div>
 
-                            <div className="bg-card/50 backdrop-blur-md border border-white/5 rounded-2xl p-6 sm:p-8">
+                            <div className="bg-card/50 backdrop-blur-md border rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Services souhaités</h2>
                                 <div className="grid md:grid-cols-2 gap-4">
                                     {services.map((service) => (
                                         <Label
                                             key={service.id}
                                             htmlFor={service.id}
-                                            className="flex items-center space-x-3 bg-background/50 rounded-lg p-4 border border-white/10 hover:border-primary/50 transition-colors cursor-pointer"
+                                            className="flex items-center space-x-3 bg-background/20 rounded-lg p-4 border border-white/10 hover:border-primary/50 transition-colors cursor-pointer"
                                         >
                                             <Checkbox
                                                 id={service.id}
@@ -266,7 +261,7 @@ export default function DevisPage() {
                                 </div>
                             </div>
 
-                            <div className="bg-card/50 backdrop-blur-md border border-white/5 rounded-2xl p-6 sm:p-8">
+                            <div className="bg-card/50 backdrop-blur-md border rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Budget estimé</h2>
                                 <RadioGroup
                                     value={formData.budget}
@@ -277,7 +272,7 @@ export default function DevisPage() {
                                         <Label
                                             key={budget.id}
                                             htmlFor={budget.id}
-                                            className="flex items-center space-x-3 bg-background/50 rounded-lg p-4 border border-white/10 hover:border-primary/50 transition-colors cursor-pointer"
+                                            className="flex items-center space-x-3 bg-background/20 rounded-lg p-4 border border-white/10 hover:border-primary/50 transition-colors cursor-pointer"
                                         >
                                             <RadioGroupItem value={budget.id} id={budget.id} />
                                             <span>{budget.label}</span>
@@ -286,7 +281,7 @@ export default function DevisPage() {
                                 </RadioGroup>
                             </div>
 
-                            <div className="bg-card/50 backdrop-blur-md border border-white/5 rounded-2xl p-6 sm:p-8">
+                            <div className="bg-card/50 backdrop-blur-md border rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Votre projet</h2>
                                 <div className="space-y-6">
                                     <div className="space-y-2">
@@ -296,7 +291,6 @@ export default function DevisPage() {
                                             placeholder="Décrivez votre projet, vos objectifs, vos attentes..."
                                             value={formData.projectDescription}
                                             onChange={(e) => setFormData({ ...formData, projectDescription: e.target.value })}
-                                            className="border-primary/50"
                                             rows={6}
                                             required
                                         />
@@ -308,7 +302,6 @@ export default function DevisPage() {
                                             placeholder="Ex: 2 mois, Janvier 2025..."
                                             value={formData.deadline}
                                             onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
-                                            className="border-primary/50"
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -318,7 +311,6 @@ export default function DevisPage() {
                                             placeholder="Listez des sites web qui vous inspirent..."
                                             value={formData.references}
                                             onChange={(e) => setFormData({ ...formData, references: e.target.value })}
-                                            className="border-primary/50"
                                             rows={3}
                                         />
                                     </div>

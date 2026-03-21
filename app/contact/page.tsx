@@ -173,11 +173,11 @@ export default function ContactPage() {
 
                         {/* Right Form */}
                         <div ref={rightRef}>
-                            <Card className="border-0 shadow-lg">
+                            <Card className="shadow-lg backdrop-blur-md bg-secondary/40 border">
                                 <CardContent className="p-6 sm:p-8">
                                     <form onSubmit={handleSubmit} className="space-y-6">
                                         {error && (
-                                            <div className="flex items-center gap-2 p-3 bg-destructive/10 text-destructive rounded-lg text-sm">
+                                            <div className="flex items-center gap-2 p-3 bg-destructive/10 text-destructive rounded-lg text-sm ">
                                                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                                                 {error}
                                             </div>
@@ -190,7 +190,7 @@ export default function ContactPage() {
                                                     placeholder="Votre nom"
                                                     value={formData.name}
                                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                                    className="bg-secondary/50 border-0 focus-visible:ring-primary"
+                                                    className="bg-secondary/50 border focus-visible:ring-primary"
                                                     required
                                                 />
                                             </div>
@@ -202,7 +202,7 @@ export default function ContactPage() {
                                                     placeholder="votre@email.com"
                                                     value={formData.email}
                                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                                    className="bg-secondary/50 border-0 focus-visible:ring-primary"
+                                                    className="bg-secondary/50 border focus-visible:ring-primary"
                                                     required
                                                 />
                                             </div>
@@ -214,7 +214,7 @@ export default function ContactPage() {
                                                 placeholder="Objet de votre demande"
                                                 value={formData.subject}
                                                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                                                className="bg-secondary/50 border-0 focus-visible:ring-primary"
+                                                className="bg-secondary/50 border focus-visible:ring-primary"
                                                 required
                                             />
                                         </div>
@@ -226,7 +226,7 @@ export default function ContactPage() {
                                                 rows={6}
                                                 value={formData.message}
                                                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                                className="bg-secondary/50 border-0 focus-visible:ring-primary resize-none"
+                                                className="bg-secondary/50 border focus-visible:ring-primary resize-none"
                                                 required
                                             />
                                         </div>
