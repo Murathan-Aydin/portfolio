@@ -2,11 +2,23 @@
 
 import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
-import { FolderKanban, Users, Eye, TrendingUp, FileText, ArrowUpRight, ArrowDownRight, Loader2 } from "lucide-react"
+import { FolderKanban, Users, Eye, TrendingUp, FileText, ArrowUpRight, ArrowDownRight, Loader2, Trash2 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AdminHeader } from "@/components/admin/admin-header"
 import { ProtectedRoute } from "@/components/admin/protected-route"
 import Link from "next/link"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 
 interface DashboardData {
     stats: {
@@ -22,6 +34,7 @@ interface DashboardData {
 export default function AdminDashboardPage() {
     const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
     const [isLoading, setIsLoading] = useState(true)
+    const [isResetting, setIsResetting] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const statsRef = useRef<HTMLDivElement>(null)
     const card1Ref = useRef<HTMLDivElement>(null)
@@ -51,6 +64,26 @@ export default function AdminDashboardPage() {
 
         fetchDashboardData()
     }, [])
+
+    const handleResetStats = async () => {
+        setIsResetting(true)
+        try {
+            const response = await fetch("/api/dashboard", { method: "DELETE" })
+            const result = await response.json()
+            if (!response.ok || !result.success) {
+                throw new Error(result.error || "Erreur lors de la réinitialisation")
+            }
+            // Mettre à jour les données du dashboard
+            const freshResponse = await fetch("/api/dashboard")
+            const freshResult = await freshResponse.json()
+            setDashboardData(freshResult.data)
+        } catch (err) {
+            console.error("Error resetting stats:", err)
+            alert(err instanceof Error ? err.message : "Erreur")
+        } finally {
+            setIsResetting(false)
+        }
+    }
 
     useEffect(() => {
         if (dashboardData && statsRef.current) {
@@ -142,7 +175,32 @@ export default function AdminDashboardPage() {
         <ProtectedRoute>
             <div className="min-h-screen bg-background">
                 <main className="lg:ml-64 p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8">
-                    <AdminHeader title="Dashboard" description="Vue d'ensemble de votre activité" />
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+                        <AdminHeader title="Dashboard" description="Vue d'ensemble de votre activité" />
+                        
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button variant="destructive" className="gap-2" disabled={isResetting}>
+                                    {isResetting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                                    Réinitialiser les stats
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Êtes-vous absolument sûr ?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        Cette action supprimera tout l'historique des visiteurs et des pages vues. Les compteurs seront remis à zéro.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                    <AlertDialogAction onClick={handleResetStats} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                        Oui, réinitialiser
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    </div>
 
                     <div ref={statsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         {stats.map((stat) => (

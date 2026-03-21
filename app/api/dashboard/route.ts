@@ -233,3 +233,20 @@ export async function GET(_request: NextRequest) {
     }
 }
 
+// DELETE - Réinitialiser les statistiques (supprimer l'historique Analytics)
+export async function DELETE(_request: NextRequest) {
+    try {
+        const session = await getServerSession(authOptions)
+        if (!session) {
+            return NextResponse.json({ success: false, error: "Non autorisé" }, { status: 401 })
+        }
+
+        await connectDB()
+        await Analytics.deleteMany({}) // Supprime tous les logs
+
+        return NextResponse.json({ success: true, message: "Statistiques réinitialisées" })
+    } catch (error) {
+        console.error("Error resetting stats:", error)
+        return NextResponse.json({ success: false, error: "Erreur lors de la réinitialisation" }, { status: 500 })
+    }
+}
