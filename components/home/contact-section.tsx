@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useLayoutEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Mail, Briefcase, Send, Loader2, Check, AlertCircle } from "lucide-react"
@@ -25,26 +25,28 @@ export function ContactSection() {
     const containerRef = useRef<HTMLDivElement>(null)
     const formRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         gsap.registerPlugin(ScrollTrigger)
 
         const ctx = gsap.context(() => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top 75%",
+                    toggleActions: "play none none none",
+                }
+            })
+
             if (containerRef.current) {
-                gsap.fromTo(
+                tl.fromTo(
                     containerRef.current,
-                    { opacity: 0, scale: 0.95, y: 30 },
+                    { opacity: 0, scale: 0.92, y: 50 },
                     {
                         opacity: 1,
                         scale: 1,
                         y: 0,
-                        duration: 1,
+                        duration: 1.2,
                         ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: containerRef.current,
-                            start: "top 80%",
-                            once: true,
-                            invalidateOnRefresh: true,
-                        },
                     }
                 )
             }
@@ -82,24 +84,24 @@ export function ContactSection() {
     }
 
     return (
-        <section id="contact" className="py-24 sm:py-32 bg-background relative px-4 sm:px-6">
+        <section id="contact" className="py-24 sm:py-32 bg-transparent relative px-4 sm:px-6">
             <div className="container mx-auto max-w-7xl">
 
                 {/* Huge Blue Container */}
                 <div
                     ref={containerRef}
-                    className="bg-primary rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-12 lg:p-16 shadow-2xl overflow-hidden relative"
+                    className="bg-card/50 backdrop-blur-2xl border border-white/10 rounded-4xl sm:rounded-[3rem] p-4 py-8 sm:p-12 lg:p-16 shadow-2xl overflow-hidden relative"
                 >
                     {/* Decorative Background Elements */}
                     <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
 
                     <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
                         {/* Left Content (Text) */}
-                        <div className="text-white">
+                        <div className="text-foreground">
                             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
                                 Prêt à lancer <br /> votre projet ?
                             </h2>
-                            <p className="text-primary-foreground/80 text-lg leading-relaxed mb-12 max-w-lg">
+                            <p className="text-muted-foreground text-lg leading-relaxed mb-12 max-w-lg">
                                 Discutons de vos enjeux et trouvons la solution optimale pour concevoir,
                                 développer ou moderniser votre application ou site web.
                             </p>
@@ -134,14 +136,14 @@ export function ContactSection() {
                         </div>
 
                         {/* Right Form Card */}
-                        <div ref={formRef} className="bg-white rounded-3xl p-8 sm:p-10 shadow-xl">
+                        <div ref={formRef} className="bg-card/80 backdrop-blur-xl border border-border rounded-3xl p-4 py-8 sm:p-8 shadow-xl">
                             {isSubmitted ? (
                                 <div className="text-center py-12">
-                                    <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                                        <Check className="w-10 h-10 text-emerald-600" />
+                                    <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                        <Check className="w-10 h-10 text-emerald-400" />
                                     </div>
-                                    <h4 className="text-2xl font-bold text-slate-900 mb-3">Message envoyé !</h4>
-                                    <p className="text-slate-500 mb-8">
+                                    <h4 className="text-2xl font-bold text-foreground mb-3">Message envoyé !</h4>
+                                    <p className="text-muted-foreground mb-8">
                                         Merci pour votre message. Je vous recontacterai très rapidement pour échanger sur vos besoins.
                                     </p>
                                     <Button
@@ -156,60 +158,60 @@ export function ContactSection() {
                             ) : (
                                 <form onSubmit={handleSubmit} className="space-y-6">
                                     {error && (
-                                        <div className="flex items-center gap-2 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm font-medium">
-                                            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                                        <div className="flex items-center gap-2 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl text-sm font-medium">
+                                            <AlertCircle className="w-5 h-5 shrink-0" />
                                             {error}
                                         </div>
                                     )}
 
                                     <div className="grid sm:grid-cols-2 gap-6">
-                                        <div className="space-y-2">
-                                            <label htmlFor="name" className="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1">Nom</label>
+                                        <div className="space-y-2 flex flex-col">
+                                            <label htmlFor="name" className="text-xs font-bold text-muted-foreground uppercase tracking-widest pl-1">Nom</label>
                                             <Input
                                                 id="name"
                                                 placeholder="Jean Dupont"
                                                 value={formData.name}
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                                className="bg-slate-50/50 border-slate-200 focus-visible:ring-primary rounded-xl px-4 py-6 text-slate-900 shadow-none hover:bg-white"
+                                                className="bg-white/5 border-white/10 focus-visible:ring-primary rounded-xl px-4 py-6 text-foreground shadow-none hover:bg-white/10"
                                                 required
                                             />
                                         </div>
-                                        <div className="space-y-2">
-                                            <label htmlFor="email" className="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1">Email</label>
+                                        <div className="space-y-2 flex flex-col">
+                                            <label htmlFor="email" className="text-xs font-bold text-muted-foreground uppercase tracking-widest pl-1">Email</label>
                                             <Input
                                                 id="email"
                                                 type="email"
                                                 placeholder="jean@exemple.com"
                                                 value={formData.email}
                                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                                className="bg-slate-50/50 border-slate-200 focus-visible:ring-primary rounded-xl px-4 py-6 text-slate-900 shadow-none hover:bg-white"
+                                                className="bg-white/5 border-white/10 focus-visible:ring-primary rounded-xl px-4 py-6 text-foreground shadow-none hover:bg-white/10"
                                                 required
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <label htmlFor="subject" className="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1">Sujet du projet</label>
+                                    <div className="space-y-2 flex flex-col">
+                                        <label htmlFor="subject" className="text-xs font-bold text-muted-foreground uppercase tracking-widest pl-1">Sujet du projet</label>
                                         <Input
                                             id="subject"
                                             placeholder="Ex: Création d'une application web..."
                                             value={formData.subject}
                                             onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                                            className="bg-slate-50/50 border-slate-200 focus-visible:ring-primary rounded-xl px-4 py-6 text-slate-900 shadow-none hover:bg-white"
+                                            className="bg-white/5 border-white/10 focus-visible:ring-primary rounded-xl px-4 py-6 text-foreground shadow-none hover:bg-white/10"
                                             required
                                         />
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <label htmlFor="message" className="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1">Votre message</label>
+                                    <div className="space-y-2 flex flex-col">
+                                        <label htmlFor="message" className="text-xs font-bold text-muted-foreground uppercase tracking-widest pl-1">Votre message</label>
                                         <Textarea
                                             id="message"
                                             placeholder="Décrivez votre besoin en détail..."
                                             rows={4}
                                             value={formData.message}
                                             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                            className="bg-slate-50/50 border-slate-200 focus-visible:ring-primary rounded-xl px-4 py-4 text-slate-900 resize-none shadow-none hover:bg-white"
-                                            required
+                                            className="bg-white/5 border-white/10 focus-visible:ring-primary rounded-xl px-4 py-4 text-foreground resize-none shadow-none hover:bg-white/10 resize-y"
+                                            required                                            
                                         />
                                     </div>
 

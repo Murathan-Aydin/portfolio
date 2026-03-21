@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useLayoutEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
@@ -32,51 +32,50 @@ export function MethodSection() {
     const headerRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         gsap.registerPlugin(ScrollTrigger)
 
         const ctx = gsap.context(() => {
             const isMobile = window.innerWidth < 768
 
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top 75%",
+                    toggleActions: "play none none none",
+                }
+            })
+
             if (headerRef.current) {
-                gsap.fromTo(
+                tl.fromTo(
                     headerRef.current.children,
-                    { opacity: 0, y: isMobile ? 10 : 20 },
+                    { opacity: 0, y: isMobile ? 20 : 40, scale: 0.98 },
                     {
                         opacity: 1,
                         y: 0,
+                        scale: 1,
                         duration: 0.8,
-                        stagger: 0.1,
+                        stagger: 0.15,
                         ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: headerRef.current,
-                            start: "top 85%",
-                            once: true,
-                            invalidateOnRefresh: true,
-                        },
                     }
                 )
             }
 
             if (containerRef.current) {
                 const stepCards = containerRef.current.querySelectorAll(".method-step")
-                gsap.fromTo(
+                tl.fromTo(
                     stepCards,
-                    { opacity: 0, x: isMobile ? 0 : 30, y: isMobile ? 20 : 0 },
+                    { opacity: 0, x: isMobile ? 0 : 30, y: isMobile ? 20 : 0, scale: 0.95 },
                     {
                         opacity: 1,
                         x: 0,
                         y: 0,
-                        duration: 0.8,
+                        scale: 1,
+                        duration: 1,
                         stagger: 0.15,
                         ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: containerRef.current,
-                            start: "top 80%",
-                            once: true,
-                            invalidateOnRefresh: true,
-                        },
-                    }
+                    },
+                    "-=0.4"
                 )
             }
         }, sectionRef)
@@ -85,21 +84,21 @@ export function MethodSection() {
     }, [])
 
     return (
-        <section id="methode" className="py-24 sm:py-32 bg-[#0F172A] relative overflow-hidden" ref={sectionRef}>
+        <section id="methode" className="py-24 sm:py-32 bg-transparent relative overflow-hidden" ref={sectionRef}>
             <div className="container mx-auto px-4 sm:px-6 max-w-7xl relative z-10">
                 
                 {/* Header */}
                 <div ref={headerRef} className="mb-20 max-w-3xl">
-                    <h2 className="text-4xl sm:text-5xl font-extrabold text-white mb-6">
+                    <h2 className="text-4xl sm:text-5xl font-extrabold text-foreground mb-6">
                         Ma méthode de travail
                     </h2>
-                    <p className="text-lg text-slate-400 leading-relaxed">
+                    <p className="text-lg text-muted-foreground leading-relaxed">
                         Une approche pragmatique pour garantir le succès de vos projets, de l&apos;idée à la mise en ligne.
                     </p>
                 </div>
 
                 {/* Steps */}
-                <div ref={containerRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+                <div ref={containerRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 border p-8 rounded-md backdrop-blur-md bg-white/5">
                     {steps.map((step) => (
                         <div key={step.number} className="method-step flex flex-col">
                             {/* Huge background number */}
@@ -110,13 +109,13 @@ export function MethodSection() {
                             {/* Title with blue line */}
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="w-6 h-[2px] bg-primary rounded-full" />
-                                <h3 className="text-xl font-bold text-white">
+                                <h3 className="text-xl font-bold text-foreground">
                                     {step.title}
                                 </h3>
                             </div>
                             
                             {/* Description */}
-                            <p className="text-slate-400 text-sm leading-relaxed pr-4">
+                            <p className="text-muted-foreground text-sm leading-relaxed pr-4">
                                 {step.description}
                             </p>
                         </div>

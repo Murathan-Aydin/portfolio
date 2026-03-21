@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useLayoutEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
@@ -48,54 +48,57 @@ const faqs = [
 ]
 
 export function FAQSection() {
+    const sectionRef = useRef<HTMLElement>(null)
     const titleRef = useRef<HTMLDivElement>(null)
     const contentRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const isMobile = window.innerWidth < 768
 
-        if (titleRef.current) {
-            gsap.fromTo(
-                titleRef.current,
-                { opacity: 0, y: isMobile ? 10 : 20 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.5,
-                    scrollTrigger: {
-                        trigger: titleRef.current,
-                        start: "top 85%",
-                        once: true,
-                    },
+        const ctx = gsap.context(() => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top 75%",
+                    toggleActions: "play none none none"
                 }
-            )
-        }
+            })
 
-        if (contentRef.current) {
-            gsap.fromTo(
-                contentRef.current,
-                { opacity: 0, y: isMobile ? 10 : 20 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.4,
-                    delay: 0.1,
-                    scrollTrigger: {
-                        trigger: contentRef.current,
-                        start: "top 85%",
-                        once: true,
+            if (titleRef.current) {
+                tl.fromTo(
+                    titleRef.current,
+                    { opacity: 0, y: isMobile ? 20 : 40, scale: 0.98 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 0.8,
+                        ease: "power3.out",
+                    }
+                )
+            }
+
+            if (contentRef.current) {
+                tl.fromTo(
+                    contentRef.current,
+                    { opacity: 0, y: isMobile ? 30 : 50, scale: 0.98 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 1,
+                        ease: "power3.out",
                     },
-                }
-            )
-        }
+                    "-=0.4"
+                )
+            }
+        }, sectionRef)
 
-        return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-        }
+        return () => ctx.revert()
     }, [])
 
     return (
-        <section id="faq" className="py-16 sm:py-24 bg-secondary">
+        <section id="faq" className="py-16 sm:py-24 bg-transparent" ref={sectionRef}>
             <div className="container mx-auto px-4 sm:px-6">
                 <div ref={titleRef} className="text-center mb-12 sm:mb-16">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Questions fréquentes – Développeur web à Mâcon</h2>
@@ -108,7 +111,7 @@ export function FAQSection() {
                             <AccordionItem
                                 key={index}
                                 value={`item-${index}`}
-                                className="bg-white rounded-xl border-0 shadow-sm px-6"
+                                className="bg-card backdrop-blur-md border border-border rounded-xl shadow-sm px-6"
                             >
                                 <AccordionTrigger className="text-left font-semibold text-foreground hover:no-underline py-6">
                                     {faq.question}

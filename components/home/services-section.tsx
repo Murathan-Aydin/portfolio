@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useLayoutEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Code2, LayoutDashboard, ShieldCheck } from "lucide-react"
@@ -43,50 +43,50 @@ export function ServicesSection() {
     const titleRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         gsap.registerPlugin(ScrollTrigger)
 
         const ctx = gsap.context(() => {
             const isMobile = window.innerWidth < 768
 
+            // On crée une Timeline rattachée à la section entière
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top 75%", // Se déclenche quand le haut de la section atteint 75% de l'écran
+                    toggleActions: "play none none none", // Joue l'animation une fois
+                }
+            })
+
             if (titleRef.current) {
-                gsap.fromTo(
+                tl.fromTo(
                     titleRef.current.children,
-                    { opacity: 0, y: isMobile ? 10 : 20 },
+                    { opacity: 0, y: isMobile ? 20 : 40, scale: 0.98 },
                     {
                         opacity: 1,
                         y: 0,
+                        scale: 1,
                         duration: 0.8,
-                        stagger: 0.1,
+                        stagger: 0.15,
                         ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: titleRef.current,
-                            start: "top 85%",
-                            once: true,
-                            invalidateOnRefresh: true,
-                        },
                     }
                 )
             }
 
             if (containerRef.current) {
                 const cards = containerRef.current.querySelectorAll(".service-card")
-                gsap.fromTo(
+                tl.fromTo(
                     cards,
-                    { opacity: 0, y: isMobile ? 20 : 30 },
+                    { opacity: 0, y: isMobile ? 30 : 50, scale: 0.95 },
                     {
                         opacity: 1,
                         y: 0,
-                        duration: 0.8,
+                        scale: 1,
+                        duration: 1,
                         stagger: 0.15,
                         ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: containerRef.current,
-                            start: "top 75%",
-                            once: true,
-                            invalidateOnRefresh: true,
-                        },
-                    }
+                    },
+                    "-=0.4" // Commence légèrement avant la fin de l'animation du titre
                 )
             }
         }, sectionRef)
@@ -95,15 +95,15 @@ export function ServicesSection() {
     }, [])
 
     return (
-        <section id="services" className="py-24 sm:py-32 bg-[#F8FAFC]" ref={sectionRef}>
+        <section id="services" className="py-24 sm:py-32 bg-transparent" ref={sectionRef}>
             <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
                 
                 {/* Titles */}
                 <div ref={titleRef} className="text-center mb-16">
-                    <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-6">
+                    <h2 className="text-4xl sm:text-5xl font-extrabold text-foreground mb-6">
                         Services digitaux sur mesure
                     </h2>
-                    <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                         Des solutions web modernes, performantes et pensées pour répondre concrètement à vos besoins.
                     </p>
                 </div>
@@ -112,24 +112,24 @@ export function ServicesSection() {
                 <div ref={containerRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {services.map((service, idx) => (
                         <div key={idx} className="service-card flex">
-                            <div className="w-full bg-white rounded-3xl p-8 sm:p-10 shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-2 transition-all duration-300">
+                            <div className="w-full bg-card backdrop-blur-md rounded-3xl p-8 sm:p-10 shadow-sm border border-border hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-2 transition-all duration-300">
 
-                                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-8">
+                                <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center mb-8">
                                     <service.icon className="w-6 h-6 text-primary" />
                                 </div>
 
-                                <h3 className="text-xl font-bold text-slate-900 mb-3">
+                                <h3 className="text-xl font-bold text-foreground mb-3">
                                     {service.title}
                                 </h3>
 
-                                <p className="text-slate-500 text-sm leading-relaxed mb-6">
+                                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                                     {service.description}
                                 </p>
 
                                 <ul className="space-y-2">
                                     {service.bullets.map((bullet, i) => (
-                                        <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
-                                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                                        <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
                                             {bullet}
                                         </li>
                                     ))}

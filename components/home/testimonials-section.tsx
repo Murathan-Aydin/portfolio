@@ -80,7 +80,7 @@ export function TestimonialsSection() {
     }, [])
 
     return (
-        <section id="avis" className="py-16 sm:py-24 bg-white">
+        <section id="avis" className="py-16 sm:py-24 bg-transparent">
             <div className="container mx-auto px-4 sm:px-6">
                 <div ref={titleRef} className="text-center mb-12 sm:mb-16">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Ce que disent mes clients</h2>
@@ -90,11 +90,11 @@ export function TestimonialsSection() {
                 <div ref={containerRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                     {testimonials.map((testimonial, index) => (
                         <div key={index} className="testimonial-card">
-                            <Card className="h-full border-0 shadow-sm hover:shadow-md transition-shadow duration-300">
+                            <Card className="h-full bg-card backdrop-blur-md border border-border shadow-sm hover:shadow-md hover:shadow-primary/10 transition-shadow duration-300">
                                 <CardContent className="p-8">
                                     <Quote className="w-10 h-10 text-primary/30 mb-4" />
                                     <p className="text-foreground leading-relaxed mb-6">{`"${testimonial.content}"`}</p>
-                                    <div className="border-t pt-4">
+                                    <div className="border-t border-border pt-4">
                                         <p className="font-semibold text-foreground">{testimonial.author}</p>
                                         <p className="text-sm text-muted-foreground">{testimonial.role}</p>
                                     </div>

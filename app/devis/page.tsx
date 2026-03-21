@@ -165,7 +165,7 @@ export default function DevisPage() {
                                 </div>
                             )}
 
-                            <div className="bg-secondary rounded-2xl p-6 sm:p-8">
+                            <div className="bg-card/50 backdrop-blur-md border border-white/5 rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Vos coordonnées</h2>
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
@@ -226,7 +226,7 @@ export default function DevisPage() {
                                 </div>
                             </div>
 
-                            <div className="bg-secondary rounded-2xl p-6 sm:p-8">
+                            <div className="bg-card/50 backdrop-blur-md border border-white/5 rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Type de projet</h2>
                                 <RadioGroup
                                     value={formData.projectType}
@@ -237,7 +237,7 @@ export default function DevisPage() {
                                         <Label
                                             key={type.id}
                                             htmlFor={type.id}
-                                            className="flex items-center space-x-3 bg-white rounded-lg p-4 border border-primary/50 hover:border-primary transition-colors cursor-pointer"
+                                            className="flex items-center space-x-3 bg-background/50 rounded-lg p-4 border border-white/10 hover:border-primary/50 transition-colors cursor-pointer"
                                         >
                                             <RadioGroupItem value={type.id} id={type.id} />
                                             <span>{type.label}</span>
@@ -246,14 +246,14 @@ export default function DevisPage() {
                                 </RadioGroup>
                             </div>
 
-                            <div className="bg-secondary rounded-2xl p-6 sm:p-8">
+                            <div className="bg-card/50 backdrop-blur-md border border-white/5 rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Services souhaités</h2>
                                 <div className="grid md:grid-cols-2 gap-4">
                                     {services.map((service) => (
                                         <Label
                                             key={service.id}
                                             htmlFor={service.id}
-                                            className="flex items-center space-x-3 bg-white rounded-lg p-4 border border-primary/50 hover:border-primary transition-colors cursor-pointer"
+                                            className="flex items-center space-x-3 bg-background/50 rounded-lg p-4 border border-white/10 hover:border-primary/50 transition-colors cursor-pointer"
                                         >
                                             <Checkbox
                                                 id={service.id}
@@ -266,7 +266,7 @@ export default function DevisPage() {
                                 </div>
                             </div>
 
-                            <div className="bg-secondary rounded-2xl p-6 sm:p-8">
+                            <div className="bg-card/50 backdrop-blur-md border border-white/5 rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Budget estimé</h2>
                                 <RadioGroup
                                     value={formData.budget}
@@ -277,7 +277,7 @@ export default function DevisPage() {
                                         <Label
                                             key={budget.id}
                                             htmlFor={budget.id}
-                                            className="flex items-center space-x-3 bg-white rounded-lg p-4 border border-primary/50 hover:border-primary transition-colors cursor-pointer"
+                                            className="flex items-center space-x-3 bg-background/50 rounded-lg p-4 border border-white/10 hover:border-primary/50 transition-colors cursor-pointer"
                                         >
                                             <RadioGroupItem value={budget.id} id={budget.id} />
                                             <span>{budget.label}</span>
@@ -286,7 +286,7 @@ export default function DevisPage() {
                                 </RadioGroup>
                             </div>
 
-                            <div className="bg-secondary rounded-2xl p-6 sm:p-8">
+                            <div className="bg-card/50 backdrop-blur-md border border-white/5 rounded-2xl p-6 sm:p-8">
                                 <h2 className="text-xl font-semibold text-foreground mb-6">Votre projet</h2>
                                 <div className="space-y-6">
                                     <div className="space-y-2">

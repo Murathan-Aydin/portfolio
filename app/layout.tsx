@@ -5,7 +5,7 @@ import { LayoutWrapper } from "@/components/layout-wrapper"
 import { StructuredData } from "@/components/seo/structured-data"
 import { VercelAnalytics } from "@/components/vercel-analytics"
 import { AnalyticsProvider } from "@/components/analytics-provider"
-
+import BgAnimate from "@/components/bg-animate"
 
 export const metadata: Metadata = {
     title: "Murathan Aydin | Développeur Fullstack",
@@ -58,6 +58,7 @@ export default function RootLayout({
     return (
         <html lang="fr">
             <body className={`font-sans antialiased`}>
+                <BgAnimate />
                 <AnalyticsProvider
                     clientId="ma-dev"
                     apiUrl="https://api.m-aydin.fr"

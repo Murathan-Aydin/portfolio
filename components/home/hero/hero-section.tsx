@@ -3,132 +3,160 @@
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { Arrow } from "@radix-ui/react-select"
+import { ArrowDown } from "lucide-react"
+
+const TEXTS = [
+    `Je suis Murathan`,
+    `Développeur FullStack`,
+    `Je crée des expériences digitales uniques et innovantes.`// il faut un texte court
+]
 
 export function HeroSection() {
-    const contentRef = useRef<HTMLDivElement>(null)
-    const visualRef = useRef<HTMLDivElement>(null)
-    const imageRef = useRef<HTMLImageElement>(null)
+    const introRef = useRef<HTMLDivElement>(null)
+    const sectionRef = useRef<HTMLElement>(null)
+    const textRefs = useRef<(HTMLDivElement | null)[]>([])
+    const containerRef = useRef<HTMLDivElement>(null)
+    const arrowRef = useRef<HTMLSpanElement>(null)
 
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger)
 
-        const ctx = gsap.context(() => {
-            const isMobile = window.innerWidth < 768
+        // --- Intro : disparaît au scroll ---
+        if (introRef.current) {
+            gsap.to(introRef.current, {
+                opacity: 0, // L'intro devient transparente
+                y: -60, // L'intro remonte légèrement en disparaissant {ici je veu un effet en translation + opacity}
+                scale: 0.95, // L'intro rétrécit légèrement
+                scrollTrigger: {
+                    trigger: introRef.current, // L'animation est déclenchée par l'élément intro
+                    start: "top top", // L'animation commence dès que le top de l'intro atteint le top du viewport
+                    end: "center top", // L'animation se termine quand le bas de l'intro atteint le top du viewport
+                    scrub: 1, // L'animation suit le scroll
+                },
+            })
+        }
 
-            // Entry animations — no ScrollTrigger needed, hero is always in viewport
-            if (contentRef.current) {
-                gsap.fromTo(
-                    contentRef.current.children,
-                    { opacity: 0, y: isMobile ? 20 : 30 },
-                    { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out" }
-                )
-            }
+        // --- Parallax textes + shrink conteneur ---
+        const section = sectionRef.current
+        const els = textRefs.current
+        if (!section || els.some(el => !el)) return
 
-            if (visualRef.current) {
-                gsap.fromTo(
-                    visualRef.current,
-                    { opacity: 0, scale: 0.95 },
-                    { opacity: 1, scale: 1, duration: 1, delay: 0.2, ease: "expo.out" }
-                )
-            }
+        gsap.set(els[0], { opacity: 1, y: 0 })
+        els.slice(1).forEach(el => gsap.set(el, { opacity: 0, y: 80 }))
 
-            // Parallax scroll effect — fromTo centered so image is at 0 when hero is in view
-            if (imageRef.current && visualRef.current) {
-                gsap.fromTo(
-                    imageRef.current,
-                    { yPercent: -8 },
-                    {
-                        yPercent: 8,
-                        ease: "none",
-                        scrollTrigger: {
-                            trigger: visualRef.current,
-                            start: "top bottom",
-                            end: "bottom top",
-                            scrub: true,
-                            invalidateOnRefresh: true,
-                        },
-                    }
-                )
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: section,
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1,
+            },
+        })
+
+        els.forEach((_, i) => {
+            if (i < els.length - 1) {
+                tl.to(els[i], { opacity: 0, y: -80, duration: 1 })
+                tl.to(els[i + 1], { opacity: 1, y: 0, duration: 1 }, "<0.4")
             }
         })
 
-        return () => ctx.revert()
+        // Phase 1 : dernier texte remonte et sort (rapide)
+        tl.to(els[els.length - 1], { y: -220, opacity: 0, duration: 1 })
+
+        // Phase 2 : ScrollTrigger séparé — démarre quand on est à 75% du scroll de la section
+        if (containerRef.current) {
+            gsap.to(containerRef.current, {
+                y: -180,
+                scale: 0.72,
+                scrollTrigger: {
+                    trigger: section,
+                    start: "75% top",
+                    end: "bottom top",
+                    scrub: 1,
+                },
+            })
+        }
+
+        // --- Flèche descend et disparaît au scroll ---
+        if (arrowRef.current && introRef.current) {
+            gsap.to(arrowRef.current, {
+                y: 100, // Déplacement vers le bas (parallax par rapport au parent)
+                opacity: 0,
+                scrollTrigger: {
+                    trigger: introRef.current,
+                    start: "top top",
+                    end: "center top", // Disparaît en synchronisation avec l'intro
+                    scrub: 1,
+                }
+            })
+        }
+        return () => {
+            ScrollTrigger.getAll().forEach(st => st.kill())
+        }
     }, [])
 
     return (
-        <section className="relative min-h-screen pt-32 pb-16 overflow-hidden bg-background flex items-center">
-            <div className="container mx-auto px-4 sm:px-6">
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-                    {/* Left Content */}
-                    <div
-                        ref={contentRef}
-                        className="relative z-10 w-full flex flex-col items-start pr-0 lg:pr-12"
-                    >
-                        <div className="inline-flex items-center gap-2 mb-6 text-sm font-semibold tracking-wide text-primary uppercase">
-                            MURATHAN AYDIN — DÉVELOPPEUR FULLSTACK
-                        </div>
-                        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-extrabold text-foreground leading-[1.05] tracking-tight mb-8">
-                            Développeur web <br />
-                            <span className="text-primary">Fullstack &</span> <br />
-                            <span className="text-primary">Étudiant</span>
-                        </h1>
-                        <p className="text-lg sm:text-xl text-muted-foreground max-w-lg leading-relaxed mb-10">
-                            Passionné par l&apos;innovation numérique, je conçois et développe des applications web performantes. Actuellement en alternance chez OID Consultants.
-                        </p>
+        <>
+            {/* Intro — plein écran, disparaît au scroll */}
+            <div className="relative h-[150vh]">
+                <div
+                    ref={introRef}
+                    className="sticky top-0 h-screen flex items-center justify-center"
+                >
+                    <h1 className="text-[clamp(2.5rem,8vw,5.5rem)] md:text-[clamp(2rem,5vw,4rem)] font-extrabold text-center px-4 leading-[1.1] tracking-tight">
+                        Vous Cherchez un développeur ?
+                    </h1>
+                    <span ref={arrowRef} className="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-500/90" >
+                        <ArrowDown className="w-10 h-10" />
+                    </span>
+                    {/* <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-full px-10 flex flex-row items-center justify-between">
+                        <span className="text-md uppercase tracking-wider ">scroll</span>
+                        <span className="text-md uppercase tracking-wider ">scroll</span>
+                    </div> */}
+                </div>
+            </div>
 
-                        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-10">
-                            <Button asChild size="lg" className="text-base font-semibold px-8 py-7 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 transition-all">
-                                <Link href="/contact">
-                                    Prendre un rendez-vous !
-                                </Link>
-                            </Button>
-                            <Button asChild variant="outline" size="lg" className="text-base font-semibold px-8 py-7 rounded-2xl border-border bg-white hover:bg-secondary/50 text-foreground transition-all">
-                                <Link href="/projets">
-                                    Voir mes projets
-                                </Link>
-                            </Button>
-                        </div>
-
-                        <div className="flex items-center gap-3 text-sm font-medium text-muted-foreground">
-                            <span className="relative flex h-3 w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                            </span>
-                            <span>Disponible pour de nouvelles missions</span>
-                        </div>
-                    </div>
-
-                    {/* Right Visual with Parallax */}
-                    <div
-                        ref={visualRef}
-                        className="relative h-[650px] w-full rounded-[2rem] overflow-hidden shadow-2xl border border-gray-100 bg-gray-100 group"
-                    >
+            {/* Parallax section */}
+            <section
+                ref={sectionRef}
+                className="relative "
+                style={{ height: `${TEXTS.length * 80}vh` }}
+            >
+                <div className="sticky top-[20vh] mb-10 h-fit overflow-hidden flex items-center justify-center px-[2%] md:px-[5%]">
+                    {/* Conteneur centré avec marges */}
+                    <div ref={containerRef} className="relative w-full h-[60vh] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+                        {/* Image de fond */}
                         <Image
-                            ref={imageRef}
-                            src="/murathan.jpg"
-                            alt="Murathan Aydin profile"
+                            src="/bg_hero_1.jpeg"
+                            alt="Hero Background"
                             fill
-                            className="object-cover scale-110 grayscale-[30%] hover:grayscale-0 transition-[filter] duration-700"
-                            sizes="(max-width: 768px) 100vw, 50vw"
+                            className="object-cover"
                             priority
                         />
+                        {/* Overlay sombre avec teinte bleue foncée du thème */}
+                        <div className="absolute inset-0 bg-background/60" />
 
-                        {/* Floating Badge (like in screenshot) */}
-                        <div className="absolute bottom-8 right-8 bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl shadow-xl border border-white/50 flex items-center gap-4 animate-float">
-                            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                                <div className="w-4 h-4 rounded-full bg-emerald-500" />
-                            </div>
-                            <div>
-                                <p className="text-sm font-bold text-slate-900">Statut</p>
-                                <p className="text-xs font-semibold text-emerald-600">Ouvert pour de <br />nouveaux missions</p>
+                        {/* Textes centrés */}
+                        <div className="relative z-10 h-full flex items-center justify-center px-6">
+                            <div className="relative w-full h-48 md:h-64 flex items-center justify-center">
+                                {TEXTS.map((text, i) => (
+                                    <div
+                                        key={i}
+                                        ref={el => { textRefs.current[i] = el }}
+                                        className="absolute inset-0 flex items-center justify-center text-center"
+                                    >
+                                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-md max-w-5xl">
+                                            {text}
+                                        </h1>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </>
     )
 }
