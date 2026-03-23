@@ -18,7 +18,7 @@ export function HeroSection() {
     const sectionRef = useRef<HTMLElement>(null)
     const textRefs = useRef<(HTMLDivElement | null)[]>([])
     const containerRef = useRef<HTMLDivElement>(null)
-    const arrowRef = useRef<HTMLSpanElement>(null)
+    const arrowRef = useRef<HTMLButtonElement>(null)
 
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger)
@@ -108,9 +108,9 @@ export function HeroSection() {
                     <h1 className="text-[clamp(2.5rem,8vw,5.5rem)] md:text-[clamp(2rem,5vw,4rem)] font-extrabold text-center px-4 leading-[1.1] tracking-tight">
                         Vous cherchez un développeur ?
                     </h1>
-                    <span ref={arrowRef} className="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-200/90" >
+                    <button ref={arrowRef} onClick={() => window.scrollTo({ top: window.innerHeight * 1.5, behavior: "smooth" })} className="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-200/90 cursor-pointer" >
                         <ArrowDown className="w-10 h-10" />
-                    </span>
+                    </button>
                     {/* <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-full px-10 flex flex-row items-center justify-between">
                         <span className="text-md uppercase tracking-wider ">scroll</span>
                         <span className="text-md uppercase tracking-wider ">scroll</span>
