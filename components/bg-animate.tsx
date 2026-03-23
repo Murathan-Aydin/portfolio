@@ -93,7 +93,7 @@ export default function BgAnimate() {
             {/* Forme 3 : Blob Bas Droite (Bleu profond brillant) */}
             <div 
                 ref={blob2Ref} 
-                className="absolute bottom-[-10%] right-[0%] w-[100vw] lg:w-[50vw] h-[70vw] lg:h-[40vw] rounded-full bg-blue-600/30 blur-[110px] lg:blur-[140px] opacity-100 animate-pulse-soft" 
+                className="absolute bottom-[-10%] right-[0%] w-screen lg:w-[50vw] h-[70vw] lg:h-[40vw] rounded-full bg-blue-600/30 blur-[110px] lg:blur-[140px] opacity-100 animate-pulse-soft" 
             />
             
             {/* Forme 4 : Centre - Suit la SOURIS activement */}
