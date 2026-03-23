@@ -9,11 +9,11 @@ if (typeof window !== "undefined") {
 }
 
 const BLOB_CONFIG = [
-    { color: "bg-primary/25",    size: "w-[40vw] h-[40vw]", baseDuration: 14, morphDuration: 9  },
-    { color: "bg-cyan-500/20",   size: "w-[35vw] h-[35vw]", baseDuration: 18, morphDuration: 11 },
-    { color: "bg-blue-600/20",   size: "w-[50vw] h-[50vw]", baseDuration: 22, morphDuration: 13 },
-    { color: "bg-indigo-500/15", size: "w-[30vw] h-[30vw]", baseDuration: 16, morphDuration: 10 },
-    { color: "bg-blue-400/20",   size: "w-[45vw] h-[45vw]", baseDuration: 20, morphDuration: 12 },
+    { glow: "rgba(59, 130, 246, 0.15)",   size: "w-[35vw] h-[35vw]", baseDuration: 14 },
+    { glow: "rgba(6, 182, 212, 0.15)",    size: "w-[25vw] h-[25vw]", baseDuration: 18 },
+    { glow: "rgba(37, 99, 235, 0.15)",    size: "w-[45vw] h-[45vw]", baseDuration: 22 },
+    { glow: "rgba(99, 102, 241, 0.15)",   size: "w-[20vw] h-[20vw]", baseDuration: 16 },
+    { glow: "rgba(96, 165, 250, 0.15)",   size: "w-[30vw] h-[30vw]", baseDuration: 20 },
 ]
 
 export default function DynamicBlobEngine() {
@@ -47,31 +47,11 @@ export default function DynamicBlobEngine() {
 
                 // Respiration de scale
                 gsap.to(blob, {
-                    scale: () => gsap.utils.random(0.8, 1.2),
+                    scale: () => gsap.utils.random(0.9, 1.1),
                     duration: () => gsap.utils.random(8, 14),
                     repeat: -1,
                     repeatRefresh: true,
                     ease: "sine.inOut",
-                })
-
-                // Morphing de forme : nouvelles valeurs à chaque cycle
-                gsap.to(blob, {
-                    borderRadius: () => {
-                        const r = () => Math.round(gsap.utils.random(20, 80))
-                        return `${r()}% ${100 - r()}% ${r()}% ${r()}% / ${r()}% ${r()}% ${r()}% ${r()}%`
-                    },
-                    duration: config.morphDuration,
-                    repeat: -1,
-                    repeatRefresh: true,
-                    ease: "sine.inOut",
-                })
-
-                // Rotation lente
-                gsap.to(blob, {
-                    rotation: i % 2 === 0 ? 360 : -360,
-                    duration: config.baseDuration * 4,
-                    repeat: -1,
-                    ease: "none",
                 })
 
                 // Parallaxe subtile au scroll
@@ -97,17 +77,16 @@ export default function DynamicBlobEngine() {
                 <div
                     key={i}
                     ref={(el) => { blobRefs.current[i] = el }}
-                    className={`absolute rounded-full blur-[80px] lg:blur-[120px] will-change-transform ${config.color} ${config.size}`}
-                    style={{ borderRadius: "50% 50% 50% 50% / 50% 50% 50% 50%" }}
+                    className={`absolute rounded-full will-change-transform bg-background ${config.size}`}
+                    style={{ 
+                        boxShadow: `
+                            30px 30px 60px rgba(0, 0, 0, 0.4), 
+                            -10px -10px 40px rgba(255, 255, 255, 0.03),
+                            inset 0 0 60px ${config.glow}
+                        `
+                    }}
                 />
             ))}
-{/* 
-            <div
-                className="absolute inset-0 opacity-[0.18] mix-blend-overlay"
-                style={{
-                    backgroundImage: ``
-                }}
-            /> */}
         </div>
     )
 }
