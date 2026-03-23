@@ -106,7 +106,7 @@ export function HeroSection() {
                     className="sticky top-0 h-screen flex items-center justify-center"
                 >
                     <h1 className="text-[clamp(2.5rem,8vw,5.5rem)] md:text-[clamp(2rem,5vw,4rem)] font-extrabold text-center px-4 leading-[1.1] tracking-tight">
-                        Vous Cherchez un développeur ?
+                        Vous cherchez un développeur ?
                     </h1>
                     <span ref={arrowRef} className="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-500/90" >
                         <ArrowDown className="w-10 h-10" />
