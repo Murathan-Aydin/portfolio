@@ -210,7 +210,7 @@ export function ContactSection() {
                                             rows={4}
                                             value={formData.message}
                                             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                            className="bg-white/5 border-white/10 focus-visible:ring-primary rounded-xl px-4 py-4 text-foreground resize-none shadow-none hover:bg-white/10 resize-y"
+                                            className="bg-white/5 border-white/10 focus-visible:ring-primary rounded-xl px-4 py-4 text-foreground shadow-none hover:bg-white/10 resize-y"
                                             required                                            
                                         />
                                     </div>

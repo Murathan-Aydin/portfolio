@@ -9,11 +9,11 @@ if (typeof window !== "undefined") {
 }
 
 const BLOB_CONFIG = [
-    { glow: "rgba(59, 130, 246, 0.15)",   size: "w-[35vw] h-[35vw]", baseDuration: 14 },
-    { glow: "rgba(6, 182, 212, 0.15)",    size: "w-[25vw] h-[25vw]", baseDuration: 18 },
-    { glow: "rgba(37, 99, 235, 0.15)",    size: "w-[45vw] h-[45vw]", baseDuration: 22 },
-    { glow: "rgba(99, 102, 241, 0.15)",   size: "w-[20vw] h-[20vw]", baseDuration: 16 },
-    { glow: "rgba(96, 165, 250, 0.15)",   size: "w-[30vw] h-[30vw]", baseDuration: 20 },
+    { glow: "rgba(59, 130, 246, 0.15)",   size: "w-[60vw] h-[60vw] md:w-[35vw] md:h-[35vw]", baseDuration: 14 },
+    { glow: "rgba(6, 182, 212, 0.15)",    size: "w-[45vw] h-[45vw] md:w-[25vw] md:h-[25vw]", baseDuration: 18 },
+    { glow: "rgba(37, 99, 235, 0.15)",    size: "w-[75vw] h-[75vw] md:w-[45vw] md:h-[45vw]", baseDuration: 22 },
+    { glow: "rgba(99, 102, 241, 0.15)",   size: "w-[40vw] h-[40vw] md:w-[20vw] md:h-[20vw]", baseDuration: 16 },
+    { glow: "rgba(96, 165, 250, 0.15)",   size: "w-[55vw] h-[55vw] md:w-[30vw] md:h-[30vw]", baseDuration: 20 },
 ]
 
 export default function DynamicBlobEngine() {
