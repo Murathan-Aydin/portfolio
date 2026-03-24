@@ -2,33 +2,138 @@
 
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
-import { DrawSVGPlugin } from "gsap/DrawSVGPlugin"
 
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(DrawSVGPlugin)
-}
-
-const TextToSvgComponent = ({ className = "", style = {} }: { className?: string; style?: React.CSSProperties }) => {
-    const svgRef = useRef<SVGSVGElement>(null)
+export default function LogoIntro({
+    className = "",
+    style = {},
+}: {
+    className?: string
+    style?: React.CSSProperties
+}) {
+    const rootRef = useRef<HTMLDivElement>(null)
+    const circleRef = useRef<SVGCircleElement>(null)
+    const leftRef = useRef<SVGPathElement>(null)
+    const slashRef = useRef<SVGPathElement>(null)
+    const rightRef = useRef<SVGPathElement>(null)
+    const titleRef = useRef<HTMLHeadingElement>(null)
+    const subtitleRef = useRef<HTMLParagraphElement>(null)
+    const glowRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        if (!svgRef.current) return
-        const paths = svgRef.current.querySelectorAll<SVGPathElement>("path")
+        const circle = circleRef.current
+        const left = leftRef.current
+        const slash = slashRef.current
+        const right = rightRef.current
+        const title = titleRef.current
+        const subtitle = subtitleRef.current
+        const glow = glowRef.current
 
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 1, paused: true })
-        tl.set(paths, { drawSVG: "0%" })
-        tl.to(paths, {
-            drawSVG: "100%",
-            duration: 0.25,
-            stagger: 0.08,
-            ease: "none",
+        if (!circle || !left || !slash || !right || !title || !subtitle || !glow) return
+
+        const iconPaths = [left, slash, right]
+
+        const setDraw = (el: SVGGeometryElement) => {
+            const length = el.getTotalLength()
+            gsap.set(el, {
+                strokeDasharray: length,
+                strokeDashoffset: length,
+            })
+        }
+
+        setDraw(circle)
+        iconPaths.forEach(setDraw)
+
+        gsap.set(title, {
+            opacity: 0,
+            y: 24,
+            scale: 0.98,
+            filter: "blur(10px)",
         })
-        tl.to(paths, {
-            drawSVG: "0%",
-            duration: 0.15,
-            stagger: { each: 0.06, from: "end" },
-            ease: "power2.in",
-        }, "+=0.8")
+
+        gsap.set(subtitle, {
+            opacity: 0,
+            y: 16,
+            filter: "blur(8px)",
+        })
+
+        gsap.set(glow, {
+            opacity: 0,
+            scale: 0.85,
+        })
+
+        const tl = gsap.timeline()
+
+        tl.to(glow, {
+            opacity: 0.45,
+            scale: 1,
+            duration: 0.8,
+            ease: "power2.out",
+        })
+
+        tl.to(
+            circle,
+            {
+                strokeDashoffset: 0,
+                duration: 1.2,
+                ease: "power2.inOut",
+            },
+            0
+        )
+
+        tl.to(
+            left,
+            {
+                strokeDashoffset: 0,
+                duration: 0.35,
+                ease: "power2.out",
+            },
+            0.45
+        )
+
+        tl.to(
+            slash,
+            {
+                strokeDashoffset: 0,
+                duration: 0.35,
+                ease: "power2.out",
+            },
+            0.6
+        )
+
+        tl.to(
+            right,
+            {
+                strokeDashoffset: 0,
+                duration: 0.35,
+                ease: "power2.out",
+            },
+            0.75
+        )
+
+        tl.to(
+            title,
+            {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                filter: "blur(0px)",
+                duration: 0.7,
+                ease: "power3.out",
+            },
+            1.05
+        )
+
+        tl.to(
+            subtitle,
+            {
+                opacity: 1,
+                y: 0,
+                filter: "blur(0px)",
+                duration: 0.55,
+                ease: "power2.out",
+            },
+            1.3
+        )
 
         const handleOverlayVisible = () => tl.restart()
         window.addEventListener("overlay-visible", handleOverlayVisible)
@@ -40,43 +145,96 @@ const TextToSvgComponent = ({ className = "", style = {} }: { className?: string
     }, [])
 
     return (
-        <svg
-            ref={svgRef}
-            className={className}
+        <div
+            ref={rootRef}
+            className={`relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-transparent px-6 ${className}`}
             style={style}
-            viewBox="0 8.859999656677246 233.52000427246094 37.0099983215332"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
         >
-            {/* < */}
-            <path d="M0 29.61L0 25.51L23.71 15.50L23.71 19.87L4.91 27.59L23.71 35.38L23.71 39.75L0 29.61Z" />
-            {/* M */}
-            <path d="M30.18 45.26L30.18 9.47L37.30 9.47L45.78 34.81Q46.95 38.35 47.49 40.11Q48.10 38.16 49.39 34.38L57.96 9.47L64.33 9.47L64.33 45.26L59.77 45.26L59.77 15.31L49.37 45.26L45.09 45.26L34.74 14.79L34.74 45.26L30.18 45.26Z" />
-            {/* a outer */}
-            <path d="M88.33 42.07Q85.89 44.14 83.63 45.00Q81.37 45.85 78.78 45.85Q74.51 45.85 72.22 43.76Q69.92 41.67 69.92 38.43Q69.92 36.52 70.79 34.95Q71.66 33.37 73.06 32.42Q74.46 31.47 76.22 30.98Q77.51 30.64 80.13 30.32Q85.45 29.69 87.96 28.81Q87.99 27.91 87.99 27.66Q87.99 24.98 86.74 23.88Q85.06 22.39 81.74 22.39Q78.64 22.39 77.16 23.47Q75.68 24.56 74.98 27.32L70.68 26.73Q71.26 23.97 72.61 22.28Q73.95 20.58 76.49 19.67Q79.03 18.75 82.37 18.75Q85.69 18.75 87.77 19.53Q89.84 20.31 90.82 21.50Q91.80 22.68 92.19 24.49Q92.41 25.61 92.41 28.54L92.41 34.40Q92.41 40.53 92.69 42.15Q92.97 43.77 93.80 45.26L89.21 45.26Q88.53 43.90 88.33 42.07" />
-            {/* a counter */}
-            <path d="M87.96 32.25Q85.57 33.23 80.79 33.91Q78.08 34.30 76.95 34.79Q75.83 35.28 75.22 36.22Q74.61 37.16 74.61 38.31Q74.61 40.06 75.94 41.24Q77.27 42.41 79.83 42.41Q82.37 42.41 84.35 41.30Q86.33 40.19 87.26 38.26Q87.96 36.77 87.96 33.86L87.96 32.25Z" />
-            {/* - */}
-            <path d="M97.51 34.52L97.51 30.10L111.01 30.10L111.01 34.52L97.51 34.52Z" />
-            {/* d outer */}
-            <path d="M132.69 45.26L132.69 41.99Q130.22 45.85 125.44 45.85Q122.34 45.85 119.74 44.14Q117.14 42.43 115.71 39.37Q114.28 36.30 114.28 32.32Q114.28 28.44 115.58 25.28Q116.87 22.12 119.46 20.43Q122.05 18.75 125.24 18.75Q127.59 18.75 129.42 19.74Q131.25 20.73 132.40 22.31L132.40 9.47L136.77 9.47L136.77 45.26L132.69 45.26" />
-            {/* d counter */}
-            <path d="M118.80 32.32Q118.80 37.30 120.90 39.77Q123.00 42.24 125.85 42.24Q128.74 42.24 130.75 39.88Q132.76 37.52 132.76 32.69Q132.76 27.37 130.71 24.88Q128.66 22.39 125.66 22.39Q122.73 22.39 120.76 24.78Q118.80 27.17 118.80 32.32Z" />
-            {/* e outer */}
-            <path d="M161.43 36.91L165.97 37.48Q164.89 41.46 161.99 43.65Q159.08 45.85 154.57 45.85Q148.88 45.85 145.54 42.35Q142.21 38.84 142.21 32.52Q142.21 25.98 145.58 22.36Q148.95 18.75 154.32 18.75Q159.52 18.75 162.82 22.29Q166.11 25.83 166.11 32.25Q166.11 32.64 166.09 33.42L146.75 33.42Q147.00 37.70 149.17 39.97Q151.34 42.24 154.59 42.24Q157.01 42.24 158.72 40.97Q160.42 39.70 161.43 36.91" />
-            {/* e counter */}
-            <path d="M147.00 29.81L161.47 29.81Q161.18 26.54 159.81 24.90Q157.71 22.36 154.37 22.36Q151.34 22.36 149.28 24.39Q147.22 26.42 147.00 29.81Z" />
-            {/* v */}
-            <path d="M178.69 45.26L168.82 19.34L173.46 19.34L179.03 34.86Q179.93 37.38 180.69 40.09Q181.27 38.04 182.32 35.16L188.09 19.34L192.60 19.34L182.79 45.26L178.69 45.26Z" />
-            {/* / */}
-            <path d="M193.19 45.87L203.56 8.86L207.08 8.86L196.73 45.87L193.19 45.87Z" />
-            {/* > */}
-            <path d="M233.52 29.61L209.81 39.75L209.81 35.38L228.59 27.59L209.81 19.87L209.81 15.50L233.52 25.51L233.52 29.61Z" />
-        </svg>
+            {/* glow */}
+            <div
+                ref={glowRef}
+                className="pointer-events-none absolute h-[320px] w-[320px] rounded-full blur-3xl"
+                style={{
+                    background:
+                        "radial-gradient(circle, rgba(59,130,246,0.18) 0%, rgba(138,217,255,0.12) 40%, rgba(0,0,0,0) 72%)",
+                }}
+            />
+
+            {/* icône */}
+            <div className="relative z-10 mb-10">
+                <svg
+                    width="220"
+                    height="220"
+                    viewBox="0 0 220 220"
+                    fill="none"
+                    className="overflow-visible"
+                >
+                    <defs>
+                        <linearGradient id="logoGradient" x1="30" y1="30" x2="190" y2="190" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stopColor="#3b82f6" />
+                            <stop offset="100%" stopColor="#8ad9ff" />
+                        </linearGradient>
+                    </defs>
+
+                    <circle
+                        ref={circleRef}
+                        cx="110"
+                        cy="110"
+                        r="68"
+                        stroke="url(#logoGradient)"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                    />
+
+                    <path
+                        ref={leftRef}
+                        d="M88 92 L68 110 L88 128"
+                        stroke="url(#logoGradient)"
+                        strokeWidth="8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+
+                    <path
+                        ref={slashRef}
+                        d="M110 78 L98 132"
+                        stroke="url(#logoGradient)"
+                        strokeWidth="8"
+                        strokeLinecap="round"
+                    />
+
+                    <path
+                        ref={rightRef}
+                        d="M132 92 L152 110 L132 128"
+                        stroke="url(#logoGradient)"
+                        strokeWidth="8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                </svg>
+            </div>
+
+            {/* texte */}
+            <div className="relative z-10 text-center">
+                <h1
+                    ref={titleRef}
+                    className="text-7xl font-bold tracking-tight md:text-8xl"
+                    style={{
+                        background: "linear-gradient(135deg, #8ad9ff 0%, #3b82f6 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                    }}
+                >
+                    Ma-Dev
+                </h1>
+
+                <p
+                    ref={subtitleRef}
+                    className="mt-8 text-xl text-white/60 md:text-2xl"
+                >
+                    Développeur Full Stack
+                </p>
+            </div>
+        </div>
     )
 }
-
-export default TextToSvgComponent

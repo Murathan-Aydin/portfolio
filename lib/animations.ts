@@ -39,7 +39,9 @@ export const animatePageOut = (href: string, router: AppRouterInstance) => {
     }
 
     // dispatch quand l'overlay est pleinement visible → repart l'anim SVG depuis le début
-    tl.call(() => window.dispatchEvent(new Event("overlay-visible")))
+    tl.call(() => {
+        window.dispatchEvent(new Event("overlay-visible"))
+    })
 
     // durée fixe indépendante de la connexion
     tl.to({}, { duration: HOLD_DURATION })
