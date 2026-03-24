@@ -3,17 +3,18 @@
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import TextToSvgComponent from "./text-svg"
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger)
 }
 
 const BLOB_CONFIG = [
-    { glow: "rgba(59, 130, 246, 0.15)",   size: "w-[60vw] h-[60vw] md:w-[35vw] md:h-[35vw]", baseDuration: 14 },
-    { glow: "rgba(6, 182, 212, 0.15)",    size: "w-[45vw] h-[45vw] md:w-[25vw] md:h-[25vw]", baseDuration: 18 },
-    { glow: "rgba(37, 99, 235, 0.15)",    size: "w-[75vw] h-[75vw] md:w-[45vw] md:h-[45vw]", baseDuration: 22 },
-    { glow: "rgba(99, 102, 241, 0.15)",   size: "w-[40vw] h-[40vw] md:w-[20vw] md:h-[20vw]", baseDuration: 16 },
-    { glow: "rgba(96, 165, 250, 0.15)",   size: "w-[55vw] h-[55vw] md:w-[30vw] md:h-[30vw]", baseDuration: 20 },
+    { glow: "rgba(59, 130, 246, 0.15)", size: "w-[60vw] h-[60vw] md:w-[35vw] md:h-[35vw]", baseDuration: 14 },
+    { glow: "rgba(6, 182, 212, 0.15)", size: "w-[45vw] h-[45vw] md:w-[25vw] md:h-[25vw]", baseDuration: 18 },
+    { glow: "rgba(37, 99, 235, 0.15)", size: "w-[75vw] h-[75vw] md:w-[45vw] md:h-[45vw]", baseDuration: 22 },
+    { glow: "rgba(99, 102, 241, 0.15)", size: "w-[40vw] h-[40vw] md:w-[20vw] md:h-[20vw]", baseDuration: 16 },
+    { glow: "rgba(96, 165, 250, 0.15)", size: "w-[55vw] h-[55vw] md:w-[30vw] md:h-[30vw]", baseDuration: 20 },
 ]
 
 export default function DynamicBlobEngine() {
@@ -73,12 +74,21 @@ export default function DynamicBlobEngine() {
 
     return (
         <div ref={containerRef} className="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-background">
+            {/* overlay actif durant la transition */}
+            <div
+                id="transition-overlay"
+                className="w-full min-h-screen z-10 backdrop-blur-md absolute overflow-hidden flex items-center justify-center text-4xl font-bold text-primary transition-opacity duration-1000"
+                style={{ opacity: 0 }}
+            >
+                <TextToSvgComponent className="w-4/5 max-w-md" />
+            </div>
+
             {BLOB_CONFIG.map((config, i) => (
                 <div
                     key={i}
                     ref={(el) => { blobRefs.current[i] = el }}
                     className={`absolute rounded-full will-change-transform bg-background ${config.size}`}
-                    style={{ 
+                    style={{
                         boxShadow: `
                             30px 30px 60px rgba(0, 0, 0, 0.4), 
                             -10px -10px 40px rgba(255, 255, 255, 0.03),

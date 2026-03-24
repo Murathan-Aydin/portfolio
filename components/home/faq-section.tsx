@@ -98,7 +98,7 @@ export function FAQSection() {
     }, [])
 
     return (
-        <section id="faq" className="py-16 sm:py-24 bg-transparent" ref={sectionRef}>
+        <section id="faq" className="py-16 bg-transparent" ref={sectionRef}>
             <div className="container mx-auto px-4 sm:px-6">
                 <div ref={titleRef} className="text-center mb-12 sm:mb-16">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Questions fréquentes – Développeur web à Mâcon</h2>

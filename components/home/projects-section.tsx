@@ -85,7 +85,7 @@ export function ProjectsSection() {
     }, [projects])
 
     return (
-        <section id="projets" className="py-24 sm:py-32 bg-transparent relative" ref={sectionRef}>
+        <section id="projets" className="py-24 bg-transparent relative" ref={sectionRef}>
             <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
                 
                 {/* Header (Text left, Link right) */}

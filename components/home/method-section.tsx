@@ -84,7 +84,7 @@ export function MethodSection() {
     }, [])
 
     return (
-        <section id="methode" className="py-24 sm:py-32 bg-transparent relative overflow-hidden" ref={sectionRef}>
+        <section id="methode" className="py-24 bg-transparent relative overflow-hidden" ref={sectionRef}>
             <div className="container mx-auto px-4 sm:px-6 max-w-7xl relative z-10">
                 
                 {/* Header */}
@@ -108,7 +108,7 @@ export function MethodSection() {
                             
                             {/* Title with blue line */}
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="w-6 h-[2px] bg-primary rounded-full" />
+                                <div className="w-6 h-2 bg-primary rounded-full" />
                                 <h3 className="text-xl font-bold text-foreground">
                                     {step.title}
                                 </h3>

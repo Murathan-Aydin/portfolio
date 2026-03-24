@@ -4,8 +4,8 @@ import { ServicesSection } from "@/components/home/services-section"
 import { ProjectsSection } from "@/components/home/projects-section"
 import { MethodSection } from "@/components/home/method-section"
 import { ContactSection } from "@/components/home/contact-section"
-
 export default function Home() {
+
     return (
         <>
             <HeroSection />

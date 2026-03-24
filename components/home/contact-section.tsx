@@ -84,7 +84,7 @@ export function ContactSection() {
     }
 
     return (
-        <section id="contact" className="py-24 sm:py-32 bg-transparent relative px-4 sm:px-6">
+        <section id="contact" className="py-24 bg-transparent relative px-4 sm:px-6">
             <div className="container mx-auto max-w-7xl">
 
                 {/* Huge Blue Container */}
@@ -93,7 +93,7 @@ export function ContactSection() {
                     className="bg-card/50 backdrop-blur-2xl border border-white/10 rounded-4xl sm:rounded-[3rem] p-4 py-8 sm:p-12 lg:p-16 shadow-2xl overflow-hidden relative"
                 >
                     {/* Decorative Background Elements */}
-                    <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+                    <div className="absolute top-0 right-0 w-150 h-150 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
 
                     <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
                         {/* Left Content (Text) */}

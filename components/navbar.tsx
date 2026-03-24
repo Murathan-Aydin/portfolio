@@ -4,13 +4,12 @@ import { useState, useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { TransitionLink } from "@/components/transition-link"
 
 const navLinks = [
     { name: "Services", href: "/#services" },
     { name: "Projets", href: "/projets" },
     { name: "Méthode", href: "/#methode" },
-    { name: "Avis", href: "/#avis" },
     { name: "Contact", href: "/contact" },
 ]
 
@@ -95,29 +94,29 @@ export function Navbar() {
                         <nav className="flex-1 px-4 sm:px-6 py-6 overflow-y-auto">
                             <div className="flex flex-col gap-1">
                                 {navLinks.map((link) => (
-                                    <Link
+                                    <TransitionLink
                                         key={link.name}
                                         href={link.href}
                                         className="text-muted-foreground hover:text-foreground transition-colors font-medium py-3 px-3 text-base rounded-lg hover:bg-secondary"
                                         onClick={() => setIsMobileMenuOpen(false)}
                                     >
                                         {link.name}
-                                    </Link>
+                                    </TransitionLink>
                                 ))}
                             </div>
                         </nav>
 
                         {/* Footer avec bouton CTA */}
                         <div className="p-4 sm:p-6 border-t border-border">
-                            <Link 
-                                href="/devis" 
+                            <TransitionLink
+                                href="/devis"
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="block"
                             >
                                 <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full py-6 text-base">
                                     Demander un devis
                                 </Button>
-                            </Link>
+                            </TransitionLink>
                         </div>
                     </div>
                 </div>
@@ -130,25 +129,25 @@ export function Navbar() {
             >
                 <nav className="container mx-auto px-4 sm:px-6 py-4">
                     <div className="flex items-center justify-between">
-                        <Link href="/" className="text-xl sm:text-2xl font-bold text-foreground">
+                        <TransitionLink href="/" className="text-xl sm:text-2xl font-bold text-foreground">
                             MA<span className="text-primary">.DEV</span>
-                        </Link>
+                        </TransitionLink>
 
                         <div className="hidden md:flex items-center gap-6 lg:gap-8">
                             {navLinks.map((link) => (
-                                <Link
+                                <TransitionLink
                                     key={link.name}
                                     href={link.href}
                                     className="text-sm lg:text-base text-muted-foreground hover:text-foreground transition-colors font-medium"
                                 >
                                     {link.name}
-                                </Link>
+                                </TransitionLink>
                             ))}
-                            <Link href="/devis">
+                            <TransitionLink href="/devis">
                                 <Button className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm lg:text-base">
                                     Demander un devis
                                 </Button>
-                            </Link>
+                            </TransitionLink>
                         </div>
 
                         <button

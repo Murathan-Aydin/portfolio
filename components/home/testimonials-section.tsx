@@ -80,7 +80,7 @@ export function TestimonialsSection() {
     }, [])
 
     return (
-        <section id="avis" className="py-16 sm:py-24 bg-transparent">
+        <section id="avis" className="py-16 bg-transparent">
             <div className="container mx-auto px-4 sm:px-6">
                 <div ref={titleRef} className="text-center mb-12 sm:mb-16">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Ce que disent mes clients</h2>

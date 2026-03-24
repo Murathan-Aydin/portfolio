@@ -95,7 +95,7 @@ export function ServicesSection() {
     }, [])
 
     return (
-        <section id="services" className="py-24 sm:py-32 bg-transparent" ref={sectionRef}>
+        <section id="services" className="py-24 bg-transparent" ref={sectionRef}>
             <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
                 
                 {/* Titles */}
