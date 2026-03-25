@@ -153,7 +153,7 @@ export default function LogoIntro({
             {/* glow */}
             <div
                 ref={glowRef}
-                className="pointer-events-none absolute h-[320px] w-[320px] rounded-full blur-3xl"
+                className="pointer-events-none absolute h-80 w-[320px] rounded-full blur-3xl"
                 style={{
                     background:
                         "radial-gradient(circle, rgba(59,130,246,0.18) 0%, rgba(138,217,255,0.12) 40%, rgba(0,0,0,0) 72%)",
