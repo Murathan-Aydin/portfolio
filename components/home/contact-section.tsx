@@ -8,10 +8,8 @@ import { Mail, Briefcase, Send, Loader2, Check, AlertCircle } from "lucide-react
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { config } from "@/lib/config"
 
-
-export function ContactSection() {
+export function ContactSection({ email }: { email: string }) {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -116,7 +114,7 @@ export function ContactSection() {
                                         Email
                                     </p>
                                     <p className="font-bold text-lg text-white">
-                                        {config.email}
+                                        {email}
                                     </p>
                                 </div>
 
