@@ -6,41 +6,39 @@ Pour personnaliser vos informations de contact et vos mentions légales, créez 
 
 ```bash
 # Informations personnelles
-BUSINESS_NAME=m-aydin
-FIRST_NAME=Murathan
-LAST_NAME=Aydin
-SIRET=REDACTED_SIRET
+BUSINESS_NAME=
+FIRST_NAME=
+LAST_NAME=
+SIRET=
 ADDRESS=
 
 # Contact
-CONTACT_EMAIL=contact@ma-dev.fr
-PHONE_NUMBER=REDACTED_PHONE
-PHONE_NUMBER_DISPLAY=REDACTED_PHONE_DISPLAY
+CONTACT_EMAIL=
+PHONE_NUMBER=
+PHONE_NUMBER_DISPLAY=
 
 # Hébergeur
-HOST_NAME=OVH
-HOST_ADDRESS=2 rue Kellermann, 59100 Roubaix, France
-HOST_WEBSITE=https://www.ovh.com
-HOST_TYPE=VPS en France
+HOST_NAME=
+HOST_ADDRESS=
+HOST_WEBSITE=
+HOST_TYPE=
 
 # NextAuth (Authentification)
 NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=votre_clé_secrète_ici
+NEXTAUTH_SECRET=   # générer avec : openssl rand -base64 32
 
 # MongoDB (Base de données)
-MONGODB_URI=mongodb://localhost:27017/portfolio
-# Ou pour MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/portfolio?retryWrites=true&w=majority
+MONGODB_URI=
 
 # SEO (Optionnel - pour sitemap et données structurées)
-NEXT_PUBLIC_SITE_URL=https://ma-dev.fr
+NEXT_PUBLIC_SITE_URL=
 
 # SMTP (Envoi d'emails - Contact et Devis)
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_USER=votre-email@example.com
-SMTP_PASS=votre-mot-de-passe
-SMTP_TO=contact@ma-dev.fr
+SMTP_HOST=
+SMTP_PORT=465
+SMTP_USER=
+SMTP_PASS=
+SMTP_TO=
 ```
 
 **Note :** Pour que les variables soient accessibles côté client (composants React), vous pouvez également utiliser le préfixe `NEXT_PUBLIC_` (ex: `NEXT_PUBLIC_CONTACT_EMAIL`). Le fichier `lib/config.ts` gère automatiquement les deux formats.
