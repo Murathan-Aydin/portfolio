@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import bcrypt from "bcryptjs"
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -14,12 +15,14 @@ export const authOptions: NextAuthOptions = {
                     return null
                 }
 
-                // Vérification des credentials
-                // TODO: Remplacer par une vraie vérification en base de données
-                if (
-                    credentials.email === process.env.USER_ADMIN &&
-                    credentials.password === process.env.PASS_ADMIN
-                ) {
+                // Vérification des credentials via hash bcrypt
+                const passHash = process.env.PASS_ADMIN_HASH
+                if (!passHash) return null
+
+                const emailMatch = credentials.email === process.env.USER_ADMIN
+                const passwordMatch = await bcrypt.compare(credentials.password, passHash)
+
+                if (emailMatch && passwordMatch) {
                     return {
                         id: "1",
                         email: credentials.email,
@@ -89,11 +92,10 @@ export const authOptions: NextAuthOptions = {
                 : "next-auth.session-token",
             options: {
                 httpOnly: true,
-                sameSite: "lax",
+                sameSite: "strict",
                 path: "/",
                 secure: process.env.NODE_ENV === "production",
-                // Pas de domaine spécifique = cookie valide uniquement sur le domaine actuel
-                // Chaque domaine aura sa propre session
+                maxAge: 24 * 60 * 60, // 24 heures
             },
         },
     },

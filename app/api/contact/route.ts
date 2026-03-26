@@ -1,8 +1,24 @@
 import { NextRequest, NextResponse } from "next/server"
 import nodemailer from "nodemailer"
+import { checkRateLimit } from "@/lib/rate-limit"
+
+const escapeHtml = (s: string): string =>
+    s.replace(/&/g, "&amp;")
+     .replace(/</g, "&lt;")
+     .replace(/>/g, "&gt;")
+     .replace(/"/g, "&quot;")
+     .replace(/'/g, "&#039;")
 
 export async function POST(request: NextRequest) {
     try {
+        const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown"
+        if (!checkRateLimit(`contact:${ip}`, 5, 60_000)) {
+            return NextResponse.json(
+                { success: false, error: "Trop de requêtes. Veuillez patienter avant de réessayer." },
+                { status: 429 }
+            )
+        }
+
         const body = await request.json()
         const { name, email, subject, message } = body
 
@@ -36,12 +52,12 @@ export async function POST(request: NextRequest) {
             subject: `[Contact Portfolio] ${subject}`,
             html: `
                 <h2>Nouveau message de contact</h2>
-                <p><strong>Nom :</strong> ${name}</p>
-                <p><strong>Email :</strong> ${email}</p>
-                <p><strong>Sujet :</strong> ${subject}</p>
+                <p><strong>Nom :</strong> ${escapeHtml(name)}</p>
+                <p><strong>Email :</strong> ${escapeHtml(email)}</p>
+                <p><strong>Sujet :</strong> ${escapeHtml(subject)}</p>
                 <hr>
                 <p><strong>Message :</strong></p>
-                <p>${message.replace(/\n/g, "<br>")}</p>
+                <p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>
             `,
             text: `
 Nouveau message de contact

@@ -26,6 +26,12 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ success: false, error: "Le fichier doit être une image" }, { status: 400 })
         }
 
+        // Vérifier la taille (max 10 MB)
+        const MAX_SIZE = 10 * 1024 * 1024
+        if (file.size > MAX_SIZE) {
+            return NextResponse.json({ success: false, error: "Fichier trop volumineux (max 10 Mo)" }, { status: 400 })
+        }
+
         // Lire le fichier
         const bytes = await file.arrayBuffer()
         const buffer = Buffer.from(bytes)
@@ -93,7 +99,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error("Error uploading image:", error)
         return NextResponse.json(
-            { success: false, error: error instanceof Error ? error.message : "Erreur lors de l'upload de l'image" },
+            { success: false, error: "Erreur lors de l'upload de l'image" },
             { status: 500 }
         )
     }

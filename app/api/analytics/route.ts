@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/auth"
 import connectDB from "@/lib/mongodb"
 import Analytics from "@/models/Analytics"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 // Fonction pour déterminer le type d'appareil depuis user-agent
 function getDeviceType(userAgent: string | null): "desktop" | "mobile" | "tablet" {
@@ -233,6 +234,11 @@ export async function GET(request: NextRequest) {
 // POST - Enregistrer une visite (peut être appelé depuis le frontend)
 export async function POST(request: NextRequest) {
     try {
+        const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown"
+        if (!checkRateLimit(`analytics:${ip}`, 60, 60_000)) {
+            return NextResponse.json({ success: false, error: "Trop de requêtes" }, { status: 429 })
+        }
+
         await connectDB()
 
         const body = await request.json()

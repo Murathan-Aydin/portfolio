@@ -1,32 +1,35 @@
 // Configuration centralisée
-// Utilise les variables d'environnement avec des valeurs par défaut
+// Toutes les valeurs sensibles doivent être définies dans .env.local
 // Supporte NEXT_PUBLIC_ pour l'accès côté client et les variables normales côté serveur
 
-const getEnv = (key: string, defaultValue: string): string => {
-    // Priorité : NEXT_PUBLIC_ (client) puis variable normale (serveur)
-    return process.env[`NEXT_PUBLIC_${key}`] || process.env[key] || defaultValue
+const getEnv = (key: string): string => {
+    const value = process.env[`NEXT_PUBLIC_${key}`] || process.env[key]
+    if (!value) {
+        throw new Error(`Variable d'environnement manquante : ${key} (ou NEXT_PUBLIC_${key})`)
+    }
+    return value
 }
 
 export const config = {
     // Informations personnelles
-    businessName: getEnv("BUSINESS_NAME", "m-aydin"),
-    firstName: getEnv("FIRST_NAME", "Murathan"),
-    lastName: getEnv("LAST_NAME", "Aydin"),
+    businessName: getEnv("BUSINESS_NAME"),
+    firstName: getEnv("FIRST_NAME"),
+    lastName: getEnv("LAST_NAME"),
     get fullName() {
         return `${this.firstName} ${this.lastName}`
     },
-    siret: getEnv("SIRET", "REDACTED_SIRET"),
-    address: getEnv("ADDRESS", ""),
+    siret: getEnv("SIRET"),
+    address: getEnv("ADDRESS"),
 
     // Contact
-    email: getEnv("CONTACT_EMAIL", "contact@ma-dev.fr"),
-    phone: getEnv("PHONE_NUMBER", "REDACTED_PHONE"),
-    phoneDisplay: getEnv("PHONE_NUMBER_DISPLAY", "REDACTED_PHONE_DISPLAY"),
+    email: getEnv("CONTACT_EMAIL"),
+    phone: getEnv("PHONE_NUMBER"),
+    phoneDisplay: getEnv("PHONE_NUMBER_DISPLAY"),
 
     // Hébergeur
-    hostName: getEnv("HOST_NAME", "OVH"),
-    hostAddress: getEnv("HOST_ADDRESS", "2 rue Kellermann, 59100 Roubaix, France"),
-    hostWebsite: getEnv("HOST_WEBSITE", "https://www.ovh.com"),
-    hostType: getEnv("HOST_TYPE", "VPS en France"),
+    hostName: getEnv("HOST_NAME"),
+    hostAddress: getEnv("HOST_ADDRESS"),
+    hostWebsite: getEnv("HOST_WEBSITE"),
+    hostType: getEnv("HOST_TYPE"),
 }
 

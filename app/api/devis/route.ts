@@ -1,5 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
 import nodemailer from "nodemailer"
+import { checkRateLimit } from "@/lib/rate-limit"
+
+const escapeHtml = (s: string): string =>
+    s.replace(/&/g, "&amp;")
+     .replace(/</g, "&lt;")
+     .replace(/>/g, "&gt;")
+     .replace(/"/g, "&quot;")
+     .replace(/'/g, "&#039;")
 
 // Mapping des budgets pour l'affichage dans l'email
 const budgetRanges = [
@@ -11,6 +19,14 @@ const budgetRanges = [
 
 export async function POST(request: NextRequest) {
     try {
+        const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown"
+        if (!checkRateLimit(`devis:${ip}`, 5, 60_000)) {
+            return NextResponse.json(
+                { success: false, error: "Trop de requêtes. Veuillez patienter avant de réessayer." },
+                { status: 429 }
+            )
+        }
+
         const body = await request.json()
         const {
             firstName,
@@ -79,23 +95,23 @@ export async function POST(request: NextRequest) {
             subject: `[Devis] Nouvelle demande de ${firstName} ${lastName}`,
             html: `
                 <h2>Nouvelle demande de devis</h2>
-                
+
                 <h3>Coordonnées</h3>
-                <p><strong>Nom :</strong> ${firstName} ${lastName}</p>
-                <p><strong>Email :</strong> ${email}</p>
-                ${phone ? `<p><strong>Téléphone :</strong> ${phone}</p>` : ""}
-                ${company ? `<p><strong>Entreprise :</strong> ${company}</p>` : ""}
-                
+                <p><strong>Nom :</strong> ${escapeHtml(firstName)} ${escapeHtml(lastName)}</p>
+                <p><strong>Email :</strong> ${escapeHtml(email)}</p>
+                ${phone ? `<p><strong>Téléphone :</strong> ${escapeHtml(phone)}</p>` : ""}
+                ${company ? `<p><strong>Entreprise :</strong> ${escapeHtml(company)}</p>` : ""}
+
                 <h3>Projet</h3>
-                <p><strong>Type de projet :</strong> ${projectTypeLabel}</p>
-                <p><strong>Services souhaités :</strong> ${servicesList}</p>
-                <p><strong>Budget estimé :</strong> ${budgetLabel}</p>
-                ${deadline ? `<p><strong>Délai souhaité :</strong> ${deadline}</p>` : ""}
-                
+                <p><strong>Type de projet :</strong> ${escapeHtml(projectTypeLabel)}</p>
+                <p><strong>Services souhaités :</strong> ${escapeHtml(servicesList)}</p>
+                <p><strong>Budget estimé :</strong> ${escapeHtml(budgetLabel)}</p>
+                ${deadline ? `<p><strong>Délai souhaité :</strong> ${escapeHtml(deadline)}</p>` : ""}
+
                 <h3>Description</h3>
-                <p>${projectDescription.replace(/\n/g, "<br>")}</p>
-                
-                ${references ? `<h3>Sites de référence</h3><p>${references.replace(/\n/g, "<br>")}</p>` : ""}
+                <p>${escapeHtml(projectDescription).replace(/\n/g, "<br>")}</p>
+
+                ${references ? `<h3>Sites de référence</h3><p>${escapeHtml(references).replace(/\n/g, "<br>")}</p>` : ""}
             `,
             text: `
 Nouvelle demande de devis

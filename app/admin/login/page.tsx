@@ -90,7 +90,7 @@ export default function AdminLoginPage() {
                                 <Input
                                     id="email"
                                     type="email"
-                                    placeholder="REDACTED_ADMIN_EMAIL"
+                                    placeholder="votre@email.fr"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="pl-10"
@@ -135,7 +135,6 @@ export default function AdminLoginPage() {
                         </Button>
                     </form>
 
-                    <p className="text-center text-xs text-muted-foreground mt-6">Demo: REDACTED_ADMIN_EMAIL / REDACTED_ADMIN_PASSWORD</p>
                 </div>
             </div>
         </div>
