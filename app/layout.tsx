@@ -8,23 +8,29 @@ import { AnalyticsProvider } from "@/components/analytics-provider"
 import BgAnimate from "@/components/bg-animate"
 
 export const metadata: Metadata = {
-    title: "Murathan Aydin | Développeur Full-Stack",
+    title: {
+        default: "MA.DEV — Développeur Full-Stack Freelance à Mâcon",
+        template: "%s | MA.DEV",
+    },
     description:
-        "Portfolio de Murathan Aydin, développeur Full-Stack en alternance chez OID Consultants et étudiant à Epitech. Découvrez mes projets et mon parcours.",
+        "Développeur web freelance à Mâcon. React, Next.js, Node.js. Sites sur mesure, applications web, SEO technique. Devis gratuit sous 48h.",
     keywords: [
+        "développeur web freelance Mâcon",
         "développeur Full-Stack",
-        "portfolio développeur",
-        "alternant développeur",
-        "Epitech",
-        "développeur web",
+        "développeur web Saône-et-Loire",
+        "création site internet Mâcon",
         "React",
         "Next.js",
+        "Node.js",
     ],
     openGraph: {
-        title: "Murathan Aydin | Développeur Full-Stack",
-        description: "Portfolio de Murathan Aydin, développeur Full-Stack.",
+        title: "MA.DEV — Développeur Full-Stack Freelance à Mâcon",
+        description:
+            "Développeur web freelance à Mâcon. React, Next.js, Node.js. Sites sur mesure, applications web, SEO. Devis gratuit sous 48h.",
         locale: "fr_FR",
         type: "website",
+        url: "https://ma-dev.fr",
+        siteName: "MA.DEV",
     },
     generator: "Next.js",
     manifest: "/manifest.json",

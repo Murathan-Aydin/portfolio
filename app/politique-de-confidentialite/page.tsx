@@ -2,8 +2,9 @@
 import { config } from "@/lib/config"
 
 export const metadata = {
-    title: "Politique de confidentialité | MA.DEV",
+    title: { absolute: "Politique de confidentialité | MA.DEV" },
     description: "Politique de confidentialité et protection des données personnelles - MA.DEV",
+    robots: { index: false, follow: true },
 }
 
 export default function PolitiqueConfidentialite() {

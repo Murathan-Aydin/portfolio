@@ -1,7 +1,8 @@
 
 export const metadata = {
-    title: "Conditions Générales de Vente | MA.DEV",
+    title: { absolute: "Conditions Générales de Vente | MA.DEV" },
     description: "Conditions générales de vente des services de développement web - MA.DEV",
+    robots: { index: false, follow: true },
 }
 
 export default function CGV() {

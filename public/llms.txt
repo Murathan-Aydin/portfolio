@@ -1,0 +1,26 @@
+# Murathan Aydin — Développeur Full-Stack Freelance
+
+> Murathan Aydin est un développeur full-stack freelance basé à Mâcon (71),
+> Bourgogne-Franche-Comté, France. Spécialisé React, Next.js, Node.js,
+> TypeScript. Disponible pour missions en remote ou sur site en Bourgogne.
+
+## Pages principales
+- [Accueil](https://ma-dev.fr/): Services de développement web freelance
+- [Projets](https://ma-dev.fr/projets): Portfolio et réalisations
+- [Devis](https://ma-dev.fr/devis): Demande de devis gratuit
+- [Contact](https://ma-dev.fr/contact): Formulaire de contact
+
+## Compétences
+React, Next.js, TypeScript, Node.js, Python, Laravel, PHP, Tailwind CSS, DevOps, MongoDB
+
+## Services
+- Création de sites vitrines sur mesure
+- Développement d'applications web React/Next.js
+- Optimisation SEO technique
+- Maintenance et hébergement
+
+## Contact
+- Localisation: Mâcon, 71000, Bourgogne-Franche-Comté, France
+- Email: contact@ma-dev.fr
+- Tél: +33771224266
+- Site: https://ma-dev.fr

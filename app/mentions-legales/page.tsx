@@ -1,8 +1,9 @@
 import { config } from "@/lib/config"
 
 export const metadata = {
-    title: "Mentions légales | MA.DEV",
+    title: { absolute: "Mentions légales | MA.DEV" },
     description: "Mentions légales du site MA.DEV - Développeur web freelance",
+    robots: { index: false, follow: true },
 }
 
 export default function MentionsLegales() {

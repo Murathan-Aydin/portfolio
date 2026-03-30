@@ -16,6 +16,8 @@ export async function generateStaticParams() {
     }
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://ma-dev.fr"
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     try {
         const { slug } = await params
@@ -24,17 +26,31 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
         if (!project) {
             return {
-                title: "Projet non trouvé | MA.DEV",
+                title: { absolute: "Projet non trouvé | MA.DEV" },
             }
         }
 
+        const imageUrl = project.image
+            ? project.image.startsWith("/")
+                ? `${BASE_URL}${project.image}`
+                : project.image
+            : undefined
+
         return {
-            title: `${project.title} | MA.DEV`,
+            title: { absolute: `${project.title} — Portfolio MA.DEV` },
             description: project.description,
+            alternates: { canonical: `${BASE_URL}/projets/${slug}` },
+            openGraph: {
+                title: `${project.title} — Portfolio MA.DEV`,
+                description: project.description,
+                url: `${BASE_URL}/projets/${slug}`,
+                type: "article",
+                ...(imageUrl && { images: [{ url: imageUrl }] }),
+            },
         }
     } catch {
         return {
-            title: "Projet | MA.DEV",
+            title: { absolute: "Projet | MA.DEV" },
         }
     }
 }
@@ -57,5 +73,26 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         notFound()
     }
 
-    return <ProjectDetailClient project={projectData!} />
+    const creativeWorkSchema = {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        name: `${projectData!.title} — Site web`,
+        url: `${BASE_URL}/projets/${projectData!.slug}`,
+        author: { "@id": `${BASE_URL}/#person` },
+        inLanguage: "fr-FR",
+        about: {
+            "@type": "LocalBusiness",
+            name: projectData!.clientName,
+        },
+    }
+
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkSchema) }}
+            />
+            <ProjectDetailClient project={projectData!} />
+        </>
+    )
 }
