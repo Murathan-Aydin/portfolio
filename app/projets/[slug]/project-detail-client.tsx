@@ -143,7 +143,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                                             key={index}
                                             className="flex items-start gap-3"
                                         >
-                                            <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                                            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
                                                 <Check className="w-4 h-4 text-primary" />
                                             </span>
                                             <span className="text-muted-foreground">{feature}</span>

@@ -282,7 +282,7 @@ export default function AdminDashboardPage() {
                                                     href={`/admin/projets/${project.slug}/edit`}
                                                     className="flex items-center gap-4 py-3 border-b border-border last:border-0 hover:bg-muted/50 transition-colors rounded-lg px-2 -mx-2"
                                                 >
-                                                    <div className="w-12 h-12 bg-muted rounded-lg overflow-hidden flex-shrink-0">
+                                                    <div className="w-12 h-12 bg-muted rounded-lg overflow-hidden shrink-0">
                                                         <img
                                                             src={project.image || "/placeholder.svg"}
                                                             alt={project.title}
