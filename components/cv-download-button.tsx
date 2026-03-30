@@ -19,10 +19,12 @@ export function CvDownloadButton() {
             await new Promise(resolve => setTimeout(resolve, 500))
 
             const canvas = await html2canvas(element, {
-                scale: 2,
+                scale: 4,
                 useCORS: true,
                 logging: false,
                 backgroundColor: "#ffffff",
+                windowWidth: 794, // Approx 210mm at 96 DPI
+                windowHeight: 1123, // Approx 297mm at 96 DPI
                 onclone: (clonedDoc) => {
                     const clonedElement = clonedDoc.getElementById("cv-print-area")
                     if (clonedElement) {
@@ -56,9 +58,11 @@ export function CvDownloadButton() {
             })
 
             const pdfWidth = pdf.internal.pageSize.getWidth()
-            const pdfHeight = pdf.internal.pageSize.getHeight()
+            const imgWidth = pdfWidth
+            const imgHeight = (canvas.height * imgWidth) / canvas.width
             
-            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight)
+            // Add image with FAST compression
+            pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight, undefined, "FAST")
             pdf.save("CV_Murathan_Aydin.pdf")
         } catch (error) {
             console.error("Failed to generate PDF:", error)
