@@ -3,8 +3,19 @@ import type { Metadata } from 'next'
 import { CvDownloadButton } from '@/components/cv-download-button'
 
 export const metadata: Metadata = {
-    title: 'CV | Murathan Aydin',
-    description: 'CV de Murathan Aydin, alternant développeur full-stack.',
+    title: 'CV | Murathan Aydin - Développeur Full-Stack',
+    description: 'Consultez le CV de Murathan Aydin, développeur full-stack spécialisé en React, Next.js, PHP et DevOps. Disponible pour de nouveaux projets.',
+    keywords: ['CV', 'Murathan Aydin', 'Développeur Full-Stack', 'Epitech', 'React', 'Next.js', 'PHP', 'DevOps', 'Lyon'],
+    openGraph: {
+        title: 'CV | Murathan Aydin - Développeur Full-Stack',
+        description: 'Parcours professionnel et compétences de Murathan Aydin.',
+        url: 'https://ma-dev.fr/cv',
+        type: 'website',
+    },
+    robots: {
+        index: true,
+        follow: true,
+    }
 }
 
 type Experience = {
@@ -224,7 +235,9 @@ export default function CvPage() {
                                     <h3 className="text-[15px] font-bold leading-tight text-slate-900">
                                         {experience.role} — {experience.company}
                                     </h3>
-                                    <p className="mt-1 text-[12.5px] uppercase tracking-[0.06em] text-slate-500">{experience.period}</p>
+                                    <p className="mt-1 text-[12.5px] uppercase tracking-[0.06em] text-slate-500">
+                                        <time>{experience.period}</time>
+                                    </p>
                                     <ul className="mt-2 space-y-1.5 text-[13.5px] leading-[1.35] text-slate-700">
                                         {experience.bullets.map((bullet) => (
                                             <li key={bullet} className="flex gap-2">
