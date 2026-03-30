@@ -58,7 +58,7 @@ export default function DynamicBlobEngine() {
                 // Parallaxe subtile au scroll
                 gsap.to(blob, {
                     scrollTrigger: {
-                        trigger: "body",
+                        trigger: typeof document !== "undefined" ? document.body : "body",
                         start: "top top",
                         end: "bottom bottom",
                         scrub: 2,
