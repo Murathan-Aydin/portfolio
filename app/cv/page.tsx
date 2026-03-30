@@ -62,6 +62,14 @@ const cv = {
             ],
         },
         {
+            role: 'Opérateur Polyvalent',
+            company: "Missions d'Intérim (Simire, Bressor, Lamberet)",
+            period: 'Juin 2023 — Octobre 2024',
+            bullets: [
+                'Fabrication, production industrielle et assemblage en industrie.',
+            ],
+        },
+        {
             role: 'Responsable magasin',
             company: 'Phone Store Academy',
             period: 'Février 2022 — Mars 2023',
