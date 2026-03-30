@@ -1,5 +1,6 @@
 
 import type { Metadata } from 'next'
+import { CvDownloadButton } from '@/components/cv-download-button'
 
 export const metadata: Metadata = {
     title: 'CV | Murathan Aydin',
@@ -24,7 +25,7 @@ const cv = {
         website: 'https://ma-dev.fr',
         drivingLicense: 'Permis B',
         summary:
-            'Alternant développeur full-stack spécialisé en API, IoT et automatisation. Expérience en PHP, Python, DevOps et traitement de données énergétiques. Ouvert à une alternance Bac+3.',
+            'Alternant développeur full-stack spécialisé en API, IoT et automatisation. Expérience en PHP, Python, DevOps et traitement de données énergétiques. Ouvert à une alternance Bac+5 à la suite de mon diplôme.',
     },
     experiences: [
         {
@@ -110,7 +111,7 @@ function SidebarList({ items }: { items: string[] }) {
 
 export default function CvPage() {
     return (
-        <main className="min-h-screen pt-32 bg-slate-100 py-8 print:bg-white print:py-0">
+        <main className="min-h-screen pt-20 py-8 print:bg-white print:py-0">
             <style>{`
         @page {
           size: A4;
@@ -147,33 +148,65 @@ export default function CvPage() {
             color: inherit !important;
           }
         }
-      `}</style>
+        /* Custom class for capturing with html2canvas (fixes modern color parsing) */
+        .cv-sheet.print-mode {
+            width: 210mm !important;
+            min-height: 297mm !important;
+            margin: 0 !important;
+            box-shadow: none !important;
+            border: none !important;
+            background-color: #ffffff !important;
+        }
+        /* Override modern Tailwind colors in PDF generation mode */
+        .cv-sheet.print-mode * {
+            outline: none !important;
+            text-shadow: none !important;
+            /* Force standard colors for common CV elements */
+        }
+        .cv-sheet.print-mode .text-slate-900 { color: #0f172a !important; }
+        .cv-sheet.print-mode .text-slate-800 { color: #1e293b !important; }
+        .cv-sheet.print-mode .text-slate-700 { color: #334155 !important; }
+        .cv-sheet.print-mode .text-slate-500 { color: #64748b !important; }
+        .cv-sheet.print-mode .text-blue-800 { color: #1e40af !important; }
+        .cv-sheet.print-mode .bg-blue-800 { background-color: #1e40af !important; }
+        .cv-sheet.print-mode .bg-slate-100 { background-color: #f1f5f9 !important; }
+        .cv-sheet.print-mode .border-slate-200 { border-color: #e2e8f0 !important; }
 
+        @media (max-width: 768px) {
+            .cv-sheet.print-mode header,
+            .cv-sheet.print-mode .grid {
+                grid-template-columns: 1.45fr 0.85fr !important;
+                display: grid !important;
+            }
+        }
+      `}</style>
             <section
                 id="cv-print-area"
-                className="cv-sheet mx-auto flex min-h-[297mm] w-[210mm] flex-col border border-slate-200 bg-white px-8 py-7 shadow-sm print:min-h-0 print:border-0 print:px-0 print:py-0"
+                className="cv-sheet mx-auto flex min-h-0 lg:min-h-[297mm] w-full max-w-[210mm] flex-col border border-slate-200 bg-white px-4 py-6 sm:px-8 sm:py-7 shadow-sm print:min-h-0 print:border-0 print:px-0 print:py-0"
             >
-                <header className="grid grid-cols-[1.45fr_0.85fr] gap-8 border-b border-slate-200 pb-6">
+                <header className="grid grid-cols-1 md:grid-cols-[1.45fr_0.85fr] gap-6 md:gap-8 border-b border-slate-200 pb-6">
                     <div>
-                        <h1 className="text-[26px] font-bold leading-none tracking-tight text-slate-900">
+                        <h1 className="text-[24px] sm:text-[26px] font-bold leading-none tracking-tight text-slate-900">
                             {cv.identity.name}
                         </h1>
-                        <p className="mt-4 text-[14px] font-bold uppercase tracking-[0.08em] text-blue-800">
+                        <p className="mt-4 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.08em] text-blue-800">
                             {cv.identity.title}
                         </p>
-                        <p className="mt-4 max-w-[95%] text-[14px] leading-[1.45] text-slate-700">{cv.identity.summary}</p>
+                        <p className="mt-4 max-w-full md:max-w-[95%] text-[13.5px] sm:text-[14px] leading-[1.45] text-slate-700">
+                            {cv.identity.summary}
+                        </p>
                     </div>
 
-                    <ul className="space-y-2 text-[13.5px] leading-[1.35] text-slate-800">
-                        <li>{cv.identity.phone}</li>
-                        <li>{cv.identity.email}</li>
+                    <ul className="space-y-1.5 md:space-y-2 text-[13px] sm:text-[13.5px] leading-[1.35] text-slate-800">
+                        <li><a href={`tel:${cv.identity.phone}`} target="_blank" rel="noreferrer" className="hover:underline">{cv.identity.phone}</a></li>
+                        <li className="break-all hover:underline"><a href={`mailto:${cv.identity.email}`} target="_blank" rel="noreferrer">{cv.identity.email}</a></li>
                         <li>
-                            <a href={cv.identity.linkedin} target="_blank" rel="noreferrer">
+                            <a href={cv.identity.linkedin} target="_blank" rel="noreferrer" className="hover:underline">
                                 linkedin.com/in/murathan-aydin
                             </a>
                         </li>
                         <li>
-                            <a href={cv.identity.website} target="_blank" rel="noreferrer">
+                            <a href={cv.identity.website} target="_blank" rel="noreferrer" className="hover:underline">
                                 ma-dev.fr
                             </a>
                         </li>
@@ -182,7 +215,7 @@ export default function CvPage() {
                     </ul>
                 </header>
 
-                <div className="mt-6 grid flex-1 grid-cols-[1.5fr_0.82fr] gap-8">
+                <div className="mt-6 grid flex-1 grid-cols-1 md:grid-cols-[1.5fr_0.82fr] gap-8">
                     <div>
                         <SectionTitle>Expériences</SectionTitle>
                         <div className="space-y-4">
@@ -241,6 +274,7 @@ export default function CvPage() {
                     </aside>
                 </div>
             </section>
+            <CvDownloadButton />
         </main>
     )
 }
