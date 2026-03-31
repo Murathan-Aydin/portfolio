@@ -1,6 +1,5 @@
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import bcrypt from "bcryptjs"
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -15,12 +14,8 @@ export const authOptions: NextAuthOptions = {
                     return null
                 }
 
-                // Vérification des credentials via hash bcrypt
-                const passHash = process.env.PASS_ADMIN_HASH
-                if (!passHash) return null
-
                 const emailMatch = credentials.email === process.env.USER_ADMIN
-                const passwordMatch = await bcrypt.compare(credentials.password, passHash)
+                const passwordMatch = credentials.password === process.env.PASS_ADMIN
 
                 if (emailMatch && passwordMatch) {
                     return {
