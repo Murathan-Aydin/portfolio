@@ -42,7 +42,7 @@ const cv = {
         {
             role: 'Développeur Full-Stack',
             company: 'OID Consultants',
-            period: 'Septembre 2025 — Aujourd’hui',
+            period: "Septembre 2025 — Aujourd'hui",
             bullets: [
                 'API PHP/Python pour le traitement de données en push',
                 'Automatisation IoT via SFTP et CRON',
@@ -76,7 +76,7 @@ const cv = {
             bullets: [
                 'Gestion magasin et relation client',
                 'Encadrement de stagiaires et apprentis',
-                'Création d’un site web en autodidacte',
+                "Création d'un site web en autodidacte",
             ],
         },
         {
@@ -102,7 +102,7 @@ const cv = {
         ['Web', 'API REST, SFTP, Grafana, SCSS'],
     ],
     languages: ['Français — langue maternelle', 'Turc — bilingue', 'Anglais — niveau professionnel'],
-    softSkills: ['Rigueur', 'Autonomie', 'Esprit d’équipe', 'Capacité d’adaptation'],
+    softSkills: ['Rigueur', 'Autonomie', "Esprit d'équipe", "Capacité d'adaptation"],
     interests: ['Automobile', 'Randonnée', 'Bénévolat associatif'],
 }
 
@@ -110,7 +110,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
     return (
         <div className="mb-3">
             <h2 className="text-[13px] font-bold uppercase tracking-[0.14em] text-slate-900">{children}</h2>
-            <div className="mt-1 h-[2px] w-24 bg-blue-800" />
+            <div className="mt-1 h-2 w-24 bg-blue-800" />
         </div>
     )
 }
@@ -120,7 +120,7 @@ function SidebarList({ items }: { items: string[] }) {
         <ul className="space-y-1.5 text-[13.5px] leading-[1.35] text-slate-700">
             {items.map((item) => (
                 <li key={item} className="flex gap-2">
-                    <span className="mt-[2px] text-slate-900">•</span>
+                    <span className="mt-2 text-slate-900">•</span>
                     <span>{item}</span>
                 </li>
             ))}
@@ -132,73 +132,73 @@ export default function CvPage() {
     return (
         <main className="min-h-screen pt-20 py-8 print:bg-white print:py-0">
             <style>{`
-        @page {
-          size: A4;
-          margin: 12mm;
-        }
-        @media print {
-          html, body {
-            background: white;
-          }
-          body * {
-            visibility: hidden;
-          }
-          #cv-print-area,
-          #cv-print-area * {
-            visibility: visible;
-          }
-          #cv-print-area {
-            position: absolute;
-            inset: 0;
-            margin: 12mm;
-          }
-          .cv-sheet {
-            box-shadow: none !important;
-            border: none !important;
-            width: 100% !important;
-            min-height: auto !important;
-            margin: 0 !important;
-          }
-          .print-hidden {
-            display: none !important;
-          }
-          a {
-            text-decoration: none !important;
-            color: inherit !important;
-          }
-        }
-        /* Custom class for capturing with html2canvas (fixes modern color parsing) */
-        .cv-sheet.print-mode {
-            width: 210mm !important;
-            min-height: 297mm !important;
-            margin: 0 !important;
-            box-shadow: none !important;
-            border: none !important;
-            background-color: #ffffff !important;
-        }
-        /* Override modern Tailwind colors in PDF generation mode */
-        .cv-sheet.print-mode * {
-            outline: none !important;
-            text-shadow: none !important;
-            /* Force standard colors for common CV elements */
-        }
-        .cv-sheet.print-mode .text-slate-900 { color: #0f172a !important; }
-        .cv-sheet.print-mode .text-slate-800 { color: #1e293b !important; }
-        .cv-sheet.print-mode .text-slate-700 { color: #334155 !important; }
-        .cv-sheet.print-mode .text-slate-500 { color: #64748b !important; }
-        .cv-sheet.print-mode .text-blue-800 { color: #1e40af !important; }
-        .cv-sheet.print-mode .bg-blue-800 { background-color: #1e40af !important; }
-        .cv-sheet.print-mode .bg-slate-100 { background-color: #f1f5f9 !important; }
-        .cv-sheet.print-mode .border-slate-200 { border-color: #e2e8f0 !important; }
+                @page {
+                size: A4;
+                margin: 12mm;
+                }
+                @media print {
+                html, body {
+                    background: white;
+                }
+                body * {
+                    visibility: hidden;
+                }
+                #cv-print-area,
+                #cv-print-area * {
+                    visibility: visible;
+                }
+                #cv-print-area {
+                    position: absolute;
+                    inset: 0;
+                    margin: 12mm;
+                }
+                .cv-sheet {
+                    box-shadow: none !important;
+                    border: none !important;
+                    width: 100% !important;
+                    min-height: auto !important;
+                    margin: 0 !important;
+                }
+                .print-hidden {
+                    display: none !important;
+                }
+                a {
+                    text-decoration: none !important;
+                    color: inherit !important;
+                }
+                }
+                /* Custom class for capturing with html2canvas (fixes modern color parsing) */
+                .cv-sheet.print-mode {
+                    width: 210mm !important;
+                    min-height: 297mm !important;
+                    margin: 0 !important;
+                    box-shadow: none !important;
+                    border: none !important;
+                    background-color: #ffffff !important;
+                }
+                /* Override modern Tailwind colors in PDF generation mode */
+                .cv-sheet.print-mode * {
+                    outline: none !important;
+                    text-shadow: none !important;
+                    /* Force standard colors for common CV elements */
+                }
+                .cv-sheet.print-mode .text-slate-900 { color: #0f172a !important; }
+                .cv-sheet.print-mode .text-slate-800 { color: #1e293b !important; }
+                .cv-sheet.print-mode .text-slate-700 { color: #334155 !important; }
+                .cv-sheet.print-mode .text-slate-500 { color: #64748b !important; }
+                .cv-sheet.print-mode .text-blue-800 { color: #1e40af !important; }
+                .cv-sheet.print-mode .bg-blue-800 { background-color: #1e40af !important; }
+                .cv-sheet.print-mode .bg-slate-100 { background-color: #f1f5f9 !important; }
+                .cv-sheet.print-mode .border-slate-200 { border-color: #e2e8f0 !important; }
 
-        @media (max-width: 768px) {
-            .cv-sheet.print-mode header,
-            .cv-sheet.print-mode .grid {
-                grid-template-columns: 1.45fr 0.85fr !important;
-                display: grid !important;
-            }
-        }
-      `}</style>
+                @media (max-width: 768px) {
+                    .cv-sheet.print-mode header,
+                    .cv-sheet.print-mode .grid {
+                        grid-template-columns: 1.45fr 0.85fr !important;
+                        display: grid !important;
+                    }
+                }
+            `}</style>
             <section
                 id="cv-print-area"
                 className="cv-sheet mx-auto flex min-h-0 lg:min-h-[297mm] w-full max-w-[210mm] flex-col border border-slate-200 bg-white px-4 py-6 sm:px-8 sm:py-7 shadow-sm print:min-h-0 print:border-0 print:px-0 print:py-0"
@@ -249,7 +249,7 @@ export default function CvPage() {
                                     <ul className="mt-2 space-y-1.5 text-[13.5px] leading-[1.35] text-slate-700">
                                         {experience.bullets.map((bullet) => (
                                             <li key={bullet} className="flex gap-2">
-                                                <span className="mt-[2px] text-slate-900">•</span>
+                                                <span className="mt-2px text-slate-900">•</span>
                                                 <span>{bullet}</span>
                                             </li>
                                         ))}
