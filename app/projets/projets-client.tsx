@@ -101,7 +101,7 @@ export default function ProjectsClient({ initialProjects }: ProjectsClientProps)
                     ) : (
                         <div ref={containerRef} className="grid sm:grid-cols-2 gap-6 sm:gap-8 ">
                             {projects.map((project) => (
-                                <div key={project.slug} className="project-card bg-white/5 border border-white/10 rounded-2xl w-fit backdrop-blur-md">
+                                <div key={project.slug} className="project-card border border-white/10 rounded-2xl w-fit backdrop-blur-md">
                                     <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-xl transition-all duration-300 h-full">
                                         <div className="relative overflow-hidden h-64">
                                             <Image
