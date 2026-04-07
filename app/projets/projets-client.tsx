@@ -147,7 +147,7 @@ export default function ProjectsClient({ initialProjects }: ProjectsClientProps)
 
                     <div
                         ref={ctaRef}
-                        className="mt-12 sm:mt-20 text-center bg-secondary/30 rounded-2xl p-8 sm:p-12"
+                        className="mt-12 sm:mt-20 text-center bg-secondary/30 p-8 sm:p-12 border border-white/10 rounded-2xl w-fit backdrop-blur-md"
                     >
                         <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Un projet en tête ?</h2>
                         <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
