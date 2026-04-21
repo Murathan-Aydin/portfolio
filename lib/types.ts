@@ -10,6 +10,7 @@ export interface Project {
     clientName: string
     projectDate: string
     projectUrl?: string
+    downloadUrl?: string
     features: string[]
     createdAt?: Date
     updatedAt?: Date

@@ -2,9 +2,9 @@
 
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
-import { ArrowLeft, ExternalLink, Check } from "lucide-react"
+import { ArrowLeft, ExternalLink, Check, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import type { Project } from "@/lib/projects-data"
+import type { Project } from "@/lib/types"
 import Link from "next/link"
 
 interface ProjectDetailClientProps {
@@ -115,14 +115,24 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                                     ))}
                                 </div>
 
-                                {project.projectUrl && (
-                                    <a href={project.projectUrl} target="_blank" rel="noopener noreferrer">
-                                        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                                            Voir le site en ligne
-                                            <ExternalLink className="ml-2 w-4 h-4" />
-                                        </Button>
-                                    </a>
-                                )}
+                                <div className="flex flex-wrap gap-3">
+                                    {project.projectUrl && (
+                                        <a href={project.projectUrl} target="_blank" rel="noopener noreferrer">
+                                            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                                                Voir le site en ligne
+                                                <ExternalLink className="ml-2 w-4 h-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {project.downloadUrl && (
+                                        <a href={project.downloadUrl} download>
+                                            <Button variant="outline">
+                                                Télécharger
+                                                <Download className="ml-2 w-4 h-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="relative">

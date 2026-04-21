@@ -274,6 +274,17 @@ export default function EditProjectPage() {
                                                 onChange={(e) => setFormData({ ...formData, projectUrl: e.target.value })}
                                             />
                                         </div>
+
+                                        <div className="space-y-2">
+                                            <Label htmlFor="downloadUrl">URL de téléchargement</Label>
+                                            <Input
+                                                id="downloadUrl"
+                                                type="url"
+                                                value={formData.downloadUrl || ""}
+                                                onChange={(e) => setFormData({ ...formData, downloadUrl: e.target.value })}
+                                                placeholder="https://ma-dev.fr/ClaudeBar.dmg"
+                                            />
+                                        </div>
                                     </CardContent>
                                 </Card>
 
