@@ -36,7 +36,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         const { slug } = await params
 
         const body = await request.json()
-        const { title, description, longDescription, tags, image, gallery, clientName, projectDate, projectUrl, features, slug: newSlug } = body
+        const { title, description, longDescription, tags, image, gallery, clientName, projectDate, projectUrl, downloadUrl, features, slug: newSlug } = body
 
         // Si le slug change, vérifier qu'il n'existe pas déjà
         if (newSlug && newSlug !== slug) {
@@ -62,6 +62,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
                 clientName,
                 projectDate,
                 projectUrl: projectUrl || "",
+                downloadUrl: downloadUrl || "",
                 features: features || [],
             },
             { new: true, runValidators: true }
